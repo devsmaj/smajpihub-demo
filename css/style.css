@@ -227,12 +227,12 @@ nav a:hover {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
-  text-align: left;
+  text-align: center;
 }
 
 .footer-grid > div {
-  text-align: left;
-  align-items: flex-start;
+  text-align: center;
+  align-items: center;
 }
 
 .footer h4 {
@@ -258,14 +258,14 @@ nav a:hover {
 }
 
 .footer-grid p {
-  text-align: left;
+  text-align: center;
   margin-top: 0;
   font-size: 14px;
 }
 
 .footer .socials {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
