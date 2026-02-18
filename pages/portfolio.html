@@ -3,22 +3,16 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Portfolio — SMAJ PI HUB</title>
+  <title>Portfolio - SMAJ PI HUB</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Boxicons -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="../css/portfolio.css">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/portfolio.css">
 </head>
 
-<body>
-
-  <!-- HEADER -->
-    <header class="header">
+<body class="portfolio-page">
+  <header class="header">
     <div class="container nav">
       <div class="logo">
         <img src="../assets/images/logo.png" alt="SMAJ PI HUB Logo">
@@ -51,105 +45,195 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
+  <main>
+    <section class="portfolio-hero">
+      <div class="container portfolio-hero-grid">
+        <div>
+          <span class="portfolio-kicker">SMAJ PI HUB PORTFOLIO</span>
+          <h1>Real Projects Delivered Across the Pi Ecosystem</h1>
+          <p>
+            Explore selected work from SMAJ PI HUB services including web builds, visual design,
+            crypto utility solutions, and growth campaigns for ecosystem partners.
+          </p>
+          <div class="portfolio-hero-actions">
+            <a href="service.html" class="btn-primary">Explore Services</a>
+            <a href="contact.html" class="btn-secondary">Start a Project</a>
+          </div>
+        </div>
+        <div class="portfolio-hero-image">
+          <img src="../assets/images/website-hero.png" alt="SMAJ PI HUB portfolio showcase">
+        </div>
+      </div>
+    </section>
 
-  <!-- HERO -->
-  <section class="hero container">
-    <h1>Our Work Speaks</h1>
-    <p>SMAJ PI HUB delivers global digital services. Browse our projects and see real results achieved.</p>
-  </section>
+    <section class="portfolio-filters">
+      <div class="container">
+        <div class="portfolio-head">
+          <h2>Browse by Category</h2>
+          <p>Filter projects to quickly find the type of work you need.</p>
+        </div>
+        <div class="filters">
+          <button class="filter-btn active" data-category="all" type="button">All</button>
+          <button class="filter-btn" data-category="web" type="button">Web Development</button>
+          <button class="filter-btn" data-category="graphic" type="button">Graphic Design</button>
+          <button class="filter-btn" data-category="crypto" type="button">Crypto Services</button>
+          <button class="filter-btn" data-category="marketing" type="button">Digital Marketing</button>
+        </div>
+      </div>
+    </section>
 
-  <!-- FILTERS -->
-  <section class="filters container">
-    <button class="filter-btn active" data-category="all">All</button>
-    <button class="filter-btn" data-category="web">Web Development</button>
-    <button class="filter-btn" data-category="graphic">Graphic Design</button>
-    <button class="filter-btn" data-category="crypto">Crypto Services</button>
-    <button class="filter-btn" data-category="marketing">Digital Marketing</button>
-  </section>
-
-  <!-- PORTFOLIO GRID -->
-  <section class="portfolio container">
-    <div class="portfolio-grid" id="portfolioGrid">
-
-      <!-- Portfolio Item Example -->
-      <div class="portfolio-item" data-category="web">
-        <img src="../assets/images/website-hero.png" alt="Website Project">
-        <div class="portfolio-info">
-          <h4>Website Project</h4>
-          <p>Responsive website for global client.</p>
-          <div class="metrics">
-            <div class="progress-bar">
-              <span style="width: 95%"></span>
+    <section class="portfolio-work">
+      <div class="container">
+        <div class="portfolio-grid" id="portfolioGrid">
+          <article class="portfolio-item" data-category="web">
+            <img src="../assets/images/website.png" alt="E-commerce website project">
+            <div class="portfolio-info">
+              <p class="portfolio-meta">Web Development</p>
+              <h3>Pi-Powered Marketplace Website</h3>
+              <p>Responsive storefront and order flow optimized for trust-first Pi transactions.</p>
+              <div class="metrics">
+                <div class="progress-bar"><span style="width: 95%"></span></div>
+                <p>Completion: 95%</p>
+              </div>
+              <div class="portfolio-buttons">
+                <button class="btn-primary" type="button"><i class='bx bx-show'></i> View Project</button>
+                <button class="btn-secondary" type="button"><i class='bx bx-user-plus'></i> Hire Service</button>
+              </div>
             </div>
-            <p>Completion: 95%</p>
-          </div>
-          <div class="portfolio-buttons">
-            <button class="btn primary"><i class='bx bx-show'></i> View Project</button>
-            <button class="btn secondary"><i class='bx bx-user-plus'></i> Hire Service</button>
-          </div>
+          </article>
+
+          <article class="portfolio-item" data-category="graphic">
+            <img src="../assets/images/grahpic.png" alt="Branding and design project">
+            <div class="portfolio-info">
+              <p class="portfolio-meta">Graphic Design</p>
+              <h3>Brand System and Visual Kit</h3>
+              <p>Modern brand identity, social templates, and campaign visuals for Pi businesses.</p>
+              <div class="metrics">
+                <div class="progress-bar"><span style="width: 92%"></span></div>
+                <p>Completion: 92%</p>
+              </div>
+              <div class="portfolio-buttons">
+                <button class="btn-primary" type="button"><i class='bx bx-show'></i> View Project</button>
+                <button class="btn-secondary" type="button"><i class='bx bx-user-plus'></i> Hire Service</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="portfolio-item" data-category="crypto">
+            <img src="../assets/images/market-banner.png" alt="Crypto service integration project">
+            <div class="portfolio-info">
+              <p class="portfolio-meta">Crypto Services</p>
+              <h3>Wallet-Connected Checkout Module</h3>
+              <p>Integrated identity and payment confirmation flow for secure Pi service access.</p>
+              <div class="metrics">
+                <div class="progress-bar"><span style="width: 90%"></span></div>
+                <p>Completion: 90%</p>
+              </div>
+              <div class="portfolio-buttons">
+                <button class="btn-primary" type="button"><i class='bx bx-show'></i> View Project</button>
+                <button class="btn-secondary" type="button"><i class='bx bx-user-plus'></i> Hire Service</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="portfolio-item" data-category="marketing">
+            <img src="../assets/images/business.jpg" alt="Digital campaign management project">
+            <div class="portfolio-info">
+              <p class="portfolio-meta">Digital Marketing</p>
+              <h3>Growth Campaign for Service Launch</h3>
+              <p>Multi-channel launch campaign that improved user onboarding and retention quality.</p>
+              <div class="metrics">
+                <div class="progress-bar"><span style="width: 88%"></span></div>
+                <p>Completion: 88%</p>
+              </div>
+              <div class="portfolio-buttons">
+                <button class="btn-primary" type="button"><i class='bx bx-show'></i> View Project</button>
+                <button class="btn-secondary" type="button"><i class='bx bx-user-plus'></i> Hire Service</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="portfolio-item" data-category="web">
+            <img src="../assets/images/smaj-hero.png" alt="Dashboard and service portal project">
+            <div class="portfolio-info">
+              <p class="portfolio-meta">Web Development</p>
+              <h3>Unified Client Dashboard Interface</h3>
+              <p>Service tracking dashboard with clear milestone progress and delivery states.</p>
+              <div class="metrics">
+                <div class="progress-bar"><span style="width: 94%"></span></div>
+                <p>Completion: 94%</p>
+              </div>
+              <div class="portfolio-buttons">
+                <button class="btn-primary" type="button"><i class='bx bx-show'></i> View Project</button>
+                <button class="btn-secondary" type="button"><i class='bx bx-user-plus'></i> Hire Service</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="portfolio-item" data-category="crypto">
+            <img src="../assets/images/marketplace.jpg" alt="Marketplace utility project">
+            <div class="portfolio-info">
+              <p class="portfolio-meta">Crypto Services</p>
+              <h3>Escrow and Delivery Proof Workflow</h3>
+              <p>Secure purchase logic with transparent order status and resolution checkpoints.</p>
+              <div class="metrics">
+                <div class="progress-bar"><span style="width: 91%"></span></div>
+                <p>Completion: 91%</p>
+              </div>
+              <div class="portfolio-buttons">
+                <button class="btn-primary" type="button"><i class='bx bx-show'></i> View Project</button>
+                <button class="btn-secondary" type="button"><i class='bx bx-user-plus'></i> Hire Service</button>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
+    </section>
 
-      <!-- Repeat for other items dynamically -->
-      <div class="portfolio-item" data-category="graphic">
-        <img src="../assets/images/grahpic.png" alt="Graphic Design Project">
-        <div class="portfolio-info">
-          <h4>Logo & Branding</h4>
-          <p>Professional branding for Pi businesses.</p>
-          <div class="metrics">
-            <div class="progress-bar"><span style="width: 90%"></span></div>
-            <p>Completion: 90%</p>
-          </div>
-          <div class="portfolio-buttons">
-            <button class="btn primary"><i class='bx bx-show'></i> View Project</button>
-            <button class="btn secondary"><i class='bx bx-user-plus'></i> Hire Service</button>
-          </div>
+    <section class="portfolio-stats">
+      <div class="container stats">
+        <article class="stat-card">
+          <i class='bx bx-briefcase-alt-2'></i>
+          <h3><span id="projectsCompleted">0</span>+</h3>
+          <p>Projects Completed</p>
+        </article>
+        <article class="stat-card">
+          <i class='bx bx-group'></i>
+          <h3><span id="clientsServed">0</span>+</h3>
+          <p>Clients Served</p>
+        </article>
+        <article class="stat-card">
+          <i class='bx bx-wallet'></i>
+          <h3><span id="revenuePi">0</span> Pi</h3>
+          <p>Revenue Processed</p>
+        </article>
+        <article class="stat-card">
+          <i class='bx bx-star'></i>
+          <h3><span id="satisfaction">0</span>%</h3>
+          <p>Client Satisfaction</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="portfolio-cta">
+      <div class="container portfolio-cta-inner">
+        <div>
+          <h2>Need a Project Like This for Your Business?</h2>
+          <p>Work with SMAJ PI HUB and launch your next service with trusted Pi-native execution.</p>
+        </div>
+        <div class="portfolio-cta-actions">
+          <a href="contact.html" class="btn-primary">Hire Team</a>
+          <a href="pricing.html" class="btn-secondary">View Pricing</a>
         </div>
       </div>
+    </section>
+  </main>
 
-      <!-- Add 10–20 more portfolio items similarly for demo -->
-    </div>
-  </section>
-
-  <!-- STATS -->
-  <section class="stats container">
-    <div class="stat-card">
-      <i class='bx bx-briefcase'></i>
-      <h3 id="projectsCompleted">0</h3>
-      <p>Projects Completed</p>
-    </div>
-    <div class="stat-card">
-      <i class='bx bx-user'></i>
-      <h3 id="clientsServed">0</h3>
-      <p>Clients Served</p>
-    </div>
-    <div class="stat-card">
-      <i class='bx bx-wallet'></i>
-      <h3 id="revenuePi">0 π</h3>
-      <p>Revenue in Pi</p>
-    </div>
-    <div class="stat-card">
-      <i class='bx bx-star'></i>
-      <h3 id="satisfaction">0%</h3>
-      <p>Client Satisfaction</p>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta container">
-    <h2>Hire a Professional Today</h2>
-    <p>Join SMAJ PI HUB and start collaborating with experts worldwide.</p>
-    <a href="auth/login.html" class="btn-primary">Get Started</a>
-  </section>
-
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-grid">
-
       <div>
         <h4>SMAJ PI HUB</h4>
-        <p>All services are priced in Pi. No fake promises. Real utility.</p>
+        <p>All services are priced in Pi Coin (GCV) with real utility across a connected ecosystem.</p>
       </div>
 
       <div>
@@ -157,37 +241,28 @@
         <a href="../index.html">Home</a>
         <a href="about.html">About</a>
         <a href="service.html">Services</a>
-        <a href="service-detail.html">Service Detail</a>
-
         <a href="how-it-works.html">How It Works</a>
         <a href="pricing.html">Pricing</a>
-        <a href="blog.html">Blog</a>
-        <a href="blog-post.html">Blog Post</a>
-
-        <a href="faq.html">FAQ</a>
-        <a href="portfolio.html">Portfolio</a>
-        <a href="contact.html">Contact</a>
+        <a href="marketplace/markerplace.html">Marketplace</a>
       </div>
 
       <div>
-        <h4>Programs</h4>
-        <a href="affiliate.html">Affiliate Program</a>
-        <a href="collaborate.html">Collaborate With Us</a>
-        <a href="partners.html">Partners</a>
-        <a href="community.html">Community</a>
-        <a href="developers.html">Developers</a>
+        <h4>Support</h4>
+        <a href="faq.html">FAQ</a>
         <a href="help-center.html">Help Center</a>
+        <a href="contact.html">Contact</a>
+        <a href="community.html">Community</a>
       </div>
 
       <div>
         <h4>Legal</h4>
-        <a href="/pages/legal/privacy.html">Privacy Policy</a>
-        <a href="/pages/legal/terms.html">Terms & Conditions</a>
-        <a href="/pages/legal/cookie.html">Cookie Policy</a>
-        <a href="/pages/legal/report.html">Report Abuse</a>
+        <a href="legal/privacy.html">Privacy Policy</a>
+        <a href="legal/terms.html">Terms and Conditions</a>
+        <a href="legal/cookie.html">Cookie Policy</a>
+        <a href="legal/report.html">Report Abuse</a>
       </div>
 
-            <div>
+      <div>
         <h4>Follow Us</h4>
         <div class="socials">
           <a href="#" aria-label="Twitter"><i class='bx bxl-twitter'></i></a>
@@ -203,11 +278,9 @@
     <p class="copyright">&copy; 2026 SMAJ PI HUB. All rights reserved.</p>
   </footer>
 
-  <!-- JS -->
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   <script src="../js/main.js"></script>
   <script src="../js/portfolio.js"></script>
-
 </body>
 
 </html>
