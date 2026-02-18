@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Provider Dashboard — SMAJ PI HUB</title>
+  <title>Provider Dashboard - SMAJ PI HUB</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Boxicons -->
@@ -59,9 +59,9 @@
     <aside class="dashboard-sidebar">
       <ul>
         <li><a href="provider.html"><i class='bx bx-home'></i> Dashboard Home</a></li>
-        <li><a href="#"><i class='bx bx-briefcase'></i> My Services</a></li>
-        <li><a href="#"><i class='bx bx-list-check'></i> Orders</a></li>
-        <li><a href="#"><i class='bx bx-line-chart'></i> Earnings</a></li>
+        <li><a href="#services-section"><i class='bx bx-briefcase'></i> My Services</a></li>
+        <li><a href="#orders-section"><i class='bx bx-list-check'></i> Orders</a></li>
+        <li><a href="#earnings-section"><i class='bx bx-line-chart'></i> Earnings</a></li>
         <li><a href="../wallet/index.html"><i class='bx bx-wallet'></i> Wallet</a></li>
         <li><a href="settings.html"><i class='bx bx-cog'></i> Settings</a></li>
         <li><a href="../../pages/auth/login.html"><i class='bx bx-log-out'></i> Logout</a></li>
@@ -86,7 +86,7 @@
       <h1>Provider Dashboard</h1>
 
       <!-- Stats Cards -->
-      <div class="dashboard-cards">
+      <div class="dashboard-cards" id="earnings-section">
         <div class="card">
           <i class='bx bx-briefcase-alt'></i>
           <h3>Total Services</h3>
@@ -105,19 +105,19 @@
         <div class="card">
           <i class='bx bx-pie-chart-alt-2'></i>
           <h3>Total Earnings</h3>
-          <p>0.0000314159 π</p>
+          <p>0.0000314159 Pi</p>
         </div>
       </div>
 
       <!-- Services Table -->
-      <section class="dashboard-section">
+      <section class="dashboard-section" id="services-section">
         <h2>My Services</h2>
         <table class="dashboard-table">
           <thead>
             <tr>
               <th>Service</th>
               <th>Category</th>
-              <th>Price (π)</th>
+              <th>Price (Pi)</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -126,7 +126,7 @@
             <tr>
               <td>Website Development</td>
               <td>Web</td>
-              <td>0.00001 π</td>
+              <td>0.00001 Pi</td>
               <td>Active</td>
               <td>
                 <button class="btn small"><i class='bx bx-edit'></i> Edit</button>
@@ -136,7 +136,7 @@
             <tr>
               <td>Logo Design</td>
               <td>Design</td>
-              <td>0.000005 π</td>
+              <td>0.000005 Pi</td>
               <td>Active</td>
               <td>
                 <button class="btn small"><i class='bx bx-edit'></i> Edit</button>
@@ -149,7 +149,7 @@
       </section>
 
       <!-- Orders Table -->
-      <section class="dashboard-section">
+      <section class="dashboard-section" id="orders-section">
         <h2>Orders</h2>
         <table class="dashboard-table">
           <thead>
@@ -157,7 +157,7 @@
               <th>Date</th>
               <th>Client</th>
               <th>Service</th>
-              <th>Amount (π)</th>
+              <th>Amount (Pi)</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -167,7 +167,7 @@
               <td>2025-12-24</td>
               <td>John Doe</td>
               <td>Website Development</td>
-              <td>0.00001 π</td>
+              <td>0.00001 Pi</td>
               <td>Pending</td>
               <td>
                 <button class="btn small primary">View</button>

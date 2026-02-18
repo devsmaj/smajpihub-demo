@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Wallet — SMAJ PI HUB</title>
+  <title>Wallet - SMAJ PI HUB</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Boxicons -->
@@ -60,10 +60,10 @@
       <ul>
         <li><a href="../dashboard/client.html"><i class='bx bx-home'></i> Dashboard Home</a></li>
         <li class="active"><a href="index.html"><i class='bx bx-wallet'></i> Wallet</a></li>
-        <li><a href="#"><i class='bx bx-transfer'></i> Deposit</a></li>
-        <li><a href="#"><i class='bx bx-export'></i> Withdraw</a></li>
+        <li><a href="#wallet-actions"><i class='bx bx-transfer'></i> Deposit</a></li>
+        <li><a href="#wallet-actions"><i class='bx bx-export'></i> Withdraw</a></li>
         <li><a href="../dashboard/settings.html"><i class='bx bx-cog'></i> Settings</a></li>
-        <li><a href="#"><i class='bx bx-log-out'></i> Logout</a></li>
+        <li><a href="../auth/login.html"><i class='bx bx-log-out'></i> Logout</a></li>
       </ul>
     </aside>
 
@@ -76,17 +76,17 @@
         <div class="card balance-card">
           <i class='bx bx-wallet wallet-icon'></i>
           <h3>Pi Balance</h3>
-          <p id="pi-balance">0 π</p>
+          <p id="pi-balance">0 Pi</p>
         </div>
         <div class="card pending-card">
           <i class='bx bx-time-five pending-icon'></i>
           <h3>Pending</h3>
-          <p id="pending-balance">0 π</p>
+          <p id="pending-balance">0 Pi</p>
         </div>
         <div class="card earned-card">
           <i class='bx bx-line-chart earned-icon'></i>
           <h3>Total Earned</h3>
-          <p id="earned-balance">0 π</p>
+          <p id="earned-balance">0 Pi</p>
         </div>
       </div>
 
@@ -98,7 +98,7 @@
             <tr>
               <th>Date</th>
               <th>Type</th>
-              <th>Amount (π)</th>
+              <th>Amount (Pi)</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -111,7 +111,7 @@
       </section>
 
       <!-- Quick Actions -->
-      <div class="wallet-actions">
+      <div class="wallet-actions" id="wallet-actions">
         <button id="send-btn"><i class='bx bx-send'></i> Send Pi</button>
         <button id="receive-btn"><i class='bx bx-download'></i> Receive Pi</button>
         <button id="deposit-btn"><i class='bx bx-wallet'></i> Deposit Pi</button>
