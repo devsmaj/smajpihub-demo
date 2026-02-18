@@ -24,24 +24,70 @@
   }
 
   nav {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    width: 100%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: 50vw;
+    max-width: 50dvw;
+    height: 100vh;
+    max-height: 100dvh;
     background: #0b0f1a;
-    display: none;
+    display: flex;
     flex-direction: column;
-    z-index: 999;
+    text-align: left;
+    z-index: 1100;
+    opacity: 0;
+    transform: translateX(100%);
+    pointer-events: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    overflow-y: auto;
+    padding-top: 56px;
   }
 
   nav.active {
-    display: flex;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
   }
 
   nav a {
     padding: 14px;
     border-top: 1px solid #222;
     font-size: 16px;
+    text-align: left;
+  }
+
+  .menu-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1090;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .menu-close {
+    display: block;
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  body.menu-open {
+    overflow: hidden;
   }
 
   .menu-toggle {
