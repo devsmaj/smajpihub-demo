@@ -227,6 +227,12 @@ nav a:hover {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
+  text-align: left;
+}
+
+.footer-grid > div {
+  text-align: left;
+  align-items: flex-start;
 }
 
 .footer h4 {
@@ -251,7 +257,20 @@ nav a:hover {
   cursor: pointer;
 }
 
-footer p {
+.footer-grid p {
+  text-align: left;
+  margin-top: 0;
+  font-size: 14px;
+}
+
+.footer .socials {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer .copyright {
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
