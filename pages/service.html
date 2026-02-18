@@ -3,21 +3,19 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Services — SMAJ PI HUB</title>
+  <title>Services - SMAJ PI HUB Ecosystem</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Boxicons -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
-  <!-- CSS -->
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/service-hub.css">
 </head>
 
 <body>
 
-  <!-- HEADER -->
-    <header class="header">
+  <header class="header">
     <div class="container nav">
       <div class="logo">
         <img src="../assets/images/logo.png" alt="SMAJ PI HUB Logo">
@@ -50,60 +48,177 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT / Section -->
- <section class="services">
-  <h2 class="section-title">Our Services</h2>
+  <main>
+    <section class="hub-hero">
+      <div class="container hub-hero-grid">
+        <div>
+          <span class="hub-kicker">ALL-IN-ONE PI SERVICE HUB</span>
+          <h1>Access Every SMAJ Platform From One Place</h1>
+          <p>
+            SMAJ PI HUB connects your wallet once and unlocks all ecosystem projects including e-commerce,
+            digital services, delivery, and upcoming tools.
+          </p>
+          <div class="hub-hero-actions">
+            <a href="../pages/dashboard/client.html" class="btn-primary">Open Unified Dashboard</a>
+            <a href="#platformDirectory" class="btn-secondary">Browse Platforms</a>
+          </div>
+        </div>
 
-  <div class="services-grid">
+        <aside class="hub-access-panel" id="hubAccessPanel">
+          <h3>Cross-Platform Access</h3>
+          <p class="hub-access-desc">Wallet connection status controls one-click access to partner platforms.</p>
+          <div class="hub-wallet-state" id="walletState">Checking wallet status...</div>
+          <p class="hub-wallet-hint" id="walletHint">Please connect your wallet to continue.</p>
+          <button class="hub-action" id="connectWalletAction" type="button">Connect Wallet</button>
+          <div class="hub-session-log" id="sessionLog">Ready</div>
+        </aside>
+      </div>
+    </section>
 
-    <div class="service-card">
-      <i class='bx bx-store'></i>
-      <h3>Global Marketplace</h3>
-      <p>Buy and sell products worldwide using Pi Coin with real utility.</p>
-      <button class="cta-btn">Explore Marketplace</button>
-    </div>
+    <section class="hub-section container">
+      <div class="hub-section-head">
+        <h2>How SMAJ PI HUB Connects All Projects</h2>
+      </div>
+      <div class="hub-flow-grid">
+        <article>
+          <i class='bx bx-wallet'></i>
+          <h3>1. Connect Wallet Once</h3>
+          <p>User signs in with Pi wallet inside SMAJ PI HUB.</p>
+        </article>
+        <article>
+          <i class='bx bx-id-card'></i>
+          <h3>2. Unified Identity</h3>
+          <p>Hub keeps one user identity across all connected services.</p>
+        </article>
+        <article>
+          <i class='bx bx-link-alt'></i>
+          <h3>3. Platform Handshake</h3>
+          <p>Each platform receives a secure hub access token placeholder.</p>
+        </article>
+        <article>
+          <i class='bx bx-check-shield'></i>
+          <h3>4. Seamless Usage</h3>
+          <p>Users open Store, Services, Delivery, and more without repeated login.</p>
+        </article>
+      </div>
+    </section>
 
-    <div class="service-card">
-      <i class='bx bx-user-voice'></i>
-      <h3>Freelance Services</h3>
-      <p>Hire content creators, designers, developers, and social media managers.</p>
-      <button class="cta-btn">Hire Talent</button>
-    </div>
+    <section class="hub-section hub-directory" id="platformDirectory">
+      <div class="container">
+        <div class="hub-section-head">
+          <h2>Platform Directory</h2>
+          <p>Choose where to go. Each card shows what users can do and where they will land.</p>
+        </div>
 
-    <div class="service-card">
-      <i class='bx bx-bar-chart'></i>
-      <h3>Digital Marketing</h3>
-      <p>Social media management, ads, SEO, analytics, and growth strategies.</p>
-      <button class="cta-btn">Boost My Brand</button>
-    </div>
+        <div class="hub-card-grid">
+          <article class="hub-card" data-platform="SMAJ Store" data-platform-url="https://smaj.store" data-requires-wallet="true">
+            <div class="hub-card-head">
+              <i class='bx bx-store'></i>
+              <span class="hub-badge live">Live</span>
+            </div>
+            <h3>SMAJ Store</h3>
+            <p>Pi-powered e-commerce for product buying and selling.</p>
+            <ul>
+              <li>Visit: smaj.store</li>
+              <li>Use case: Shopping and seller access</li>
+            </ul>
+            <button type="button" class="hub-open-btn">Open Platform</button>
+          </article>
 
-    <div class="service-card">
-      <i class='bx bx-palette'></i>
-      <h3>Logo & Graphic Design</h3>
-      <p>Professional branding and creative designs for Pi businesses.</p>
-      <button class="cta-btn">View Designs</button>
-    </div>
+          <article class="hub-card" data-platform="SMAJ Digital Services" data-platform-url="../pages/service-detail.html" data-requires-wallet="true">
+            <div class="hub-card-head">
+              <i class='bx bx-briefcase-alt-2'></i>
+              <span class="hub-badge live">Live</span>
+            </div>
+            <h3>SMAJ Digital Services</h3>
+            <p>Hire verified providers for web, design, marketing, and more.</p>
+            <ul>
+              <li>Visit: Service detail area</li>
+              <li>Use case: Service orders and delivery</li>
+            </ul>
+            <button type="button" class="hub-open-btn">Open Platform</button>
+          </article>
 
-    <div class="service-card">
-      <i class='bx bx-code-alt'></i>
-      <h3>Website Development</h3>
-      <p>HTML5, CSS3, JavaScript, WordPress and modern UI development.</p>
-      <button class="cta-btn">Build My Website</button>
-    </div>
+          <article class="hub-card" data-platform="SMAJ Marketplace" data-platform-url="../pages/marketplace/markerplace.html" data-requires-wallet="true">
+            <div class="hub-card-head">
+              <i class='bx bx-grid-alt'></i>
+              <span class="hub-badge live">Live</span>
+            </div>
+            <h3>SMAJ Marketplace</h3>
+            <p>Discover broader Pi ecosystem offerings connected to the hub.</p>
+            <ul>
+              <li>Visit: Marketplace explorer</li>
+              <li>Use case: Multi-category discovery</li>
+            </ul>
+            <button type="button" class="hub-open-btn">Open Platform</button>
+          </article>
 
-    <div class="service-card">
-      <i class='bx bx-bitcoin'></i>
-      <h3>Crypto Training & Support</h3>
-      <p>Blockchain education, trading strategy, analysis and on-chain tools.</p>
-      <button class="cta-btn">Start Learning</button>
-    </div>
+          <article class="hub-card" data-platform="SMAJ Food Delivery" data-platform-url="#" data-requires-wallet="true" data-coming-soon="true">
+            <div class="hub-card-head">
+              <i class='bx bx-dish'></i>
+              <span class="hub-badge soon">Coming Soon</span>
+            </div>
+            <h3>SMAJ Food Delivery</h3>
+            <p>Order food through integrated Pi payment and merchant network.</p>
+            <ul>
+              <li>Visit: Delivery app module</li>
+              <li>Use case: Fast local food orders</li>
+            </ul>
+            <button type="button" class="hub-open-btn">Notify Me</button>
+          </article>
 
-  </div>
-</section>
+          <article class="hub-card" data-platform="SMAJ Dashboard" data-platform-url="../pages/dashboard/client.html" data-requires-wallet="false">
+            <div class="hub-card-head">
+              <i class='bx bx-layout'></i>
+              <span class="hub-badge live">Live</span>
+            </div>
+            <h3>Unified Dashboard</h3>
+            <p>Track your activity, wallet usage, and platform actions in one view.</p>
+            <ul>
+              <li>Visit: Dashboard center</li>
+              <li>Use case: User control panel</li>
+            </ul>
+            <button type="button" class="hub-open-btn">Open Platform</button>
+          </article>
 
+          <article class="hub-card" data-platform="SMAJ Future Projects" data-platform-url="#" data-requires-wallet="true" data-coming-soon="true">
+            <div class="hub-card-head">
+              <i class='bx bx-rocket'></i>
+              <span class="hub-badge soon">Roadmap</span>
+            </div>
+            <h3>Future Ecosystem Projects</h3>
+            <p>Health, education, and jobs modules will plug into this same access flow.</p>
+            <ul>
+              <li>Visit: Upcoming modules</li>
+              <li>Use case: One-login future expansion</li>
+            </ul>
+            <button type="button" class="hub-open-btn">View Roadmap</button>
+          </article>
+        </div>
+      </div>
+    </section>
 
+    <section class="hub-section container">
+      <div class="hub-section-head">
+        <h2>Where Users Can Find Everything</h2>
+      </div>
+      <div class="hub-map-grid">
+        <div>
+          <h3>Inside SMAJ PI HUB</h3>
+          <p>Use this Services page as the ecosystem directory. Each card launches a connected platform.</p>
+        </div>
+        <div>
+          <h3>Main Entry Points</h3>
+          <p>Home for overview, Services for platform navigation, Dashboard for unified account activity.</p>
+        </div>
+        <div>
+          <h3>Cross-Platform Goal</h3>
+          <p>One wallet connection, one identity, one user journey across every SMAJ project.</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-grid">
 
@@ -118,12 +233,10 @@
         <a href="about.html">About</a>
         <a href="service.html">Services</a>
         <a href="service-detail.html">Service Detail</a>
-
         <a href="how-it-works.html">How It Works</a>
         <a href="pricing.html">Pricing</a>
         <a href="blog.html">Blog</a>
         <a href="blog-post.html">Blog Post</a>
-
         <a href="faq.html">FAQ</a>
         <a href="portfolio.html">Portfolio</a>
         <a href="contact.html">Contact</a>
@@ -147,7 +260,7 @@
         <a href="/pages/legal/report.html">Report Abuse</a>
       </div>
 
-            <div>
+      <div>
         <h4>Follow Us</h4>
         <div class="socials">
           <a href="#" aria-label="Twitter"><i class='bx bxl-twitter'></i></a>
@@ -163,9 +276,9 @@
     <p class="copyright">&copy; 2026 SMAJ PI HUB. All rights reserved.</p>
   </footer>
 
-  <!-- JS -->
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   <script src="../js/main.js"></script>
+  <script src="../js/services.js"></script>
 </body>
 
 </html>
