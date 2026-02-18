@@ -2,23 +2,17 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Community — SMAJ PI HUB</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Boxicons -->
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="../css/community.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/responsive.css">
+  <meta charset="UTF-8">
+  <title>Community - SMAJ PI HUB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="../css/community.css">
 </head>
 
-<body>
-
-    <!-- HEADER -->
-      <header class="header">
+<body class="community-page">
+  <header class="header">
     <div class="container nav">
       <div class="logo">
         <img src="../assets/images/logo.png" alt="SMAJ PI HUB Logo">
@@ -51,158 +45,228 @@
     </div>
   </header>
 
-    <!-- ================= HERO ================= -->
-    <section class="hero community-hero container">
-        <div class="hero-text">
-            <h1>Join the Global Pi Community</h1>
-            <p>Connect, share, and collaborate with SMAJ PI HUB pioneers worldwide.</p>
-            <div class="hero-actions">
-                <a href="#" class="btn primary">Join Now</a>
-                <a href="#" class="btn secondary">Explore Threads</a>
-            </div>
+  <main>
+    <section class="community-hero">
+      <div class="container community-hero-grid">
+        <div>
+          <span class="community-kicker">GLOBAL PIONEER NETWORK</span>
+          <h1>Build, Learn, and Grow with the SMAJ PI HUB Community</h1>
+          <p>
+            Join discussions, discover real Pi utility updates, and collaborate with pioneers, merchants,
+            developers, and contributors from across the ecosystem.
+          </p>
+          <div class="community-hero-actions">
+            <a href="contact.html" class="btn-primary">Join Community</a>
+            <a href="blog.html" class="btn-secondary">Read Updates</a>
+          </div>
+          <div class="community-stats">
+            <div><strong>30K+</strong><span>Global Members</span></div>
+            <div><strong>120+</strong><span>Weekly Threads</span></div>
+            <div><strong>24/7</strong><span>Peer Support</span></div>
+          </div>
         </div>
-        <div class="hero-image">
-            <img src="../assets/images/community.jpg" alt="Community Network">
+        <div class="community-hero-image">
+          <img src="../assets/images/community.jpg" alt="SMAJ PI HUB global community">
         </div>
+      </div>
     </section>
 
-    <!-- ================= CATEGORIES ================= -->
-    <section class="container community-categories">
-        <h2 class="section-title">Explore Categories</h2>
+    <section class="community-categories">
+      <div class="container">
+        <div class="community-head">
+          <h2>Explore Conversations</h2>
+          <p>Filter trending threads by category and follow what matters most to you.</p>
+        </div>
         <div class="category-buttons">
-            <button class="category active" data-category="all">All</button>
-            <button class="category" data-category="web">Web Development</button>
-            <button class="category" data-category="crypto">Crypto</button>
-            <button class="category" data-category="marketing">Marketing</button>
-            <button class="category" data-category="design">Graphic Design</button>
-            <button class="category" data-category="general">General Chat</button>
+          <button class="category active" data-category="all" type="button">All</button>
+          <button class="category" data-category="ecosystem" type="button">Ecosystem</button>
+          <button class="category" data-category="marketplace" type="button">Marketplace</button>
+          <button class="category" data-category="security" type="button">Security</button>
+          <button class="category" data-category="guides" type="button">Guides</button>
+          <button class="category" data-category="community" type="button">Community</button>
         </div>
+      </div>
     </section>
 
-    <!-- ================= POSTS ================= -->
-    <section class="container community-posts">
-        <h2 class="section-title">Latest Threads</h2>
+    <section class="community-posts">
+      <div class="container">
+        <div class="community-head">
+          <h2>Latest Threads</h2>
+          <a href="contact.html">Start a thread <i class='bx bx-right-arrow-alt'></i></a>
+        </div>
         <div class="posts-grid" id="postsGrid">
-            <!-- Example Post Card -->
-            <div class="post-card" data-category="web">
-                <h3>How to Build a React App</h3>
-                <p>Learn how to create a scalable React.js project with SMAJ PI HUB tips.</p>
-                <div class="post-info">
-                    <span><i class='bx bx-user'></i> Alice</span>
-                    <span><i class='bx bx-like'></i> 34</span>
-                    <span><i class='bx bx-message-rounded'></i> 12</span>
-                </div>
-                <div class="post-actions">
-                    <button><i class='bx bx-comment'></i> Reply</button>
-                    <button><i class='bx bx-heart'></i> Like</button>
-                    <button><i class='bx bx-share-alt'></i> Share</button>
-                </div>
+          <article class="post-card" data-category="ecosystem">
+            <h3>How SMAJ PI HUB makes multi-project access easier for daily users</h3>
+            <p>Discussion on unified wallet flow, reduced friction, and connected project navigation.</p>
+            <div class="post-info">
+              <span><i class='bx bx-user'></i> Product Team</span>
+              <span><i class='bx bx-like'></i> 87</span>
+              <span><i class='bx bx-message-rounded'></i> 35 replies</span>
             </div>
-
-            <div class="post-card" data-category="crypto">
-                <h3>Pi Wallet Security Tips</h3>
-                <p>Share best practices to keep your Pi coins safe and secure.</p>
-                <div class="post-info">
-                    <span><i class='bx bx-user'></i> Bob</span>
-                    <span><i class='bx bx-like'></i> 48</span>
-                    <span><i class='bx bx-message-rounded'></i> 20</span>
-                </div>
-                <div class="post-actions">
-                    <button><i class='bx bx-comment'></i> Reply</button>
-                    <button><i class='bx bx-heart'></i> Like</button>
-                    <button><i class='bx bx-share-alt'></i> Share</button>
-                </div>
+            <div class="post-actions">
+              <button type="button"><i class='bx bx-comment'></i> Reply</button>
+              <button type="button"><i class='bx bx-heart'></i> Like</button>
+              <button type="button"><i class='bx bx-share-alt'></i> Share</button>
             </div>
+          </article>
 
-            <!-- Additional posts will be dynamically generated by JS -->
+          <article class="post-card" data-category="marketplace">
+            <h3>Trusted marketplace checklist for Pi buyers and sellers</h3>
+            <p>Members share proof-of-delivery practices and rating standards for safer transactions.</p>
+            <div class="post-info">
+              <span><i class='bx bx-user'></i> Merchant Hub</span>
+              <span><i class='bx bx-like'></i> 64</span>
+              <span><i class='bx bx-message-rounded'></i> 22 replies</span>
+            </div>
+            <div class="post-actions">
+              <button type="button"><i class='bx bx-comment'></i> Reply</button>
+              <button type="button"><i class='bx bx-heart'></i> Like</button>
+              <button type="button"><i class='bx bx-share-alt'></i> Share</button>
+            </div>
+          </article>
+
+          <article class="post-card" data-category="security">
+            <h3>Wallet safety thread: verification steps every pioneer should follow</h3>
+            <p>Security-focused discussion around login hygiene, account recovery, and payment confirmation.</p>
+            <div class="post-info">
+              <span><i class='bx bx-user'></i> Security Desk</span>
+              <span><i class='bx bx-like'></i> 102</span>
+              <span><i class='bx bx-message-rounded'></i> 41 replies</span>
+            </div>
+            <div class="post-actions">
+              <button type="button"><i class='bx bx-comment'></i> Reply</button>
+              <button type="button"><i class='bx bx-heart'></i> Like</button>
+              <button type="button"><i class='bx bx-share-alt'></i> Share</button>
+            </div>
+          </article>
+
+          <article class="post-card" data-category="guides">
+            <h3>New user onboarding guide: from first visit to first Pi transaction</h3>
+            <p>Step-by-step tutorial references and onboarding improvements suggested by the community.</p>
+            <div class="post-info">
+              <span><i class='bx bx-user'></i> Onboarding Squad</span>
+              <span><i class='bx bx-like'></i> 58</span>
+              <span><i class='bx bx-message-rounded'></i> 18 replies</span>
+            </div>
+            <div class="post-actions">
+              <button type="button"><i class='bx bx-comment'></i> Reply</button>
+              <button type="button"><i class='bx bx-heart'></i> Like</button>
+              <button type="button"><i class='bx bx-share-alt'></i> Share</button>
+            </div>
+          </article>
+
+          <article class="post-card" data-category="community">
+            <h3>Regional ambassador thread: local growth ideas and outreach plans</h3>
+            <p>Community leaders coordinate local meetups, education, and collaboration opportunities.</p>
+            <div class="post-info">
+              <span><i class='bx bx-user'></i> Ambassador Circle</span>
+              <span><i class='bx bx-like'></i> 49</span>
+              <span><i class='bx bx-message-rounded'></i> 27 replies</span>
+            </div>
+            <div class="post-actions">
+              <button type="button"><i class='bx bx-comment'></i> Reply</button>
+              <button type="button"><i class='bx bx-heart'></i> Like</button>
+              <button type="button"><i class='bx bx-share-alt'></i> Share</button>
+            </div>
+          </article>
+
+          <article class="post-card" data-category="ecosystem">
+            <h3>Roadmap ideas: which service module should launch next in the hub</h3>
+            <p>Voting and feedback thread for upcoming modules and practical use-case priorities.</p>
+            <div class="post-info">
+              <span><i class='bx bx-user'></i> Roadmap Forum</span>
+              <span><i class='bx bx-like'></i> 73</span>
+              <span><i class='bx bx-message-rounded'></i> 30 replies</span>
+            </div>
+            <div class="post-actions">
+              <button type="button"><i class='bx bx-comment'></i> Reply</button>
+              <button type="button"><i class='bx bx-heart'></i> Like</button>
+              <button type="button"><i class='bx bx-share-alt'></i> Share</button>
+            </div>
+          </article>
         </div>
+      </div>
     </section>
 
-    <!-- ================= FEATURED MEMBERS ================= -->
-    <section class="container featured-members">
-        <h2 class="section-title">Featured Community Members</h2>
+    <section class="community-members">
+      <div class="container">
+        <div class="community-head">
+          <h2>Featured Members</h2>
+          <p>Contributors helping the ecosystem grow through trust and real collaboration.</p>
+        </div>
         <div class="members-grid">
-            <div class="member-card">
-                <img src="../assets/images/smajj.jpg" alt="Member 1">
-                <h4>Alice Johnson</h4>
-                <p>Web Developer</p>
-                <div class="socials">
-                    <i class='bx bxl-twitter'></i>
-                    <i class='bx bxl-facebook'></i>
-                    <i class='bx bxl-instagram'></i>
-                    <i class='bx bxl-telegram'></i>
-                </div>
-            </div>
-
-            <div class="member-card">
-                <img src="../../assets/images/community/member2.jpg" alt="Member 2">
-                <h4>Bob Smith</h4>
-                <p>Crypto Enthusiast</p>
-                <div class="socials">
-                    <i class='bx bxl-twitter'></i>
-                    <i class='bx bxl-facebook'></i>
-                    <i class='bx bxl-instagram'></i>
-                    <i class='bx bxl-telegram'></i>
-                </div>
-            </div>
+          <article class="member-card">
+            <img src="../assets/images/team-ayaht.jpg" alt="Featured member Ayaht">
+            <h3>Ayaht Rahman</h3>
+            <p>Community Growth Lead</p>
+          </article>
+          <article class="member-card">
+            <img src="../assets/images/team-adam.jpg" alt="Featured member Adam">
+            <h3>Adam Noor</h3>
+            <p>Marketplace Moderator</p>
+          </article>
+          <article class="member-card">
+            <img src="../assets/images/team-umerr.jpg" alt="Featured member Umerr">
+            <h3>Umerr Khan</h3>
+            <p>Education Contributor</p>
+          </article>
+          <article class="member-card">
+            <img src="../assets/images/team-aisha.jpg" alt="Featured member Aisha">
+            <h3>Aisha Ali</h3>
+            <p>Support Mentor</p>
+          </article>
         </div>
+      </div>
     </section>
 
-    <!-- ================= CTA ================= -->
-    <section class="cta community-cta">
-        <div class="container">
-            <h2>Start Connecting Today</h2>
-            <p>Create threads, join discussions, and become part of the SMAJ PI HUB global network.</p>
-            <a href="#" class="btn primary">Start a Thread</a>
-            <a href="#" class="btn secondary">Join a Group</a>
+    <section class="community-cta">
+      <div class="container community-cta-inner">
+        <div>
+          <h2>Have a Question or Idea for the Ecosystem?</h2>
+          <p>Share it with the SMAJ PI HUB community and get feedback from members and contributors.</p>
         </div>
+        <div class="community-cta-actions">
+          <a href="contact.html" class="btn-primary">Post Your Idea</a>
+          <a href="developers.html" class="btn-secondary">Visit Developers</a>
+        </div>
+      </div>
     </section>
+  </main>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container footer-grid">
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <h4>SMAJ PI HUB</h4>
+        <p>All services are priced in Pi Coin (GCV) with real utility across a connected ecosystem.</p>
+      </div>
 
-            <div>
-                <h4>SMAJ PI HUB</h4>
-                <p>All services are priced in Pi. No fake promises. Real utility.</p>
-            </div>
+      <div>
+        <h4>Platform</h4>
+        <a href="../index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="service.html">Services</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="marketplace/markerplace.html">Marketplace</a>
+      </div>
 
-            <div>
-                <h4>Platform</h4>
-                <a href="../index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="service.html">Services</a>
-                <a href="service-detail.html">Service Detail</a>
+      <div>
+        <h4>Support</h4>
+        <a href="faq.html">FAQ</a>
+        <a href="help-center.html">Help Center</a>
+        <a href="contact.html">Contact</a>
+        <a href="community.html">Community</a>
+      </div>
 
-                <a href="how-it-works.html">How It Works</a>
-                <a href="pricing.html">Pricing</a>
-                <a href="blog.html">Blog</a>
-                <a href="blog-post.html">Blog Post</a>
+      <div>
+        <h4>Legal</h4>
+        <a href="legal/privacy.html">Privacy Policy</a>
+        <a href="legal/terms.html">Terms and Conditions</a>
+        <a href="legal/cookie.html">Cookie Policy</a>
+        <a href="legal/report.html">Report Abuse</a>
+      </div>
 
-                <a href="faq.html">FAQ</a>
-                <a href="portfolio.html">Portfolio</a>
-                <a href="contact.html">Contact</a>
-            </div>
-
-            <div>
-                <h4>Programs</h4>
-                <a href="affiliate.html">Affiliate Program</a>
-                <a href="collaborate.html">Collaborate With Us</a>
-                <a href="partners.html">Partners</a>
-                <a href="community.html">Community</a>
-                <a href="developers.html">Developers</a>
-                <a href="help-center.html">Help Center</a>
-            </div>
-
-            <div>
-                <h4>Legal</h4>
-                <a href="/pages/legal/privacy.html">Privacy Policy</a>
-                <a href="/pages/legal/terms.html">Terms & Conditions</a>
-                <a href="/pages/legal/cookie.html">Cookie Policy</a>
-                <a href="/pages/legal/report.html">Report Abuse</a>
-            </div>
-
-                  <div>
+      <div>
         <h4>Follow Us</h4>
         <div class="socials">
           <a href="#" aria-label="Twitter"><i class='bx bxl-twitter'></i></a>
@@ -216,13 +280,11 @@
     </div>
 
     <p class="copyright">&copy; 2026 SMAJ PI HUB. All rights reserved.</p>
-    </footer>
+  </footer>
 
-    <!-- JS -->
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <script src="../js/community.js"></script>
-    <script src="../js/main.js"></script>
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <script src="../js/community.js"></script>
+  <script src="../js/main.js"></script>
 </body>
-
 
 </html>
