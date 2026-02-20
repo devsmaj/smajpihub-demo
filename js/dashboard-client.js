@@ -12,6 +12,8 @@
   const sidebarAvatar = document.getElementById("sidebarAvatar");
   const profileUsername = document.getElementById("profileUsername");
   const profileAvatar = document.getElementById("profileAvatar");
+  const overviewPiBalanceValue = document.getElementById("overviewPiBalanceValue");
+  const overviewBalanceToggle = document.getElementById("overviewBalanceToggle");
   const walletStatus = document.getElementById("walletStatus");
   const financeWalletStatus = document.getElementById("financeWalletStatus");
   const downloadReportBtn = document.getElementById("downloadReportBtn");
@@ -56,6 +58,8 @@
   };
 
   const DASHBOARD_THEME_KEY = "dashboard_theme";
+  const DASHBOARD_BALANCE_VISIBILITY_KEY = "dashboard_balance_visible";
+  const DEFAULT_OVERVIEW_BALANCE = "3,250.90 Pi";
 
   function applyDashboardTheme(theme) {
     const isDark = theme === "dark";
@@ -79,6 +83,22 @@
     localStorage.setItem(DASHBOARD_THEME_KEY, next);
     applyDashboardTheme(next);
     toast(next === "dark" ? "Dashboard dark mode enabled" : "Dashboard light mode enabled", "info");
+  }
+
+  function setOverviewBalanceVisible(visible) {
+    if (!overviewPiBalanceValue || !overviewBalanceToggle) return;
+
+    overviewPiBalanceValue.textContent = visible ? DEFAULT_OVERVIEW_BALANCE : "****";
+    overviewBalanceToggle.innerHTML = visible
+      ? "<i class='bx bx-hide'></i>"
+      : "<i class='bx bx-show'></i>";
+    overviewBalanceToggle.setAttribute("aria-label", visible ? "Hide balance" : "Show balance");
+    localStorage.setItem(DASHBOARD_BALANCE_VISIBILITY_KEY, visible ? "true" : "false");
+  }
+
+  function loadOverviewBalanceVisibility() {
+    const stored = localStorage.getItem(DASHBOARD_BALANCE_VISIBILITY_KEY);
+    setOverviewBalanceVisible(stored !== "false");
   }
 
   function buttonLabel(el) {
@@ -130,6 +150,7 @@
   }
 
   loadDashboardTheme();
+  loadOverviewBalanceVisibility();
   bindClick(sidebarOpen, openSidebar);
   bindClick(sidebarClose, closeSidebar);
   bindClick(sidebarOverlay, closeSidebar);
@@ -559,6 +580,10 @@
   });
 
   bindClick(themeToggle, toggleDashboardTheme);
+  bindClick(overviewBalanceToggle, () => {
+    const currentlyVisible = overviewPiBalanceValue && overviewPiBalanceValue.textContent !== "****";
+    setOverviewBalanceVisible(!currentlyVisible);
+  });
 document.querySelectorAll("button").forEach((btn) => {
     if (handledButtons.has(btn)) return;
     const label = buttonLabel(btn);

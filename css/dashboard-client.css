@@ -431,6 +431,25 @@ body.dark .dashboard-header {
   margin-bottom: 8px;
 }
 
+.stat-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.stat-title-row h3 {
+  margin-bottom: 0;
+}
+
+.balance-toggle-btn {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 10px;
+}
+
 .stat-card p,
 .metric {
   font-size: 26px;

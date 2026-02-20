@@ -75,10 +75,15 @@
           <h2>Dashboard Overview</h2>
         </div>
         <div class="stats-grid">
-          <article class="stat-card">
+          <article class="stat-card" id="overviewPiBalanceCard">
             <div class="stat-icon"><i class='bx bx-coin-stack'></i></div>
-            <h3>Pi Balance</h3>
-            <p>3,250.90 Pi</p>
+            <div class="stat-title-row">
+              <h3>Pi Balance</h3>
+              <button class="icon-btn balance-toggle-btn" id="overviewBalanceToggle" type="button" aria-label="Hide balance">
+                <i class='bx bx-hide'></i>
+              </button>
+            </div>
+            <p id="overviewPiBalanceValue">3,250.90 Pi</p>
             <button class="btn-soft">View Details</button>
           </article>
           <article class="stat-card">
