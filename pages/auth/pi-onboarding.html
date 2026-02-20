@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pi Onboarding - SMAJ PI HUB</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/auth.css">
+  <link rel="stylesheet" href="../../css/responsive.css">
+  <style>
+    .onboard-wrap { max-width: 680px; margin: 48px auto; padding: 0 16px; }
+    .onboard-card { background: #fff; border: 1px solid #e2e7f3; border-radius: 14px; padding: 22px; }
+    .onboard-steps { display: grid; gap: 14px; margin-top: 16px; }
+    .step { border: 1px solid #e2e7f3; border-radius: 12px; padding: 14px; }
+    .step h3 { margin-bottom: 8px; }
+    .step p { color: #5c6784; font-size: 14px; margin-bottom: 10px; }
+    .step input { width: 100%; border: 1px solid #d9e2f4; border-radius: 8px; padding: 10px; margin-bottom: 8px; }
+    .step.done { border-color: #7d3cff; background: #f7f2ff; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    .status { color: #5c6784; font-size: 14px; margin-top: 8px; }
+    body.dark .onboard-card, body.dark .step { background: #131b31; border-color: #2b3a5e; color: #e9efff; }
+    body.dark .step p, body.dark .status { color: #b9c6e4; }
+    body.dark .step input { background: #111a30; color: #e9efff; border-color: #2b3a5e; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container nav">
+      <div class="logo"><img src="../../assets/images/logo.png" alt="SMAJ PI HUB Logo"></div>
+      <button class="wallet-btn" type="button"><i class='bx bx-wallet'></i> Connect Pi</button>
+    </div>
+  </header>
+
+  <main class="onboard-wrap">
+    <section class="onboard-card">
+      <h1>Pi Access Setup</h1>
+      <p>Complete these 3 steps before entering your dashboard.</p>
+      <p class="status" id="walletStatusText">Wallet: Not Connected</p>
+
+      <div class="onboard-steps">
+        <article class="step" id="step1">
+          <h3>Step 1: Wallet Verification</h3>
+          <p>Connect Pi wallet and confirm your account username.</p>
+          <input id="walletUser" type="text" placeholder="Pi Username" readonly>
+        </article>
+
+        <article class="step" id="step2">
+          <h3>Step 2: Transaction Password</h3>
+          <p>Create your transaction password for sensitive operations.</p>
+          <input id="txPassword" type="password" placeholder="Transaction Password">
+          <input id="txConfirmPassword" type="password" placeholder="Confirm Transaction Password">
+        </article>
+
+        <article class="step" id="step3">
+          <h3>Step 3: Security PIN + Terms</h3>
+          <p>Add a 4-digit PIN and accept policy terms.</p>
+          <input id="securityPin" type="password" placeholder="4-digit PIN" maxlength="4">
+          <label><input type="checkbox" id="acceptTerms"> I accept transaction security terms.</label>
+        </article>
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" type="button" id="completeSetupBtn">Complete Setup</button>
+        <a class="btn-secondary" href="../../index.html">Back Home</a>
+      </div>
+      <p class="status" id="setupMsg"></p>
+    </section>
+  </main>
+
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <script src="../../js/main.js"></script>
+  <script>
+    (function () {
+      const msg = document.getElementById('setupMsg');
+      const walletUser = document.getElementById('walletUser');
+      const walletStatusText = document.getElementById('walletStatusText');
+      const completeBtn = document.getElementById('completeSetupBtn');
+
+      const getPiUser = () => {
+        try { return JSON.parse(localStorage.getItem('pi_user') || 'null'); }
+        catch (_) { return null; }
+      };
+
+      const user = getPiUser();
+      if (user && user.username) {
+        walletUser.value = user.username;
+        walletStatusText.textContent = 'Wallet: Connected as ' + user.username;
+        document.getElementById('step1').classList.add('done');
+      } else {
+        msg.textContent = 'Please connect wallet first using the top button.';
+      }
+
+      completeBtn.addEventListener('click', function () {
+        const piUser = getPiUser();
+        const txPassword = document.getElementById('txPassword').value.trim();
+        const txConfirmPassword = document.getElementById('txConfirmPassword').value.trim();
+        const securityPin = document.getElementById('securityPin').value.trim();
+        const acceptTerms = document.getElementById('acceptTerms').checked;
+
+        if (!piUser || !piUser.username) {
+          msg.textContent = 'Connect your Pi wallet first.';
+          return;
+        }
+        if (!txPassword || txPassword.length < 6) {
+          msg.textContent = 'Transaction password must be at least 6 characters.';
+          return;
+        }
+        if (txPassword !== txConfirmPassword) {
+          msg.textContent = 'Transaction password confirmation does not match.';
+          return;
+        }
+        if (!/^\d{4}$/.test(securityPin)) {
+          msg.textContent = 'Security PIN must be exactly 4 digits.';
+          return;
+        }
+        if (!acceptTerms) {
+          msg.textContent = 'Please accept terms to continue.';
+          return;
+        }
+
+        localStorage.setItem('pi_onboarding_complete', 'true');
+        localStorage.setItem('pi_security_setup', JSON.stringify({ txPasswordSet: true, pinSet: true }));
+
+        document.getElementById('step2').classList.add('done');
+        document.getElementById('step3').classList.add('done');
+        msg.textContent = 'Setup complete. Redirecting to dashboard...';
+
+        setTimeout(function () {
+          window.location.href = '../dashboard/client.html';
+        }, 700);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -162,7 +162,7 @@ function requireAuth() {
 
   if (!token && !piUser) {
     console.warn("Unauthorized access. Redirecting to login.");
-    window.location.href = "../../pages/auth/login.html";
+    window.location.href = getOnboardingPath();
   }
 }
 
@@ -180,7 +180,7 @@ if (logoutBtn) {
     localStorage.removeItem("pi_user");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "../../pages/auth/login.html";
+    window.location.href = getOnboardingPath();
   });
 }
 
@@ -204,7 +204,10 @@ function appPath(target) {
     return target;
   }
 
-  return `${getAppPrefix()}${target}`;
+  const normalized = target.startsWith("pages/") ? target.slice(6) : target;
+  const prefix = getAppPrefix();
+
+  return prefix ? `${prefix}${normalized}` : target;
 }
 
 function routeButton(button, target) {
@@ -299,70 +302,118 @@ function setupPlaceholderLinks() {
   });
 }
 setupPlaceholderLinks();
-// Pi Wallet Button - Real Implementation
-const walletBtn = document.querySelector(".wallet-btn");
-if (walletBtn) {
-  // Check if already connected
-  const storedPiUser = localStorage.getItem("pi_user");
-  if (storedPiUser) {
-    try {
-      const user = JSON.parse(storedPiUser);
-      walletBtn.innerHTML = `<i class='bx bx-check'></i> ${user.username}`;
-      walletBtn.classList.add("connected");
-    } catch (e) {
-      console.error("Error parsing stored user:", e);
-    }
+function getOnboardingPath() {
+  return appPath('pages/auth/pi-onboarding.html');
+}
+
+function removeEmailAuthEntrypoints() {
+  const authSelectors = [
+    'a[href*="auth/login"]',
+    'a[href*="auth/register"]',
+    'a[href*="auth/forget-password"]',
+    'a[href*="auth/reset-password"]'
+  ];
+
+  authSelectors.forEach((selector) => {
+    document.querySelectorAll(selector).forEach((el) => {
+      el.setAttribute('href', getOnboardingPath());
+      if (el.textContent && el.textContent.trim()) {
+        el.textContent = 'Continue With Pi';
+      }
+    });
+  });
+
+  const path = window.location.pathname.replace(/\\/g, '/').toLowerCase();
+  if (path.endsWith('/pages/auth/login.html') || path.endsWith('/pages/auth/register.html') || path.endsWith('/pages/auth/forget-password.html') || path.endsWith('/pages/auth/reset-password.html')) {
+    window.location.replace(getOnboardingPath());
   }
-  
-  walletBtn.addEventListener("click", async () => {
-    // If already connected, show options
-    if (walletBtn.classList.contains("connected")) {
-      const confirmLogout = confirm("You are connected. Would you like to disconnect?");
-      if (confirmLogout) {
-        localStorage.removeItem("pi_user");
-        walletBtn.innerHTML = `<i class='bx bx-wallet'></i> Connect Pi`;
-        walletBtn.classList.remove("connected");
-        alert("Disconnected from Pi Wallet.");
-      }
-      return;
-    }
-    
-    // Check if Pi SDK is available
-    if (window.Pi) {
-      try {
-        const scopes = ["username", "payments"];
-        const authResult = await Pi.authenticate(scopes, onIncompletePayment);
-        
-        console.log("Pi Auth Success:", authResult);
-        
-        // Store user data
-        localStorage.setItem("pi_user", JSON.stringify(authResult.user));
-        
-        // Update button to show connected state
-        walletBtn.innerHTML = `<i class='bx bx-check'></i> ${authResult.user.username}`;
-        walletBtn.classList.add("connected");
-        
-        // Show success message
-        alert("Pi Wallet connected successfully! You can now use Pi Coin for transactions.");
-        
-      } catch (err) {
-        console.error("Pi Login Failed:", err);
-        if (err.message && err.message.includes("Network error")) {
-          alert("Network error. Please check your connection and try again.");
-        } else if (err.message && err.message.includes("User canceled")) {
-          // User cancelled, no need to show error
-          console.log("User cancelled authentication");
-        } else {
-          alert("Login failed. Please try again or open in Pi Browser.");
-        }
-      }
+}
+
+function setupDashboardGateLinks() {
+  document.querySelectorAll('a[href*="dashboard/client.html"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = getOnboardingPath();
+    });
+  });
+}
+removeEmailAuthEntrypoints();
+setupDashboardGateLinks();
+// Pi Wallet Button - Real Implementation
+function getStoredPiUser() {
+  const raw = localStorage.getItem("pi_user");
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch (_) {
+    return null;
+  }
+}
+
+function updateWalletButtonsUI() {
+  const user = getStoredPiUser();
+
+  document.querySelectorAll(".wallet-btn").forEach((btn) => {
+    btn.type = "button";
+
+    if (user && user.username) {
+      btn.innerHTML = `<i class='bx bx-check'></i> ${user.username}`;
+      btn.classList.add("connected");
     } else {
-      // Pi SDK not available - suggest opening in Pi Browser
-      alert("Pi Wallet is only available in the Pi Browser. Please open this site in the Pi Network mobile app or Pi Browser to connect your wallet.");
+      btn.innerHTML = `<i class='bx bx-wallet'></i> Connect Pi`;
+      btn.classList.remove("connected");
     }
   });
 }
 
+async function handleWalletButtonClick(btn) {
+  if (!btn) return;
+
+  const connectedUser = getStoredPiUser();
+  if (connectedUser && connectedUser.username) {
+    const confirmLogout = confirm("You are connected. Would you like to disconnect?");
+    if (!confirmLogout) return;
+
+    localStorage.removeItem("pi_user");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    updateWalletButtonsUI();
+    alert("Disconnected from Pi Wallet.");
+    return;
+  }
+
+  if (!window.Pi) {
+    alert("Pi Wallet is only available in Pi Browser. Open this site inside Pi Browser to connect.");
+    return;
+  }
+
+  try {
+    const scopes = ["username", "payments"];
+    const authResult = await Pi.authenticate(scopes, onIncompletePayment);
+
+    localStorage.setItem("pi_user", JSON.stringify(authResult.user));
+    updateWalletButtonsUI();
+    alert("Pi Wallet connected successfully!");
+  } catch (err) {
+    console.error("Pi Login Failed:", err);
+    if (err && err.message && err.message.includes("User canceled")) return;
+    alert("Login failed. Please try again in Pi Browser.");
+  }
+}
+
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".wallet-btn");
+  if (!btn) return;
+  e.preventDefault();
+  handleWalletButtonClick(btn);
+});
+
+updateWalletButtonsUI();
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateWalletButtonsUI();
+});
 const dropdownToggle = document.querySelector(".dropdown-toggle");
 
 if (dropdownToggle) {
@@ -373,6 +424,12 @@ if (dropdownToggle) {
 }
 
 console.log("SMAJ PI HUB navigation loaded");
+
+
+
+
+
+
 
 
 

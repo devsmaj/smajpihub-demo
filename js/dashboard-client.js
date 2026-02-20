@@ -1,4 +1,10 @@
 (function () {
+  const onboardingDone = localStorage.getItem("pi_onboarding_complete") === "true";
+  if (!onboardingDone) {
+    window.location.href = "../../pages/auth/pi-onboarding.html";
+    return;
+  }
+
   const sidebar = document.getElementById("dashboardSidebar");
   const sidebarOpen = document.getElementById("sidebarOpen");
   const sidebarClose = document.getElementById("sidebarClose");
@@ -417,6 +423,7 @@ document.querySelectorAll("button").forEach((btn) => {
     });
   }
 })();
+
 
 
 
