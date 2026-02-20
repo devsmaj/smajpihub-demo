@@ -390,27 +390,17 @@
       toast("Delete request submitted (mock)", "warn");
     }
   });
-
-  const savedTheme = localStorage.getItem("dashboard_theme");
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-  }
-
   if (themeToggle) {
     bindClick(themeToggle, () => {
-      document.body.classList.toggle("dark");
-      localStorage.setItem(
-        "dashboard_theme",
-        document.body.classList.contains("dark") ? "dark" : "light"
-      );
-      toast(
-        document.body.classList.contains("dark") ? "Dark mode enabled" : "Light mode enabled",
-        "info"
-      );
+      setTimeout(() => {
+        toast(
+          document.body.classList.contains("dark") ? "Dark mode enabled" : "Light mode enabled",
+          "info"
+        );
+      }, 0);
     });
   }
-
-  document.querySelectorAll("button").forEach((btn) => {
+document.querySelectorAll("button").forEach((btn) => {
     if (handledButtons.has(btn)) return;
     const label = buttonLabel(btn);
     bindClick(btn, () => {
@@ -427,4 +417,7 @@
     });
   }
 })();
+
+
+
 

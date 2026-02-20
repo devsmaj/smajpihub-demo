@@ -427,3 +427,71 @@ nav a:hover {
 .btn:hover {
     background-color: #5f2bd6;
 }
+
+/* Global dark theme across pages */
+body.dark {
+  background: #0b0f1a;
+  color: #e9efff;
+}
+
+body.dark .header,
+body.dark .footer,
+body.dark .cta,
+body.dark .home-cta,
+body.dark .home-hero {
+  background: #0b0f1a;
+  color: #e9efff;
+}
+
+body.dark nav a,
+body.dark .footer a,
+body.dark .footer p,
+body.dark .hero-text p,
+body.dark .home-section-head p,
+body.dark p {
+  color: #c4cee5;
+}
+
+body.dark .section-title,
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4 {
+  color: #f2f6ff;
+}
+
+body.dark .feature-card,
+body.dark .service-card,
+body.dark .step,
+body.dark .panel,
+body.dark .home-service-card,
+body.dark .home-highlight-card,
+body.dark .blog-card,
+body.dark .blog-featured,
+body.dark .faq-item,
+body.dark .contact-card,
+body.dark .pricing-card,
+body.dark .portfolio-card,
+body.dark .auth-box {
+  background: #131b31;
+  border-color: #2b3a5e;
+  color: #e9efff;
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select {
+  background: #111a30;
+  color: #e9efff;
+  border-color: #2b3a5e;
+}
+
+body.dark .btn-secondary {
+  border-color: #9b74ff;
+  color: #c9b7ff;
+}
+
+body.dark .btn-secondary:hover {
+  color: #fff;
+  background: #7d3cff;
+}

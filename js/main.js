@@ -11,6 +11,36 @@ if (window.Pi) {
   console.warn("Pi SDK not found. Open in Pi Browser.");
 }
 
+// Global Theme (all pages)
+const SITE_THEME_KEY = "site_theme";
+
+function applySiteTheme(theme) {
+  const isDark = theme === "dark";
+  document.body.classList.toggle("dark", isDark);
+}
+
+function getSiteTheme() {
+  return localStorage.getItem(SITE_THEME_KEY) || "light";
+}
+
+function setSiteTheme(theme) {
+  localStorage.setItem(SITE_THEME_KEY, theme);
+  applySiteTheme(theme);
+}
+
+function toggleSiteTheme() {
+  const next = document.body.classList.contains("dark") ? "light" : "dark";
+  setSiteTheme(next);
+}
+
+applySiteTheme(getSiteTheme());
+
+Array.from(document.querySelectorAll('#themeToggle')).forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    toggleSiteTheme();
+  });
+});
 const piLoginBtn = document.getElementById("piLoginBtn");
 
 if (piLoginBtn) {
@@ -330,5 +360,7 @@ if (dropdownToggle) {
 }
 
 console.log("SMAJ PI HUB navigation loaded");
+
+
 
 
