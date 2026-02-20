@@ -17,12 +17,18 @@
   const sendBtn = document.getElementById("sendBtn");
   const receiveBtn = document.getElementById("receiveBtn");
   const profileEditBtn = document.getElementById("profileEditBtn");
+  const profilePhotoBtn = document.getElementById("profilePhotoBtn");
+  const profilePhotoSaveBtn = document.getElementById("profilePhotoSaveBtn");
+  const profilePhotoRemoveBtn = document.getElementById("profilePhotoRemoveBtn");
+  const profilePhotoInput = document.getElementById("profilePhotoInput");
+  const profileAvatarTrigger = document.getElementById("profileAvatarTrigger");
   const profileActionRow = document.querySelector(".profile-action-row");
   const themeToggle = document.getElementById("themeToggle");
 
   const handledButtons = new WeakSet();
   let isProfileEditing = false;
   let profileOriginal = {};
+  let pendingPhotoDataUrl = "";
 
   const profileFieldIds = [
     "profileFullName",
@@ -35,6 +41,7 @@
   ];
 
   const profileStorageKey = "dashboard_profile_data";
+  const profilePhotoStorageKey = "dashboard_profile_photo";
 
   const sectionMap = {
     "Pi Balance": "finance",
@@ -147,6 +154,41 @@
     return (value || "").replace(/^@/, "").trim() || "smaj_user";
   }
 
+  function getInitials(username) {
+    return username.slice(0, 1).toUpperCase() + "P";
+  }
+
+  function applyAvatarInitials(username) {
+    if (!profileAvatar) return;
+    if (profileAvatar.classList.contains("has-photo")) return;
+    profileAvatar.textContent = getInitials(username);
+  }
+
+  function setAvatarPhoto(photoDataUrl) {
+    if (!profileAvatar) return;
+    profileAvatar.style.backgroundImage = `url("${photoDataUrl}")`;
+    profileAvatar.classList.add("has-photo");
+    profileAvatar.textContent = "";
+  }
+
+  function clearAvatarPhoto(username) {
+    if (!profileAvatar) return;
+    profileAvatar.style.backgroundImage = "";
+    profileAvatar.classList.remove("has-photo");
+    profileAvatar.textContent = getInitials(toUsername(username || getProfileText("profileUsername")));
+  }
+
+  function loadPersistedAvatarPhoto() {
+    const photoDataUrl = localStorage.getItem(profilePhotoStorageKey);
+    if (!photoDataUrl) return;
+    setAvatarPhoto(photoDataUrl);
+  }
+
+  function setPhotoSaveVisible(show) {
+    if (!profilePhotoSaveBtn) return;
+    profilePhotoSaveBtn.classList.toggle("show", show);
+  }
+
   function getProfileText(fieldId) {
     const el = document.getElementById(fieldId);
     return el ? el.textContent.trim() : "";
@@ -175,7 +217,7 @@
     const username = toUsername(getProfileText("profileUsername"));
     if (sidebarUsername) sidebarUsername.textContent = username;
     if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${username}`;
-    if (profileAvatar) profileAvatar.textContent = username.slice(0, 1).toUpperCase() + "P";
+    applyAvatarInitials(username);
   }
 
   function persistProfileData() {
@@ -250,7 +292,9 @@
     if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${username}`;
 
     const initials = username.slice(0, 1).toUpperCase() + "P";
-    if (profileAvatar) profileAvatar.textContent = initials;
+    if (profileAvatar && !profileAvatar.classList.contains("has-photo")) {
+      profileAvatar.textContent = initials;
+    }
 
     const cancelBtn = document.getElementById("profileCancelBtn");
     if (cancelBtn) cancelBtn.remove();
@@ -294,7 +338,9 @@
       if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${username}`;
       if (sidebarUsername) sidebarUsername.textContent = username;
       if (profileUsername) profileUsername.textContent = `@${username}`;
-      if (profileAvatar) profileAvatar.textContent = initial;
+      if (profileAvatar && !profileAvatar.classList.contains("has-photo")) {
+        profileAvatar.textContent = initial;
+      }
 
       setWalletConnected(true);
     } catch (_) {
@@ -305,6 +351,67 @@
   }
 
   loadPersistedProfile();
+  loadPersistedAvatarPhoto();
+
+  bindClick(profileAvatarTrigger, () => {
+    if (!profilePhotoInput) return;
+    profilePhotoInput.click();
+  });
+
+  bindClick(profilePhotoBtn, () => {
+    if (!profilePhotoInput) return;
+    profilePhotoInput.click();
+  });
+
+  bindClick(profilePhotoSaveBtn, () => {
+    if (!pendingPhotoDataUrl) {
+      toast("No new photo selected", "info");
+      return;
+    }
+    localStorage.setItem(profilePhotoStorageKey, pendingPhotoDataUrl);
+    pendingPhotoDataUrl = "";
+    setPhotoSaveVisible(false);
+    toast("Profile photo saved", "success");
+  });
+
+  bindClick(profilePhotoRemoveBtn, () => {
+    localStorage.removeItem(profilePhotoStorageKey);
+    pendingPhotoDataUrl = "";
+    setPhotoSaveVisible(false);
+    clearAvatarPhoto(getProfileText("profileUsername"));
+    toast("Profile photo removed", "info");
+  });
+
+  if (profilePhotoInput) {
+    profilePhotoInput.addEventListener("change", () => {
+      const file = profilePhotoInput.files && profilePhotoInput.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        toast("Please choose a valid image file", "warn");
+        profilePhotoInput.value = "";
+        return;
+      }
+
+      if (file.size > 2 * 1024 * 1024) {
+        toast("Image is too large (max 2MB)", "warn");
+        profilePhotoInput.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = String(reader.result || "");
+        if (!dataUrl) return;
+        pendingPhotoDataUrl = dataUrl;
+        setAvatarPhoto(dataUrl);
+        setPhotoSaveVisible(true);
+        toast("Photo selected. Click Save Photo to confirm.", "info");
+        profilePhotoInput.value = "";
+      };
+      reader.readAsDataURL(file);
+    });
+  }
 
   document.querySelectorAll(".filter-btn").forEach((btn) => {
     bindClick(btn, () => {

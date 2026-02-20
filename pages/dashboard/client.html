@@ -132,8 +132,17 @@
         </div>
         <article class="panel profile-card">
           <div class="profile-avatar-wrap">
-            <div class="avatar large" id="profileAvatar">SP</div>
-            <div class="profile-action-row"><button class="btn-soft" id="profileEditBtn">Edit Profile</button></div>
+            <button class="avatar-upload-trigger" id="profileAvatarTrigger" type="button" aria-label="Upload profile photo">
+              <div class="avatar large" id="profileAvatar">SP</div>
+              <span class="avatar-camera"><i class='bx bx-camera'></i></span>
+            </button>
+            <input type="file" id="profilePhotoInput" class="profile-photo-input" accept="image/*">
+            <div class="profile-action-row">
+              <button class="btn-soft" id="profileEditBtn">Edit Profile</button>
+              <button class="btn-soft" id="profilePhotoBtn">Change Photo</button>
+              <button class="btn-soft" id="profilePhotoSaveBtn">Save Photo</button>
+              <button class="btn-soft" id="profilePhotoRemoveBtn">Remove Photo</button>
+            </div>
           </div>
           <div class="profile-info-grid">
             <div><h4>Full Name</h4><p id="profileFullName">SMAJ Pioneer</p></div>
