@@ -33,13 +33,26 @@ function toggleSiteTheme() {
   setSiteTheme(next);
 }
 
-applySiteTheme(getSiteTheme());
+function bindDashboardThemeToggle() {
+  const btn = document.getElementById("themeToggle");
+  if (!btn || btn.dataset.themeBound === "true") return;
 
-Array.from(document.querySelectorAll('#themeToggle')).forEach((btn) => {
+  btn.dataset.themeBound = "true";
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     toggleSiteTheme();
   });
+}
+
+// Expose for dashboard-specific scripts if needed.
+window.toggleSiteTheme = toggleSiteTheme;
+
+applySiteTheme(getSiteTheme());
+bindDashboardThemeToggle();
+
+document.addEventListener("DOMContentLoaded", () => {
+  applySiteTheme(getSiteTheme());
+  bindDashboardThemeToggle();
 });
 const piLoginBtn = document.getElementById("piLoginBtn");
 
@@ -360,6 +373,7 @@ if (dropdownToggle) {
 }
 
 console.log("SMAJ PI HUB navigation loaded");
+
 
 
 

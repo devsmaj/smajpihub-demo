@@ -495,3 +495,42 @@ body.dark .btn-secondary:hover {
   color: #fff;
   background: #7d3cff;
 }
+
+/* Extra dark coverage for homepage and section surfaces */
+body.dark .home-highlights,
+body.dark .home-ecosystem,
+body.dark .services,
+body.dark .about-section,
+body.dark .blog-listing,
+body.dark .blog-toolbar,
+body.dark .community-feed,
+body.dark .portfolio-grid,
+body.dark .pricing-cards,
+body.dark .contact-section,
+body.dark .faq-section {
+  background: #0f172b;
+  color: #e9efff;
+}
+
+body.dark .home-proof div,
+body.dark .home-hero-card,
+body.dark .home-pill,
+body.dark .step-card,
+body.dark .team-card,
+body.dark .ceo-card,
+body.dark .post-card,
+body.dark .portfolio-item,
+body.dark .table-wrap,
+body.dark .modal-content {
+  background: #131b31;
+  border-color: #2b3a5e;
+  color: #e9efff;
+}
+
+body.dark .home-service-card p,
+body.dark .home-highlight-card p,
+body.dark .blog-meta,
+body.dark .blog-featured-content p,
+body.dark .copyright {
+  color: #b9c6e4;
+}
