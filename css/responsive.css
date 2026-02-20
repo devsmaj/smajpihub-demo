@@ -263,3 +263,29 @@
   }
 }
 
+
+.menu-wallet-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #navMenu .menu-wallet-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 24px);
+    margin: 14px 12px 16px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #7d3cff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
+  .header .nav > .wallet-btn:not(.menu-wallet-btn) {
+    display: none !important;
+  }
+}

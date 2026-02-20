@@ -339,6 +339,21 @@ function setupDashboardGateLinks() {
 }
 removeEmailAuthEntrypoints();
 setupDashboardGateLinks();
+
+function ensureMobileMenuWalletButton() {
+  const nav = document.getElementById("navMenu");
+  if (!nav) return;
+  if (nav.querySelector(".menu-wallet-btn")) return;
+
+  const menuWalletBtn = document.createElement("button");
+  menuWalletBtn.type = "button";
+  menuWalletBtn.className = "wallet-btn menu-wallet-btn";
+  menuWalletBtn.innerHTML = "<i class='bx bx-wallet'></i> Connect Pi";
+
+  nav.appendChild(menuWalletBtn);
+  updateWalletButtonsUI();
+}
+
 // Pi Wallet Button - Real Implementation
 function getStoredPiUser() {
   const raw = localStorage.getItem("pi_user");
@@ -409,9 +424,11 @@ document.addEventListener("click", (e) => {
   handleWalletButtonClick(btn);
 });
 
+ensureMobileMenuWalletButton();
 updateWalletButtonsUI();
 
 document.addEventListener("DOMContentLoaded", () => {
+  ensureMobileMenuWalletButton();
   updateWalletButtonsUI();
 });
 const dropdownToggle = document.querySelector(".dropdown-toggle");
@@ -424,6 +441,9 @@ if (dropdownToggle) {
 }
 
 console.log("SMAJ PI HUB navigation loaded");
+
+
+
 
 
 
