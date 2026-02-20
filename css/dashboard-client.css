@@ -822,3 +822,137 @@ th {
   border-color: var(--brand);
   box-shadow: 0 0 0 3px rgba(125, 60, 255, 0.15);
 }
+
+/* Dashboard responsive polish */
+.header-subtext {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.dashboard-main {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.dashboard-header {
+  box-shadow: 0 6px 16px rgba(16, 24, 40, 0.06);
+}
+
+@media (max-width: 1024px) {
+  .dashboard-main {
+    padding: 20px;
+  }
+
+  .dashboard-header {
+    padding: 12px 14px;
+    border-radius: 14px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-sidebar {
+    width: min(84vw, 320px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+  }
+
+  .dashboard-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 10px;
+  }
+
+  .header-left {
+    min-width: 0;
+    gap: 10px;
+  }
+
+  .header-left > div {
+    min-width: 0;
+  }
+
+  .dashboard-header h1 {
+    font-size: 20px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-subtext {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-actions {
+    flex-wrap: nowrap;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 620px) {
+  .dashboard-main {
+    padding: 14px;
+  }
+
+  .dashboard-header {
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+
+  .header-left {
+    gap: 8px;
+  }
+
+  .header-actions {
+    width: auto;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .header-actions .btn-ghost {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    padding: 0;
+    justify-content: center;
+    font-size: 0;
+  }
+
+  .header-actions .btn-ghost i {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  .section-head h2 {
+    font-size: 20px;
+  }
+
+  .panel,
+  .stat-card,
+  .eco-card,
+  .notice-item {
+    padding: 14px;
+  }
+
+  th,
+  td {
+    padding: 10px 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .dashboard-header h1 {
+    font-size: 18px;
+  }
+
+  .header-subtext {
+    font-size: 12px;
+  }
+}

@@ -1,9 +1,4 @@
 (function () {
-  const onboardingDone = localStorage.getItem("pi_onboarding_complete") === "true";
-  if (!onboardingDone) {
-    window.location.href = "../../pages/auth/pi-onboarding.html";
-    return;
-  }
 
   const sidebar = document.getElementById("dashboardSidebar");
   const sidebarOpen = document.getElementById("sidebarOpen");
@@ -419,7 +414,7 @@ document.querySelectorAll("button").forEach((btn) => {
       localStorage.removeItem("pi_user");
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.href = "../../pages/auth/login.html";
+      window.location.href = "../../index.html";
     });
   }
 })();

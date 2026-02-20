@@ -162,7 +162,7 @@ function requireAuth() {
 
   if (!token && !piUser) {
     console.warn("Unauthorized access. Redirecting to login.");
-    window.location.href = getOnboardingPath();
+    window.location.href = getAuthEntryPath();
   }
 }
 
@@ -180,7 +180,7 @@ if (logoutBtn) {
     localStorage.removeItem("pi_user");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = getOnboardingPath();
+    window.location.href = getAuthEntryPath();
   });
 }
 
@@ -213,6 +213,7 @@ function appPath(target) {
 function routeButton(button, target) {
   if (!button || !target) return;
 
+  button.dataset.routeBound = "true";
   button.addEventListener('click', (e) => {
     e.preventDefault();
     window.location.href = appPath(target);
@@ -222,7 +223,7 @@ function routeButton(button, target) {
 // Service main CTA
 Array.from(document.querySelectorAll('.cta-btn')).forEach((btn) => {
   if (btn.type && btn.type.toLowerCase() === 'submit') return;
-  routeButton(btn, 'pages/auth/login.html');
+  routeButton(btn, 'pages/dashboard/client.html');
 });
 
 function setupGlobalButtonRouting() {
@@ -247,7 +248,7 @@ function setupGlobalButtonRouting() {
   const resolveTarget = (label) => {
     if (label.includes('view project')) return 'pages/service-detail.html';
     if (label.includes('hire service')) return 'pages/contact.html';
-    if (label.includes('subscribe')) return 'pages/auth/register.html';
+    if (label.includes('subscribe')) return 'pages/dashboard/client.html';
     if (label.includes('start a project')) return 'pages/contact.html';
     if (label.includes('view pricing')) return 'pages/pricing.html';
     if (label.includes('contact support')) return 'pages/contact.html';
@@ -274,6 +275,75 @@ function setupGlobalButtonRouting() {
 }
 
 setupGlobalButtonRouting();
+function setupUniversalButtonFallback() {
+  const path = window.location.pathname.replace(/\\/g, '/');
+  if (path.includes('/pages/dashboard/')) return;
+
+  const skipClasses = [
+    'wallet-btn', 'menu-toggle', 'sidebar-open', 'sidebar-close', 'filter-btn',
+    'category', 'faq-question', 'hub-open-btn', 'mark-read', 'nav-link',
+    'icon-btn', 'cart-toggle', 'close'
+  ];
+
+  const skipIds = new Set([
+    'piLoginBtn', 'piRegisterBtn', 'menuToggle', 'menuClose', 'sidebarOpen',
+    'sidebarClose', 'openCartBtnTop', 'openCartBtn', 'closeCart', 'checkoutBtn',
+    'closeModal', 'modalAddCart', 'modalBuyNow', 'connectWalletAction',
+    'buyNow', 'addToCart', 'send-btn', 'receive-btn', 'deposit-btn', 'withdraw-btn'
+  ]);
+
+  const normalizeText = (text) => text.replace(/\s+/g, ' ').trim().toLowerCase();
+
+  const resolveTarget = (label) => {
+    if (label.includes('view project')) return 'pages/service-detail.html';
+    if (label.includes('hire service')) return 'pages/contact.html';
+    if (label.includes('subscribe')) return 'pages/dashboard/client.html';
+    if (label.includes('join now')) return 'pages/dashboard/client.html';
+    if (label.includes('continue with pi')) return 'pages/dashboard/client.html';
+    if (label.includes('open dashboard')) return 'pages/dashboard/client.html';
+    if (label.includes('unified dashboard')) return 'pages/dashboard/client.html';
+    if (label.includes('start now')) return 'pages/service.html';
+    if (label.includes('view pricing')) return 'pages/pricing.html';
+    if (label.includes('contact support')) return 'pages/contact.html';
+    if (label.includes('join community')) return 'pages/contact.html';
+    if (label.includes('read updates')) return 'pages/blog.html';
+    if (label.includes('become a partner')) return 'pages/collaborate.html';
+    if (label.includes('request integration')) return 'pages/contact.html';
+    if (label.includes('visit developers')) return 'pages/developers.html';
+    if (label.includes('post your idea')) return 'pages/contact.html';
+    if (label.includes('read featured story')) return 'pages/blog-post.html';
+    return '';
+  };
+
+  Array.from(document.querySelectorAll('button')).forEach((btn) => {
+    const type = (btn.getAttribute('type') || '').toLowerCase();
+    const id = btn.id || '';
+
+    if (type === 'submit' || type === 'reset') return;
+    if (btn.disabled) return;
+    if (btn.dataset.routeBound === 'true') return;
+    if (skipIds.has(id)) return;
+    if (btn.hasAttribute('onclick')) return;
+    if (skipClasses.some((cls) => btn.classList.contains(cls))) return;
+
+    btn.dataset.routeBound = 'true';
+    btn.addEventListener('click', (e) => {
+      if (e.defaultPrevented) return;
+
+      const label = normalizeText(btn.textContent || '');
+      const target = resolveTarget(label);
+
+      e.preventDefault();
+      if (target) {
+        window.location.href = appPath(target);
+        return;
+      }
+
+      alert('This action is ready for backend integration and will be active soon.');
+    });
+  });
+}
+setupUniversalButtonFallback();
 function setupPlaceholderLinks() {
   const socialMap = {
     twitter: 'https://x.com',
@@ -302,8 +372,8 @@ function setupPlaceholderLinks() {
   });
 }
 setupPlaceholderLinks();
-function getOnboardingPath() {
-  return appPath('pages/auth/pi-onboarding.html');
+function getAuthEntryPath() {
+  return appPath('index.html');
 }
 
 function removeEmailAuthEntrypoints() {
@@ -316,16 +386,16 @@ function removeEmailAuthEntrypoints() {
 
   authSelectors.forEach((selector) => {
     document.querySelectorAll(selector).forEach((el) => {
-      el.setAttribute('href', getOnboardingPath());
+      el.setAttribute('href', getAuthEntryPath());
       if (el.textContent && el.textContent.trim()) {
-        el.textContent = 'Continue With Pi';
+        el.textContent = 'Connect Pi';
       }
     });
   });
 
   const path = window.location.pathname.replace(/\\/g, '/').toLowerCase();
   if (path.endsWith('/pages/auth/login.html') || path.endsWith('/pages/auth/register.html') || path.endsWith('/pages/auth/forget-password.html') || path.endsWith('/pages/auth/reset-password.html')) {
-    window.location.replace(getOnboardingPath());
+    window.location.replace(getAuthEntryPath());
   }
 }
 
@@ -333,7 +403,7 @@ function setupDashboardGateLinks() {
   document.querySelectorAll('a[href*="dashboard/client.html"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      window.location.href = getOnboardingPath();
+      window.location.href = appPath('pages/dashboard/client.html');
     });
   });
 }
@@ -441,6 +511,8 @@ if (dropdownToggle) {
 }
 
 console.log("SMAJ PI HUB navigation loaded");
+
+
 
 
 
