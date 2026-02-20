@@ -1,241 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <title>Client Dashboard - SMAJ PI HUB</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <title>User Profile Dashboard - SMAJ PI HUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/responsive.css">
   <link rel="stylesheet" href="../../css/dashboard-client.css">
 </head>
-
 <body>
-  <header class="header">
-    <div class="container nav">
-      <div class="logo">
-        <img src="../../assets/images/logo.png" alt="SMAJ PI HUB Logo">
-      </div>
-
-      <div class="menu-toggle" id="menuToggle">
-        <i class='bx bx-menu'></i>
-      </div>
-
-      <div class="menu-overlay" id="menuOverlay"></div>
-
-      <nav id="navMenu">
-        <div class="menu-close" id="menuClose">
-          <i class='bx bx-x'></i>
-        </div>
-        <a href="../../index.html">Home</a>
-        <a href="../../pages/about.html">About</a>
-        <a href="../../pages/service.html">Services</a>
-        <a href="../../pages/how-it-works.html">How It Works</a>
-        <a href="../../pages/pricing.html">Pricing</a>
-        <a href="../../pages/marketplace/markerplace.html">Marketplace</a>
-        <a href="../../pages/faq.html">FAQ</a>
-        <a href="../../pages/contact.html">Contact</a>
-        <a href="../../pages/dashboard/client.html">Dashboard</a>
-      </nav>
-
-      <button class="wallet-btn"><i class='bx bx-wallet'></i> Connect Pi</button>
-    </div>
-  </header>
-
-  <div class="dashboard-layout">
+  <div class="dashboard-shell">
     <aside class="dashboard-sidebar" id="dashboardSidebar">
-      <button class="sidebar-close" id="sidebarClose" aria-label="Close Sidebar"><i class='bx bx-x'></i></button>
-      <h3>Dashboard</h3>
-      <ul>
-        <li><a class="active" href="client.html"><i class='bx bx-home'></i> Overview</a></li>
-        <li><a href="../wallet/index.html"><i class='bx bx-wallet'></i> Wallet</a></li>
-        <li><a href="../../pages/marketplace/markerplace.html"><i class='bx bx-store'></i> Marketplace</a></li>
-        <li><a href="../service.html"><i class='bx bx-briefcase'></i> Services</a></li>
-        <li><a href="settings.html"><i class='bx bx-cog'></i> Settings</a></li>
-        <li><a href="#" id="logoutBtn"><i class='bx bx-log-out'></i> Logout</a></li>
-      </ul>
-    </aside>
-
-    <main class="dashboard-main">
-      <div class="dashboard-toolbar">
-        <button class="sidebar-open" id="sidebarOpen"><i class='bx bx-menu'></i></button>
-        <div>
-          <h1 id="welcomeTitle">Welcome back</h1>
-          <p>Track all your SMAJ PI HUB activity in one place.</p>
-        </div>
-      </div>
-
-      <section class="stats-grid">
-        <article class="stat-card">
-          <i class='bx bx-wallet'></i>
-          <h4>Pi Balance</h4>
-          <p id="piBalance">0.0000001 Pi</p>
-        </article>
-        <article class="stat-card">
-          <i class='bx bx-time-five'></i>
-          <h4>Pending Orders</h4>
-          <p id="pendingOrders">2</p>
-        </article>
-        <article class="stat-card">
-          <i class='bx bx-check-circle'></i>
-          <h4>Completed Orders</h4>
-          <p id="completedOrders">5</p>
-        </article>
-        <article class="stat-card">
-          <i class='bx bx-bell'></i>
-          <h4>New Notifications</h4>
-          <p id="notificationCount">3</p>
-        </article>
-      </section>
-
-      <section class="panel">
-        <div class="panel-head">
-          <h2>Recent Orders</h2>
-          <div class="filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="pending">Pending</button>
-            <button class="filter-btn" data-filter="completed">Completed</button>
-            <button class="filter-btn" data-filter="canceled">Canceled</button>
+      <div class="sidebar-head">
+        <div class="brand">
+          <img src="../../assets/images/logo.png" alt="SMAJ PI HUB Logo">
+          <div>
+            <h2></h2>
+            <p>Control Center</p>
           </div>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Service</th>
-                <th>Amount (Pi)</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="ordersTableBody">
-              <tr data-status="pending">
-                <td>2026-02-15</td>
-                <td>Website Development</td>
-                <td>0.0000001</td>
-                <td><span class="status pending">Pending</span></td>
-                <td><button class="btn-secondary small-btn">View</button></td>
-              </tr>
-              <tr data-status="completed">
-                <td>2026-02-13</td>
-                <td>Logo & Graphic Design</td>
-                <td>0.0000002</td>
-                <td><span class="status completed">Completed</span></td>
-                <td><button class="btn-secondary small-btn">View</button></td>
-              </tr>
-              <tr data-status="canceled">
-                <td>2026-02-11</td>
-                <td>SEO Optimization</td>
-                <td>0.0000001</td>
-                <td><span class="status canceled">Canceled</span></td>
-                <td><button class="btn-secondary small-btn">View</button></td>
-              </tr>
-            </tbody>
-          </table>
+        <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Close menu">
+          <i class='bx bx-x'></i>
+        </button>
+      </div>
+
+      <div class="profile-mini card-soft">
+        <div class="avatar">SP</div>
+        <div class="profile-meta">
+          <h3 id="sidebarUsername">SMAJ Pioneer</h3>
+          <p>@smaj_user</p>
+        </div>
+        <span class="wallet-badge connected" id="walletStatus">Connected</span>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebarNav">
+        <button class="nav-link active" data-section="overview"><i class='bx bx-grid-alt'></i>Dashboard Overview</button>
+        <button class="nav-link" data-section="profile"><i class='bx bx-user'></i>My Profile</button>
+        <button class="nav-link" data-section="finance"><i class='bx bx-wallet-alt'></i>Wallet & Finance</button>
+        <button class="nav-link" data-section="ecosystem"><i class='bx bx-planet'></i>My Ecosystem</button>
+        <button class="nav-link" data-section="orders"><i class='bx bx-package'></i>Orders & Bookings</button>
+        <button class="nav-link" data-section="jobs"><i class='bx bx-briefcase-alt-2'></i>Jobs & Services</button>
+        <button class="nav-link" data-section="notifications"><i class='bx bx-bell'></i>Notifications</button>
+        <button class="nav-link" data-section="analytics"><i class='bx bx-line-chart'></i>Analytics</button>
+        <button class="nav-link" data-section="security"><i class='bx bx-shield-quarter'></i>Security & Settings</button>
+        <button class="nav-link logout" id="logoutBtn"><i class='bx bx-log-out-circle'></i>Logout</button>
+      </nav>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <div class="header-left">
+          <button class="icon-btn" id="sidebarOpen" aria-label="Open menu">
+            <i class='bx bx-menu'></i>
+          </button>
+          <div>
+            <h1 id="welcomeTitle">Welcome back, Pioneer</h1>
+            <p>Your digital ecosystem control center powered by Pi.</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+            <i class='bx bx-sun'></i>
+          </button>
+          <a class="btn-ghost" href="../../index.html"><i class='bx bx-home-alt-2'></i> Back to Site</a>
+        </div>
+      </header>
+
+      <section class="dashboard-section active" id="section-overview">
+        <div class="section-head">
+          <h2>Dashboard Overview</h2>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon"><i class='bx bx-coin-stack'></i></div>
+            <h3>Pi Balance</h3>
+            <p>3,250.90 Pi</p>
+            <button class="btn-soft">View Details</button>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon"><i class='bx bx-package'></i></div>
+            <h3>Active Orders</h3>
+            <p>14</p>
+            <button class="btn-soft">View Details</button>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon"><i class='bx bx-briefcase'></i></div>
+            <h3>Active Jobs</h3>
+            <p>7</p>
+            <button class="btn-soft">View Details</button>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon"><i class='bx bx-book-open'></i></div>
+            <h3>Enrolled Courses</h3>
+            <p>9</p>
+            <button class="btn-soft">View Details</button>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon"><i class='bx bx-plus-medical'></i></div>
+            <h3>Health Appointments</h3>
+            <p>3</p>
+            <button class="btn-soft">View Details</button>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon"><i class='bx bx-bolt-circle'></i></div>
+            <h3>Energy Payments</h3>
+            <p>11</p>
+            <button class="btn-soft">View Details</button>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon"><i class='bx bx-building-house'></i></div>
+            <h3>Housing Bookings</h3>
+            <p>4</p>
+            <button class="btn-soft">View Details</button>
+          </article>
+          <article class="stat-card">
+            <div class="stat-icon"><i class='bx bx-transfer-alt'></i></div>
+            <h3>Swap Trades</h3>
+            <p>23</p>
+            <button class="btn-soft">View Details</button>
+          </article>
         </div>
       </section>
 
-      <section class="panel">
-        <h2>Quick Access Platforms</h2>
-        <div class="platform-grid">
-          <a class="platform-card" href="https://smaj.store">
-            <img src="../../assets/images/amazon.png" alt="SMAJ Store">
-            <h4>SMAJ Store</h4>
-            <p>Shop with Pi</p>
-          </a>
-          <a class="platform-card" href="../../pages/service.html">
-            <img src="../../assets/images/business.jpg" alt="Digital Services">
-            <h4>Digital Services</h4>
-            <p>Hire trusted providers</p>
-          </a>
-          <a class="platform-card" href="../../pages/marketplace/markerplace.html">
-            <img src="../../assets/images/marketplace.jpg" alt="Marketplace">
-            <h4>Marketplace</h4>
-            <p>Explore ecosystem offers</p>
-          </a>
+      <section class="dashboard-section" id="section-profile">
+        <div class="section-head">
+          <h2>My Profile</h2>
+        </div>
+        <article class="panel profile-card">
+          <div class="profile-avatar-wrap">
+            <div class="avatar large" id="profileAvatar">SP</div>
+            <div class="profile-action-row"><button class="btn-soft" id="profileEditBtn">Edit Profile</button></div>
+          </div>
+          <div class="profile-info-grid">
+            <div><h4>Full Name</h4><p id="profileFullName">SMAJ Pioneer</p></div>
+            <div><h4>Username</h4><p id="profileUsername">@smaj_user</p></div>
+            <div><h4>Email</h4><p id="profileEmail">pioneer@smajpihub.com</p></div>
+            <div><h4>Phone</h4><p id="profilePhone">+1 (415) 555-0199</p></div>
+            <div><h4>Country</h4><p id="profileCountry">United States</p></div>
+            <div><h4>Wallet Address</h4><p id="profileWalletAddress">GA7H...P91X</p></div>
+            <div><h4>Member Since</h4><p id="profileMemberSince">March 21, 2024</p></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-section" id="section-finance">
+        <div class="section-head">
+          <h2>Wallet & Finance</h2>
+        </div>
+        <article class="panel finance-top">
+          <div>
+            <h4>Wallet Status</h4>
+            <p><span class="wallet-badge connected" id="financeWalletStatus">Connected</span></p>
+          </div>
+          <div>
+            <h4>Pi Balance</h4>
+            <p class="metric">3,250.90 Pi</p>
+          </div>
+          <div>
+            <h4>GCV Equivalent</h4>
+            <p class="metric">$10,402.88</p>
+          </div>
+          <div class="finance-actions">
+            <button class="btn-soft" id="sendBtn"><i class='bx bx-send'></i> Send</button>
+            <button class="btn-soft" id="receiveBtn"><i class='bx bx-download'></i> Receive</button>
+            <button class="btn-soft" id="downloadReportBtn"><i class='bx bx-file'></i> Download Report</button>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Recent Transactions</h3>
+            <div class="filters">
+              <button class="filter-btn active" data-filter-group="tx" data-filter="all">All</button>
+              <button class="filter-btn" data-filter-group="tx" data-filter="income">Income</button>
+              <button class="filter-btn" data-filter-group="tx" data-filter="expense">Expense</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th>Project</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="transactionsTable">
+                <tr data-type="income"><td>2026-02-18</td><td>Income</td><td>SMAJ PI JOBS</td><td>+180 Pi</td><td><span class="status active">Completed</span></td></tr>
+                <tr data-type="expense"><td>2026-02-17</td><td>Expense</td><td>SMAJ PI HEALTH</td><td>-42 Pi</td><td><span class="status pending">Pending</span></td></tr>
+                <tr data-type="income"><td>2026-02-15</td><td>Income</td><td>SMAJ STORE</td><td>+250 Pi</td><td><span class="status active">Completed</span></td></tr>
+                <tr data-type="expense"><td>2026-02-13</td><td>Expense</td><td>SMAJ PI ENERGY</td><td>-65 Pi</td><td><span class="status active">Completed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-section" id="section-ecosystem">
+        <div class="section-head">
+          <h2>My Ecosystem</h2>
+        </div>
+        <div class="ecosystem-grid">
+          <article class="eco-card"><i class='bx bx-store'></i><h3>SMAJ STORE</h3><p>Pi-powered shopping marketplace.</p><span class="status-badge ready">Ready to Launch</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-briefcase'></i><h3>SMAJ PI JOBS</h3><p>Jobs and freelance opportunities.</p><span class="status-badge ready">Ready to Launch</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-heart-circle'></i><h3>SMAJ PI HEALTH</h3><p>Healthcare appointments and telehealth.</p><span class="status-badge coming">Coming Soon</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-book'></i><h3>SMAJ PI EDU</h3><p>Courses, mentorship, and training.</p><span class="status-badge ready">Ready to Launch</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-bus'></i><h3>SMAJ PI TRANSPORT</h3><p>Book trusted mobility services.</p><span class="status-badge coming">Coming Soon</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-leaf'></i><h3>SMAJ PI AGRO</h3><p>Agriculture inputs and produce exchange.</p><span class="status-badge ready">Ready to Launch</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-bolt'></i><h3>SMAJ PI ENERGY</h3><p>Utility bills and renewable credits.</p><span class="status-badge ready">Ready to Launch</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-donate-heart'></i><h3>SMAJ PI CHARITY</h3><p>Transparent giving on Pi rails.</p><span class="status-badge coming">Coming Soon</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-home-heart'></i><h3>SMAJ PI HOUSING</h3><p>Housing discovery and bookings.</p><span class="status-badge ready">Ready to Launch</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-calendar-event'></i><h3>SMAJ PI EVENTS</h3><p>Tickets, communities, and conferences.</p><span class="status-badge coming">Coming Soon</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-transfer'></i><h3>SMAJ PI SWAP</h3><p>Asset swaps and P2P exchange.</p><span class="status-badge ready">Ready to Launch</span><button class="btn-soft">Access Module</button></article>
+          <article class="eco-card"><i class='bx bx-dish'></i><h3>SMAJ FOOD DELIVERY</h3><p>Food ordering and instant delivery.</p><span class="status-badge coming">Coming Soon</span><button class="btn-soft">Access Module</button></article>
+        </div>
+      </section>
+
+      <section class="dashboard-section" id="section-orders">
+        <div class="section-head">
+          <h2>Orders & Bookings</h2>
+        </div>
+        <article class="panel">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Reference</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Store Order</td><td>#ST-9201</td><td>2026-02-19</td><td>80 Pi</td><td><span class="status active">Completed</span></td></tr>
+                <tr><td>Job Contract</td><td>#JB-4022</td><td>2026-02-17</td><td>230 Pi</td><td><span class="status pending">Pending</span></td></tr>
+                <tr><td>Event Ticket</td><td>#EV-1408</td><td>2026-02-14</td><td>25 Pi</td><td><span class="status active">Active</span></td></tr>
+                <tr><td>Housing Booking</td><td>#HS-8860</td><td>2026-02-12</td><td>160 Pi</td><td><span class="status pending">Pending</span></td></tr>
+                <tr><td>Transport Request</td><td>#TR-3391</td><td>2026-02-11</td><td>12 Pi</td><td><span class="status active">Completed</span></td></tr>
+                <tr><td>Agro Purchase</td><td>#AG-7410</td><td>2026-02-10</td><td>90 Pi</td><td><span class="status active">Completed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-section" id="section-jobs">
+        <div class="section-head">
+          <h2>Jobs & Services</h2>
+        </div>
+        <div class="card-grid two">
+          <article class="panel">
+            <h3>Open Jobs</h3>
+            <p>7 active projects from SMAJ PI JOBS with milestone tracking enabled.</p>
+            <button class="btn-soft">Manage Jobs</button>
+          </article>
+          <article class="panel">
+            <h3>Service Requests</h3>
+            <p>4 service requests are waiting for your confirmation and funding.</p>
+            <button class="btn-soft">View Requests</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="dashboard-section" id="section-analytics">
+        <div class="section-head">
+          <h2>Analytics</h2>
+        </div>
+        <div class="card-grid two">
+          <article class="panel">
+            <h3>Total Transactions</h3>
+            <p class="metric">1,248</p>
+          </article>
+          <article class="panel">
+            <h3>Total Earnings</h3>
+            <p class="metric">12,440 Pi</p>
+          </article>
+          <article class="panel chart-panel">
+            <h3>Monthly Activity Chart</h3>
+            <div class="chart-placeholder bars">
+              <span style="height:35%"></span>
+              <span style="height:52%"></span>
+              <span style="height:44%"></span>
+              <span style="height:75%"></span>
+              <span style="height:61%"></span>
+              <span style="height:88%"></span>
+              <span style="height:78%"></span>
+            </div>
+          </article>
+          <article class="panel chart-panel">
+            <h3>Ecosystem Usage Chart</h3>
+            <div class="chart-placeholder donut">
+              <div class="donut-core">68%</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="dashboard-section" id="section-notifications">
+        <div class="section-head">
+          <h2>Notifications Center</h2>
+          <div class="filters">
+            <button class="filter-btn active" data-filter-group="notice" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter-group="notice" data-filter="store">Store</button>
+            <button class="filter-btn" data-filter-group="notice" data-filter="jobs">Jobs</button>
+            <button class="filter-btn" data-filter-group="notice" data-filter="wallet">Wallet</button>
+          </div>
+        </div>
+        <div class="notice-list" id="noticeList">
+          <article class="notice-item" data-project="store"><h4>Order update</h4><p>Your order #ST-9201 was delivered successfully.</p><button class="mark-read">Mark as Read</button></article>
+          <article class="notice-item" data-project="jobs"><h4>Job message</h4><p>Designer shared milestone files for contract #JB-4022.</p><button class="mark-read">Mark as Read</button></article>
+          <article class="notice-item" data-project="wallet"><h4>Payment confirmation</h4><p>65 Pi payment for SMAJ PI ENERGY completed.</p><button class="mark-read">Mark as Read</button></article>
+          <article class="notice-item" data-project="wallet"><h4>System alert</h4><p>New login detected from Chrome on Windows.</p><button class="mark-read">Mark as Read</button></article>
+        </div>
+      </section>
+
+      <section class="dashboard-section" id="section-security">
+        <div class="section-head">
+          <h2>Security & Settings</h2>
+        </div>
+        <div class="card-grid two">
+          <article class="panel">
+            <h3>Change Password</h3>
+            <div class="form-grid">
+              <input type="password" placeholder="Current Password">
+              <input type="password" placeholder="New Password">
+              <button class="btn-soft">Update Password</button>
+            </div>
+          </article>
+          <article class="panel">
+            <h3>Enable 2FA</h3>
+            <label class="switch">
+              <input type="checkbox" id="twoFactorToggle">
+              <span class="slider"></span>
+            </label>
+            <p>Strengthen account protection with two-factor authentication.</p>
+            <button class="btn-soft">Wallet Reconnect</button>
+          </article>
+          <article class="panel">
+            <h3>Login Activity</h3>
+            <ul class="activity-list">
+              <li>Chrome / Windows - San Francisco, US - 2026-02-19 10:14</li>
+              <li>Pi Browser / Android - Lagos, NG - 2026-02-18 22:47</li>
+              <li>Safari / iOS - Nairobi, KE - 2026-02-17 08:31</li>
+            </ul>
+          </article>
+          <article class="panel danger">
+            <h3>Delete Account</h3>
+            <p>This action is permanent and will remove your profile from SMAJ PI HUB.</p>
+            <button class="btn-danger">Delete Account</button>
+          </article>
         </div>
       </section>
     </main>
   </div>
-
-  <div class="modal" id="logoutModal">
-    <div class="modal-content">
-      <h3>Confirm Logout</h3>
-      <p>Are you sure you want to logout from your dashboard?</p>
-      <div class="modal-actions">
-        <button id="cancelLogout" class="btn-secondary">Cancel</button>
-        <button id="confirmLogout" class="btn-primary">Logout</button>
-      </div>
-    </div>
-  </div>
-
-    <footer class="footer">
-    <div class="container footer-grid">
-
-      <div>
-        <h4>SMAJ PI HUB</h4>
-        <p>All services are priced in Pi. No fake promises. Real utility.</p>
-      </div>
-
-      <div>
-        <h4>Platform</h4>
-        <a href="../../index.html">Home</a>
-        <a href="../../pages/about.html">About</a>
-        <a href="../../pages/service.html">Services</a>
-        <a href="../../pages/service-detail.html">Service Detail</a>
-
-        <a href="../../pages/how-it-works.html">How It Works</a>
-        <a href="../../pages/pricing.html">Pricing</a>
-        <a href="../../pages/blog.html">Blog</a>
-        <a href="../../pages/blog-post.html">Blog Post</a>
-
-        <a href="../../pages/faq.html">FAQ</a>
-        <a href="../../pages/portfolio.html">Portfolio</a>
-        <a href="../../pages/contact.html">Contact</a>
-      </div>
-
-      <div>
-        <h4>Programs</h4>
-        <a href="../../pages/affiliate.html">Affiliate Program</a>
-        <a href="../../pages/collaborate.html">Collaborate With Us</a>
-        <a href="../../pages/partners.html">Partners</a>
-        <a href="../../pages/community.html">Community</a>
-        <a href="../../pages/developers.html">Developers</a>
-        <a href="../../pages/help-center.html">Help Center</a>
-      </div>
-
-      <div>
-        <h4>Legal</h4>
-        <a href="../../pages/legal/privacy.html">Privacy Policy</a>
-        <a href="../../pages/legal/terms.html">Terms & Conditions</a>
-        <a href="../../pages/legal/cookie.html">Cookie Policy</a>
-        <a href="../../pages/legal/report.html">Report Abuse</a>
-      </div>
-
-      <div>
-        <h4>Follow Us</h4>
-        <div class="socials">
-          <a href="#" aria-label="Twitter"><i class='bx bxl-twitter'></i></a>
-          <a href="#" aria-label="Telegram"><i class='bx bxl-telegram'></i></a>
-          <a href="#" aria-label="Facebook"><i class='bx bxl-facebook'></i></a>
-          <a href="#" aria-label="Instagram"><i class='bx bxl-instagram'></i></a>
-          <a href="#" aria-label="YouTube"><i class='bx bxl-youtube'></i></a>
-          <a href="#" aria-label="TikTok"><i class='bx bxl-tiktok'></i></a>
-        </div>
-      </div>
-    </div>
-
-    <p class="copyright">&copy; 2026 SMAJ PI HUB. All rights reserved.</p>
-  </footer>
 
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
   <script src="../../js/main.js"></script>
   <script src="../../js/dashboard-client.js"></script>
   <script>requireAuth();</script>
 </body>
-
 </html>
+

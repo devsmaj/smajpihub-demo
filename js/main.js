@@ -141,15 +141,121 @@ if (logoutBtn) {
   });
 }
 
-// Sevice main
+// Service CTA routing helpers
+function getAppPrefix() {
+  const path = window.location.pathname.replace(/\\/g, '/');
+  const idx = path.lastIndexOf('/pages/');
 
-document.querySelectorAll('.cta-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    window.location.href = 'auth/login.html';
+  if (idx === -1) {
+    return '';
+  }
+
+  const afterPages = path.slice(idx + '/pages/'.length);
+  const depth = afterPages.split('/').length - 1;
+
+  return depth <= 1 ? '../' : '../../';
+}
+
+function appPath(target) {
+  if (!target || /^https?:\/\//i.test(target)) {
+    return target;
+  }
+
+  return `${getAppPrefix()}${target}`;
+}
+
+function routeButton(button, target) {
+  if (!button || !target) return;
+
+  button.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = appPath(target);
   });
+}
+
+// Service main CTA
+Array.from(document.querySelectorAll('.cta-btn')).forEach((btn) => {
+  if (btn.type && btn.type.toLowerCase() === 'submit') return;
+  routeButton(btn, 'pages/auth/login.html');
 });
 
+function setupGlobalButtonRouting() {
+  const path = window.location.pathname.replace(/\\/g, '/');
+  if (path.includes('/pages/dashboard/')) return;
 
+  const skipClasses = [
+    'wallet-btn', 'menu-toggle', 'sidebar-open', 'sidebar-close', 'filter-btn',
+    'category', 'faq-question', 'hub-open-btn', 'mark-read', 'nav-link',
+    'icon-btn', 'cart-toggle', 'close'
+  ];
+
+  const skipIds = new Set([
+    'piLoginBtn', 'piRegisterBtn', 'menuToggle', 'menuClose', 'sidebarOpen',
+    'sidebarClose', 'openCartBtnTop', 'openCartBtn', 'closeCart', 'checkoutBtn',
+    'closeModal', 'modalAddCart', 'modalBuyNow', 'connectWalletAction',
+    'buyNow', 'addToCart', 'send-btn', 'receive-btn', 'deposit-btn', 'withdraw-btn'
+  ]);
+
+  const normalizeText = (text) => text.replace(/\s+/g, ' ').trim().toLowerCase();
+
+  const resolveTarget = (label) => {
+    if (label.includes('view project')) return 'pages/service-detail.html';
+    if (label.includes('hire service')) return 'pages/contact.html';
+    if (label.includes('subscribe')) return 'pages/auth/register.html';
+    if (label.includes('start a project')) return 'pages/contact.html';
+    if (label.includes('view pricing')) return 'pages/pricing.html';
+    if (label.includes('contact support')) return 'pages/contact.html';
+    return '';
+  };
+
+  Array.from(document.querySelectorAll('button')).forEach((btn) => {
+    const type = (btn.getAttribute('type') || '').toLowerCase();
+    const id = btn.id || '';
+
+    if (type === 'submit' || type === 'reset') return;
+    if (btn.disabled) return;
+    if (skipIds.has(id)) return;
+    if (btn.hasAttribute('onclick')) return;
+    if (btn.closest('.dashboard-main')) return;
+    if (skipClasses.some((cls) => btn.classList.contains(cls))) return;
+
+    const label = normalizeText(btn.textContent || '');
+    const target = resolveTarget(label);
+    if (!target) return;
+
+    routeButton(btn, target);
+  });
+}
+
+setupGlobalButtonRouting();
+function setupPlaceholderLinks() {
+  const socialMap = {
+    twitter: 'https://x.com',
+    telegram: 'https://t.me',
+    facebook: 'https://facebook.com',
+    instagram: 'https://instagram.com',
+    youtube: 'https://youtube.com',
+    tiktok: 'https://tiktok.com'
+  };
+
+  Array.from(document.querySelectorAll('a[href="#"]')).forEach((link) => {
+    const label = ((link.getAttribute('aria-label') || '') + ' ' + (link.textContent || '')).toLowerCase();
+    const key = Object.keys(socialMap).find((name) => label.includes(name));
+
+    if (key) {
+      link.setAttribute('href', socialMap[key]);
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+      return;
+    }
+
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = appPath('pages/contact.html');
+    });
+  });
+}
+setupPlaceholderLinks();
 // Pi Wallet Button - Real Implementation
 const walletBtn = document.querySelector(".wallet-btn");
 if (walletBtn) {
@@ -224,3 +330,5 @@ if (dropdownToggle) {
 }
 
 console.log("SMAJ PI HUB navigation loaded");
+
+
