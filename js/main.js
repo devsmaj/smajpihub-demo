@@ -76,7 +76,7 @@ if (piLoginBtn) {
       localStorage.setItem("pi_user", JSON.stringify(authResult.user));
 
       // Redirect to dashboard
-      window.location.href = "../dashboard/client.html";
+      window.location.href = "/pages/dashboard/client.html";
 
     } catch (err) {
       console.error("Pi Login Failed:", err);
@@ -166,11 +166,16 @@ function requireAuth() {
   }
 }
 
-const piUser = localStorage.getItem("pi_user");
-if (piUser) {
-  const user = JSON.parse(piUser);
-  const el = document.getElementById("piUsername");
-  if (el) el.textContent = user.username;
+const piUserRaw = localStorage.getItem("pi_user");
+if (piUserRaw) {
+  try {
+    const user = JSON.parse(piUserRaw);
+    const el = document.getElementById("piUsername");
+    if (el && user && user.username) el.textContent = user.username;
+  } catch (err) {
+    console.warn("Invalid pi_user data found. Resetting wallet session.");
+    localStorage.removeItem("pi_user");
+  }
 }
 
 const logoutBtn = document.getElementById("logoutBtn");
@@ -186,17 +191,7 @@ if (logoutBtn) {
 
 // Service CTA routing helpers
 function getAppPrefix() {
-  const path = window.location.pathname.replace(/\\/g, '/');
-  const idx = path.lastIndexOf('/pages/');
-
-  if (idx === -1) {
-    return '';
-  }
-
-  const afterPages = path.slice(idx + '/pages/'.length);
-  const depth = afterPages.split('/').length - 1;
-
-  return depth <= 1 ? '../' : '../../';
+  return '/';
 }
 
 function appPath(target) {
@@ -204,10 +199,8 @@ function appPath(target) {
     return target;
   }
 
-  const normalized = target.startsWith("pages/") ? target.slice(6) : target;
-  const prefix = getAppPrefix();
-
-  return prefix ? `${prefix}${normalized}` : target;
+  const normalized = target.replace(/^\/+/, '');
+  return `${getAppPrefix()}${normalized}`;
 }
 
 function routeButton(button, target) {
@@ -373,7 +366,7 @@ function setupPlaceholderLinks() {
 }
 setupPlaceholderLinks();
 function getAuthEntryPath() {
-  return appPath('index.html');
+  return appPath('pages/auth/login.html');
 }
 
 function removeEmailAuthEntrypoints() {
@@ -394,7 +387,8 @@ function removeEmailAuthEntrypoints() {
   });
 
   const path = window.location.pathname.replace(/\\/g, '/').toLowerCase();
-  if (path.endsWith('/pages/auth/login.html') || path.endsWith('/pages/auth/register.html') || path.endsWith('/pages/auth/forget-password.html') || path.endsWith('/pages/auth/reset-password.html')) {
+  const authEntry = getAuthEntryPath().toLowerCase();
+  if ((path.endsWith('/pages/auth/login.html') || path.endsWith('/pages/auth/register.html') || path.endsWith('/pages/auth/forget-password.html') || path.endsWith('/pages/auth/reset-password.html')) && !path.endsWith(authEntry)) {
     window.location.replace(getAuthEntryPath());
   }
 }
@@ -474,6 +468,7 @@ async function handleWalletButtonClick(btn) {
   }
 
   try {
+    alert("Opening Pi Wallet connection...");
     const scopes = ["username", "payments"];
     const authResult = await Pi.authenticate(scopes, onIncompletePayment);
 

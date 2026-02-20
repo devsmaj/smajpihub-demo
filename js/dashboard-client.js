@@ -414,7 +414,7 @@ document.querySelectorAll("button").forEach((btn) => {
       localStorage.removeItem("pi_user");
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.href = "../../index.html";
+      window.location.href = "../../pages/auth/login.html";
     });
   }
 })();
