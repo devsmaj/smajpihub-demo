@@ -18,6 +18,7 @@
   const receiveBtn = document.getElementById("receiveBtn");
   const profileEditBtn = document.getElementById("profileEditBtn");
   const profileActionRow = document.querySelector(".profile-action-row");
+  const themeToggle = document.getElementById("themeToggle");
 
   const handledButtons = new WeakSet();
   let isProfileEditing = false;
@@ -45,6 +46,32 @@
     "Housing Bookings": "orders",
     "Swap Trades": "ecosystem"
   };
+
+  const DASHBOARD_THEME_KEY = "dashboard_theme";
+
+  function applyDashboardTheme(theme) {
+    const isDark = theme === "dark";
+    document.body.classList.toggle("dark", isDark);
+
+    if (themeToggle) {
+      themeToggle.innerHTML = isDark
+        ? "<i class='bx bx-sun'></i>"
+        : "<i class='bx bx-moon'></i>";
+      themeToggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+    }
+  }
+
+  function loadDashboardTheme() {
+    const stored = localStorage.getItem(DASHBOARD_THEME_KEY);
+    applyDashboardTheme(stored === "dark" ? "dark" : "light");
+  }
+
+  function toggleDashboardTheme() {
+    const next = document.body.classList.contains("dark") ? "light" : "dark";
+    localStorage.setItem(DASHBOARD_THEME_KEY, next);
+    applyDashboardTheme(next);
+    toast(next === "dark" ? "Dashboard dark mode enabled" : "Dashboard light mode enabled", "info");
+  }
 
   function buttonLabel(el) {
     return (el.textContent || "Action").replace(/\s+/g, " ").trim();
@@ -94,6 +121,7 @@
     closeSidebar();
   }
 
+  loadDashboardTheme();
   bindClick(sidebarOpen, openSidebar);
   bindClick(sidebarClose, closeSidebar);
   bindClick(sidebarOverlay, closeSidebar);
@@ -390,6 +418,8 @@
       toast("Delete request submitted (mock)", "warn");
     }
   });
+
+  bindClick(themeToggle, toggleDashboardTheme);
 document.querySelectorAll("button").forEach((btn) => {
     if (handledButtons.has(btn)) return;
     const label = buttonLabel(btn);
@@ -407,6 +437,7 @@ document.querySelectorAll("button").forEach((btn) => {
     });
   }
 })();
+
 
 
 

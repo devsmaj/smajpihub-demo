@@ -13,7 +13,11 @@ if (window.Pi) {
 
 // Theme mode removed globally: keep one consistent light color system.
 const SITE_THEME_KEY = "site_theme";
+function isDashboardPage() {
+  return window.location.pathname.replace(/\\/g, "/").toLowerCase().includes("/pages/dashboard/");
+}
 function enforceSingleTheme() {
+  if (isDashboardPage()) return;
   document.body.classList.remove("dark");
   localStorage.removeItem(SITE_THEME_KEY);
 }
