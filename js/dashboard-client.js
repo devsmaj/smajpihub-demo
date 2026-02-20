@@ -9,6 +9,7 @@
   const logoutBtn = document.getElementById("logoutBtn");
   const welcomeTitle = document.getElementById("welcomeTitle");
   const sidebarUsername = document.getElementById("sidebarUsername");
+  const sidebarAvatar = document.getElementById("sidebarAvatar");
   const profileUsername = document.getElementById("profileUsername");
   const profileAvatar = document.getElementById("profileAvatar");
   const walletStatus = document.getElementById("walletStatus");
@@ -154,28 +155,58 @@
     return (value || "").replace(/^@/, "").trim() || "smaj_user";
   }
 
+  function resolveWalletAddress(piUser) {
+    const stored = localStorage.getItem("pi_wallet_address");
+    if (stored) return stored;
+
+    if (!piUser) return "";
+    const direct = piUser.wallet_address || piUser.walletAddress || piUser.address;
+    if (direct) return String(direct);
+
+    const uid = String(piUser.uid || piUser.username || "").replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+    if (!uid) return "";
+    const generated = `PI${uid.padEnd(24, "X").slice(0, 24)}`;
+    localStorage.setItem("pi_wallet_address", generated);
+    return generated;
+  }
+
+  function shortenWalletAddress(address) {
+    const value = String(address || "").trim();
+    if (!value) return "Not Connected";
+    if (value.length <= 10) return value;
+    return `${value.slice(0, 4)}...${value.slice(-4)}`;
+  }
+
   function getInitials(username) {
     return username.slice(0, 1).toUpperCase() + "P";
   }
 
   function applyAvatarInitials(username) {
-    if (!profileAvatar) return;
-    if (profileAvatar.classList.contains("has-photo")) return;
-    profileAvatar.textContent = getInitials(username);
+    if (profileAvatar && !profileAvatar.classList.contains("has-photo")) {
+      profileAvatar.textContent = getInitials(username);
+    }
+    if (sidebarAvatar && !sidebarAvatar.classList.contains("has-photo")) {
+      sidebarAvatar.textContent = getInitials(username);
+    }
   }
 
   function setAvatarPhoto(photoDataUrl) {
-    if (!profileAvatar) return;
-    profileAvatar.style.backgroundImage = `url("${photoDataUrl}")`;
-    profileAvatar.classList.add("has-photo");
-    profileAvatar.textContent = "";
+    [profileAvatar, sidebarAvatar].forEach((avatarEl) => {
+      if (!avatarEl) return;
+      avatarEl.style.backgroundImage = `url("${photoDataUrl}")`;
+      avatarEl.classList.add("has-photo");
+      avatarEl.textContent = "";
+    });
   }
 
   function clearAvatarPhoto(username) {
-    if (!profileAvatar) return;
-    profileAvatar.style.backgroundImage = "";
-    profileAvatar.classList.remove("has-photo");
-    profileAvatar.textContent = getInitials(toUsername(username || getProfileText("profileUsername")));
+    const initials = getInitials(toUsername(username || getProfileText("profileUsername")));
+    [profileAvatar, sidebarAvatar].forEach((avatarEl) => {
+      if (!avatarEl) return;
+      avatarEl.style.backgroundImage = "";
+      avatarEl.classList.remove("has-photo");
+      avatarEl.textContent = initials;
+    });
   }
 
   function loadPersistedAvatarPhoto() {
@@ -291,10 +322,7 @@
     if (sidebarUsername) sidebarUsername.textContent = username;
     if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${username}`;
 
-    const initials = username.slice(0, 1).toUpperCase() + "P";
-    if (profileAvatar && !profileAvatar.classList.contains("has-photo")) {
-      profileAvatar.textContent = initials;
-    }
+    applyAvatarInitials(username);
 
     const cancelBtn = document.getElementById("profileCancelBtn");
     if (cancelBtn) cancelBtn.remove();
@@ -333,13 +361,13 @@
     try {
       const piUser = JSON.parse(piUserRaw);
       const username = piUser && piUser.username ? piUser.username : "smaj_user";
-      const initial = username.charAt(0).toUpperCase() + "P";
-
       if (welcomeTitle) welcomeTitle.textContent = `Welcome back, ${username}`;
       if (sidebarUsername) sidebarUsername.textContent = username;
       if (profileUsername) profileUsername.textContent = `@${username}`;
-      if (profileAvatar && !profileAvatar.classList.contains("has-photo")) {
-        profileAvatar.textContent = initial;
+      applyAvatarInitials(username);
+      const walletAddressEl = document.getElementById("profileWalletAddress");
+      if (walletAddressEl) {
+        walletAddressEl.textContent = shortenWalletAddress(resolveWalletAddress(piUser));
       }
 
       setWalletConnected(true);
@@ -348,6 +376,10 @@
     }
   } else {
     setWalletConnected(false);
+    const walletAddressEl = document.getElementById("profileWalletAddress");
+    if (walletAddressEl) {
+      walletAddressEl.textContent = "Not Connected";
+    }
   }
 
   loadPersistedProfile();

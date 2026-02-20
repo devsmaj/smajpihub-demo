@@ -44,6 +44,7 @@ if (piLoginBtn) {
 
       // TEMP (frontend only – backend later)
       localStorage.setItem("pi_user", JSON.stringify(authResult.user));
+      persistWalletAddress(authResult.user);
 
       // Redirect to dashboard
       window.location.href = "/pages/dashboard/client.html";
@@ -153,6 +154,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 if (logoutBtn) {
   logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("pi_user");
+    localStorage.removeItem("pi_wallet_address");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     window.location.href = getAuthEntryPath();
@@ -400,6 +402,23 @@ function getStoredPiUser() {
   }
 }
 
+function deriveWalletAddress(user) {
+  if (!user) return "";
+  const direct = user.wallet_address || user.walletAddress || user.address;
+  if (direct) return String(direct);
+
+  const uid = String(user.uid || user.username || "").replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+  if (!uid) return "";
+  return `PI${uid.padEnd(24, "X").slice(0, 24)}`;
+}
+
+function persistWalletAddress(user) {
+  const address = deriveWalletAddress(user);
+  if (address) {
+    localStorage.setItem("pi_wallet_address", address);
+  }
+}
+
 function updateWalletButtonsUI() {
   const user = getStoredPiUser();
 
@@ -407,7 +426,7 @@ function updateWalletButtonsUI() {
     btn.type = "button";
 
     if (user && user.username) {
-      btn.innerHTML = `<i class='bx bx-check'></i> ${user.username}`;
+      btn.innerHTML = "<i class='bx bx-log-out'></i> Disconnect Pi";
       btn.classList.add("connected");
     } else {
       btn.innerHTML = `<i class='bx bx-wallet'></i> Connect Pi`;
@@ -473,6 +492,7 @@ async function handleWalletButtonClick(btn) {
     const authResult = await Pi.authenticate(scopes, onIncompletePayment);
 
     localStorage.setItem("pi_user", JSON.stringify(authResult.user));
+    persistWalletAddress(authResult.user);
     updateWalletButtonsUI();
     alert("Pi Wallet connected successfully!");
     if (!isAuthOrDashboardPage()) {

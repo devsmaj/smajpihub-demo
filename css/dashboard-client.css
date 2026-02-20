@@ -148,6 +148,13 @@ input {
   color: transparent;
 }
 
+.avatar.has-photo {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: transparent;
+}
+
 .avatar-upload-trigger {
   position: relative;
   border: none;
