@@ -446,8 +446,36 @@ function updateWalletButtonsUI() {
   });
 }
 
+let walletActionInFlight = false;
+
+function setWalletButtonsBusy(isBusy) {
+  document.querySelectorAll(".wallet-btn").forEach((btn) => {
+    if (isBusy) {
+      if (!btn.dataset.walletLabel) btn.dataset.walletLabel = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Connecting...";
+      return;
+    }
+
+    btn.disabled = false;
+    if (btn.dataset.walletLabel) {
+      btn.innerHTML = btn.dataset.walletLabel;
+      delete btn.dataset.walletLabel;
+    }
+  });
+}
+
+function isAuthOrDashboardPage() {
+  const path = window.location.pathname.replace(/\\/g, "/").toLowerCase();
+  return path.includes("/pages/auth/") || path.includes("/pages/dashboard/");
+}
+
 async function handleWalletButtonClick(btn) {
   if (!btn) return;
+  if (walletActionInFlight) {
+    alert("Wallet connection is already in progress.");
+    return;
+  }
 
   const connectedUser = getStoredPiUser();
   if (connectedUser && connectedUser.username) {
@@ -468,6 +496,8 @@ async function handleWalletButtonClick(btn) {
   }
 
   try {
+    walletActionInFlight = true;
+    setWalletButtonsBusy(true);
     alert("Opening Pi Wallet connection...");
     const scopes = ["username", "payments"];
     const authResult = await Pi.authenticate(scopes, onIncompletePayment);
@@ -475,25 +505,38 @@ async function handleWalletButtonClick(btn) {
     localStorage.setItem("pi_user", JSON.stringify(authResult.user));
     updateWalletButtonsUI();
     alert("Pi Wallet connected successfully!");
+    if (!isAuthOrDashboardPage()) {
+      window.location.href = `${getAuthEntryPath()}?wallet=connected`;
+    }
   } catch (err) {
     console.error("Pi Login Failed:", err);
     if (err && err.message && err.message.includes("User canceled")) return;
     alert("Login failed. Please try again in Pi Browser.");
+  } finally {
+    walletActionInFlight = false;
+    setWalletButtonsBusy(false);
+    updateWalletButtonsUI();
   }
 }
 
-document.addEventListener("click", (e) => {
-  const btn = e.target.closest(".wallet-btn");
-  if (!btn) return;
-  e.preventDefault();
-  handleWalletButtonClick(btn);
-});
+function bindWalletButtons() {
+  document.querySelectorAll(".wallet-btn").forEach((btn) => {
+    if (btn.dataset.walletBound === "true") return;
+    btn.dataset.walletBound = "true";
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      handleWalletButtonClick(btn);
+    });
+  });
+}
 
 ensureMobileMenuWalletButton();
+bindWalletButtons();
 updateWalletButtonsUI();
 
 document.addEventListener("DOMContentLoaded", () => {
   ensureMobileMenuWalletButton();
+  bindWalletButtons();
   updateWalletButtonsUI();
 });
 const dropdownToggle = document.querySelector(".dropdown-toggle");
