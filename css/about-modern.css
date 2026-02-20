@@ -79,6 +79,20 @@
   color: #4f5973;
 }
 
+/* Keep Mission/Vision/Trust readable in dark mode */
+body.dark .about-modern-grid article {
+  background: #ffffff;
+  border-color: #e4e9f6;
+}
+
+body.dark .about-modern-grid article h3 {
+  color: #15203a;
+}
+
+body.dark .about-modern-grid article p {
+  color: #4f5973;
+}
+
 @media (max-width: 1024px) {
   .about-modern-hero-grid,
   .about-modern-grid {

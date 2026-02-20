@@ -7,7 +7,6 @@
   const navLinks = document.querySelectorAll(".nav-link[data-section]");
   const sections = document.querySelectorAll(".dashboard-section");
   const logoutBtn = document.getElementById("logoutBtn");
-  const themeToggle = document.getElementById("themeToggle");
   const welcomeTitle = document.getElementById("welcomeTitle");
   const sidebarUsername = document.getElementById("sidebarUsername");
   const profileUsername = document.getElementById("profileUsername");
@@ -391,16 +390,6 @@
       toast("Delete request submitted (mock)", "warn");
     }
   });
-  if (themeToggle) {
-    bindClick(themeToggle, () => {
-      setTimeout(() => {
-        toast(
-          document.body.classList.contains("dark") ? "Dark mode enabled" : "Light mode enabled",
-          "info"
-        );
-      }, 0);
-    });
-  }
 document.querySelectorAll("button").forEach((btn) => {
     if (handledButtons.has(btn)) return;
     const label = buttonLabel(btn);

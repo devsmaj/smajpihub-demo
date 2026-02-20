@@ -11,49 +11,15 @@ if (window.Pi) {
   console.warn("Pi SDK not found. Open in Pi Browser.");
 }
 
-// Global Theme (all pages)
+// Theme mode removed globally: keep one consistent light color system.
 const SITE_THEME_KEY = "site_theme";
-
-function applySiteTheme(theme) {
-  const isDark = theme === "dark";
-  document.body.classList.toggle("dark", isDark);
+function enforceSingleTheme() {
+  document.body.classList.remove("dark");
+  localStorage.removeItem(SITE_THEME_KEY);
 }
-
-function getSiteTheme() {
-  return localStorage.getItem(SITE_THEME_KEY) || "light";
-}
-
-function setSiteTheme(theme) {
-  localStorage.setItem(SITE_THEME_KEY, theme);
-  applySiteTheme(theme);
-}
-
-function toggleSiteTheme() {
-  const next = document.body.classList.contains("dark") ? "light" : "dark";
-  setSiteTheme(next);
-}
-
-function bindDashboardThemeToggle() {
-  const btn = document.getElementById("themeToggle");
-  if (!btn || btn.dataset.themeBound === "true") return;
-
-  btn.dataset.themeBound = "true";
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    toggleSiteTheme();
-  });
-}
-
-// Expose for dashboard-specific scripts if needed.
-window.toggleSiteTheme = toggleSiteTheme;
-
-applySiteTheme(getSiteTheme());
-bindDashboardThemeToggle();
-
-document.addEventListener("DOMContentLoaded", () => {
-  applySiteTheme(getSiteTheme());
-  bindDashboardThemeToggle();
-});
+window.toggleSiteTheme = () => {};
+enforceSingleTheme();
+document.addEventListener("DOMContentLoaded", enforceSingleTheme);
 const piLoginBtn = document.getElementById("piLoginBtn");
 
 if (piLoginBtn) {

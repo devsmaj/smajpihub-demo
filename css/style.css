@@ -40,6 +40,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .nav {
@@ -64,6 +65,7 @@ nav a {
   color: #fff;
   font-size: 14px;
   transition: color 0.3s;
+  font-weight: 500;
 }
 
 nav a:hover {
@@ -221,6 +223,7 @@ nav a:hover {
   background: #0b0f1a;
   color: #ccc;
   padding: 50px 0 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer-grid {
@@ -244,6 +247,7 @@ nav a:hover {
   display: block;
   margin: 6px 0;
   font-size: 14px;
+  color: #c9d2e8;
   transition: color 0.3;
 }
 
@@ -261,6 +265,7 @@ nav a:hover {
   text-align: center;
   margin-top: 0;
   font-size: 14px;
+  color: #b9c6e4;
 }
 
 .footer .socials {
@@ -445,21 +450,102 @@ body.dark .home-hero {
   color: #e9efff;
 }
 
+body.dark .header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.dark .footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 body.dark nav a,
 body.dark .footer a,
 body.dark .footer p,
 body.dark .hero-text p,
-body.dark .home-section-head p,
-body.dark p {
+body.dark .home-section-head p {
   color: #c4cee5;
 }
 
-body.dark .section-title,
-body.dark h1,
-body.dark h2,
-body.dark h3,
-body.dark h4 {
+body.dark .footer h4 {
   color: #f2f6ff;
+}
+
+/* Keep readable text on light/white surfaces while dark mode is enabled */
+body.dark .feature-card,
+body.dark .service-card,
+body.dark .step,
+body.dark .auth-box,
+body.dark .panel,
+body.dark .table-wrap,
+body.dark .home-service-card,
+body.dark .home-highlight-card,
+body.dark .blog-card,
+body.dark .blog-featured,
+body.dark .faq-item,
+body.dark .contact-card,
+body.dark .pricing-card,
+body.dark .portfolio-card {
+  color: #e9efff;
+}
+
+body.dark .feature-card p,
+body.dark .service-card p,
+body.dark .step p,
+body.dark .auth-box p,
+body.dark .panel p,
+body.dark .table-wrap p,
+body.dark .home-service-card p,
+body.dark .home-highlight-card p,
+body.dark .blog-card p,
+body.dark .blog-featured p,
+body.dark .faq-item p,
+body.dark .contact-card p,
+body.dark .pricing-card p,
+body.dark .portfolio-card p {
+  color: #c4cee5;
+}
+
+/* Do not force all headings to light in dark mode.
+   Let page-level styles control heading contrast per section. */
+body.dark .section-title {
+  color: #111933;
+}
+
+/* Keep heading/text contrast on light sections used across pages */
+body.dark .about-modern-grid h1,
+body.dark .about-modern-grid h2,
+body.dark .about-modern-grid h3,
+body.dark .about-modern-grid h4,
+body.dark .hub-section h1,
+body.dark .hub-section h2,
+body.dark .hub-section h3,
+body.dark .hub-section h4,
+body.dark .hiw-section h1,
+body.dark .hiw-section h2,
+body.dark .hiw-section h3,
+body.dark .hiw-section h4,
+body.dark .faq-layout h1,
+body.dark .faq-layout h2,
+body.dark .faq-layout h3,
+body.dark .faq-layout h4,
+body.dark .contact-layout h1,
+body.dark .contact-layout h2,
+body.dark .contact-layout h3,
+body.dark .contact-layout h4 {
+  color: #111933;
+}
+
+body.dark .about-modern-grid p,
+body.dark .hub-section p,
+body.dark .hub-section li,
+body.dark .hiw-section p,
+body.dark .hiw-section li,
+body.dark .faq-layout p,
+body.dark .faq-layout li,
+body.dark .contact-layout p,
+body.dark .contact-layout li,
+body.dark .contact-layout label {
+  color: #4c5670;
 }
 
 body.dark .feature-card,
