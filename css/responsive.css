@@ -96,7 +96,9 @@
   }
 
   .wallet-btn {
-    display: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
 
   /* ---------- HERO ---------- */
@@ -260,3 +262,4 @@
     display: flex;
   }
 }
+

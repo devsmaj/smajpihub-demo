@@ -360,7 +360,9 @@ nav a:hover {
   }
 
   .wallet-btn {
-    display: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
 
 }
@@ -534,3 +536,4 @@ body.dark .blog-featured-content p,
 body.dark .copyright {
   color: #b9c6e4;
 }
+
