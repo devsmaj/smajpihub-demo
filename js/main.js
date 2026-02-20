@@ -82,7 +82,7 @@ if (piLoginBtn) {
       persistWalletAddress(authResult.user);
 
       // Redirect to dashboard
-      window.location.href = "/pages/dashboard/client.html";
+      window.location.href = appPath("pages/dashboard/client.html");
 
     } catch (err) {
       console.error("Pi Login Failed:", err);
@@ -225,6 +225,14 @@ if (logoutBtn) {
 
 // Service CTA routing helpers
 function getAppPrefix() {
+  const path = window.location.pathname.replace(/\\/g, '/');
+  const host = window.location.hostname.toLowerCase();
+
+  if (host.endsWith('github.io')) {
+    const parts = path.split('/').filter(Boolean);
+    if (parts.length > 0) return `/${parts[0]}/`;
+  }
+
   return '/';
 }
 
@@ -603,6 +611,8 @@ if (dropdownToggle) {
 }
 
 console.log("SMAJ PI HUB navigation loaded");
+
+
 
 
 
