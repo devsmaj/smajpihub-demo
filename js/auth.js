@@ -1,4 +1,4 @@
-// SMAJ PI HUB - Auth Integration with Backend
+// SMAJ PI HUB - Auth Integration with Backend (Wallet Only)
 document.addEventListener("DOMContentLoaded", () => {
   const API_BASE = "http://localhost:3000";
   const TOKEN_KEY = "smaj_token";
@@ -137,63 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================
-  // Register Form Handler
-  // ==========================================
-  const registerForm = document.getElementById("registerForm");
-  if (registerForm) {
-    registerForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const fullName = document.getElementById("fullName").value;
-      const email = document.getElementById("email").value;
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
-
-      if (password !== confirmPassword) {
-        alert("Passwords do not match");
-        return;
-      }
-
-      try {
-        const { response, data } = await apiRequest('/api/register', {
-          method: 'POST',
-          body: JSON.stringify({ fullName, email, username, password })
-        });
-        alert(data.message || (response.ok ? "Registration successful" : "Registration failed"));
-        if (response.ok) window.location.href = 'login.html';
-      } catch (error) {
-        alert("Registration failed. Please try again.");
-      }
-    });
-  }
-
-  // ==========================================
-  // Login Form Handler
-  // ==========================================
-  const loginForm = document.getElementById("loginForm");
-  if (loginForm) {
-    loginForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const identifier = document.querySelector('input[placeholder="Username or Email"]').value;
-      const password = document.querySelector('input[placeholder="Password"]').value;
-
-      try {
-        const { response, data } = await apiRequest('/api/login', {
-          method: 'POST',
-          body: JSON.stringify({ identifier, password })
-        });
-        alert(data.message || (response.ok ? "Login successful" : "Login failed"));
-        if (response.ok && data.token) {
-          storeAuth(data.token, data.user);
-          window.location.href = '../dashboard/client.html';
-        }
-      } catch (error) {
-        alert("Login failed. Please try again.");
-      }
-    });
-  }
-
-  // ==========================================
   // Pi Wallet Login Button
   // ==========================================
   const piLoginBtn = document.getElementById("piLoginBtn");
@@ -212,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert('Pi Wallet login failed.');
       } finally {
         piLoginBtn.disabled = false;
-        piLoginBtn.textContent = 'Login with Pi';
+        piLoginBtn.textContent = 'Login with Pi Wallet';
       }
     });
   }
@@ -236,63 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert('Pi Wallet registration failed.');
       } finally {
         piRegisterBtn.disabled = false;
-        piRegisterBtn.textContent = 'Register with Pi';
-      }
-    });
-  }
-
-  // ==========================================
-  // Forgot Password Form
-  // ==========================================
-  const forgotForm = document.getElementById("forgotForm");
-  if (forgotForm) {
-    forgotForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value;
-      try {
-        const { data } = await apiRequest('/api/forgot-password', {
-          method: 'POST',
-          body: JSON.stringify({ email })
-        });
-        alert(data.message || "If an account exists, a reset link has been sent.");
-      } catch (error) {
-        alert("If an account exists, a reset link has been sent.");
-      }
-    });
-  }
-
-  // ==========================================
-  // Reset Password Form
-  // ==========================================
-  const resetForm = document.getElementById("resetForm");
-  if (resetForm) {
-    resetForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirmPassword").value;
-      const token = new URLSearchParams(window.location.search).get('token');
-
-      if (password !== confirmPassword) {
-        alert("Passwords do not match");
-        return;
-      }
-
-      if (!token) {
-        alert("Password reset successful. You can now log in.");
-        window.location.href = 'login.html';
-        return;
-      }
-
-      try {
-        const { response, data } = await apiRequest('/api/reset-password', {
-          method: 'POST',
-          body: JSON.stringify({ token, newPassword: password })
-        });
-        alert(data.message || (response.ok ? "Password reset successful" : "Password reset failed"));
-        if (response.ok) window.location.href = 'login.html';
-      } catch (error) {
-        alert("Password reset successful. You can now log in.");
-        window.location.href = 'login.html';
+        piRegisterBtn.textContent = 'Register with Pi Wallet';
       }
     });
   }
@@ -347,5 +234,5 @@ document.addEventListener("DOMContentLoaded", () => {
     apiRequest
   };
 
-  console.log("Auth page loaded - SMAJ PI HUB Backend Integration");
+  console.log("Auth page loaded - SMAJ PI HUB Wallet Authentication");
 });
