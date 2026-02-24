@@ -1,4 +1,4 @@
-  n (function () {
+(function () {
 
   const sidebar = document.getElementById("dashboardSidebar");
   const sidebarOpen = document.getElementById("sidebarOpen");
@@ -607,13 +607,13 @@
     toast("Service requests redirected to Orders & Bookings", "info");
   });
 
-  hookButtonByLabel("section-security", "Update Password", () => {
-    toast("Password update is a frontend mock", "info");
-  });
-
-  hookButtonByLabel("section-security", "Wallet Reconnect", () => {
+  hookButtonByLabel("section-security", "Reconnect Wallet", () => {
     setWalletConnected(true);
     toast("Wallet reconnected successfully", "success");
+  });
+
+  hookButtonByLabel("section-security", "Update Security", () => {
+    toast("Security settings are a frontend mock", "info");
   });
 
   hookButtonByLabel("section-security", "Delete Account", () => {
@@ -635,16 +635,18 @@ document.querySelectorAll("button").forEach((btn) => {
       toast(`${label} clicked`, "info");
     });
   });
-
   if (logoutBtn) {
     bindClick(logoutBtn, () => {
       localStorage.removeItem("pi_user");
+      localStorage.removeItem("smaj_token");
+      localStorage.removeItem("smaj_user");
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      window.location.href = "../../pages/auth/login.html";
+      window.location.href = "../../index.html";
     });
-  }
-})();
+  }})();
+
+
 
 
 

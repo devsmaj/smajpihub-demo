@@ -42,7 +42,7 @@
         <button class="nav-link" data-section="notifications"><i class='bx bx-bell'></i>Notifications</button>
         <button class="nav-link" data-section="analytics"><i class='bx bx-line-chart'></i>Analytics</button>
         <button class="nav-link" data-section="security"><i class='bx bx-shield-quarter'></i>Security & Settings</button>
-        <button class="nav-link logout" id="logoutBtn"><i class='bx bx-log-out-circle'></i>Logout</button>
+        <button class="nav-link logout" id="logoutBtn"><i class='bx bx-log-out-circle'></i>Disconnect</button>
       </nav>
     </aside>
 
@@ -328,7 +328,7 @@
           <article class="notice-item" data-project="store"><h4>Order update</h4><p>Your order #ST-9201 was delivered successfully.</p><button class="mark-read">Mark as Read</button></article>
           <article class="notice-item" data-project="jobs"><h4>Job message</h4><p>Designer shared milestone files for contract #JB-4022.</p><button class="mark-read">Mark as Read</button></article>
           <article class="notice-item" data-project="wallet"><h4>Payment confirmation</h4><p>65 Pi payment for SMAJ PI ENERGY completed.</p><button class="mark-read">Mark as Read</button></article>
-          <article class="notice-item" data-project="wallet"><h4>System alert</h4><p>New login detected from Chrome on Windows.</p><button class="mark-read">Mark as Read</button></article>
+          <article class="notice-item" data-project="wallet"><h4>System alert</h4><p>New wallet session detected from Chrome on Windows.</p><button class="mark-read">Mark as Read</button></article>
         </div>
       </section>
 
@@ -338,12 +338,9 @@
         </div>
         <div class="card-grid two">
           <article class="panel">
-            <h3>Change Password</h3>
-            <div class="form-grid">
-              <input type="password" placeholder="Current Password">
-              <input type="password" placeholder="New Password">
-              <button class="btn-soft">Update Password</button>
-            </div>
+            <h3>Wallet Session</h3>
+            <p>Your wallet signature is your identity. Reconnect if you need to refresh access.</p>
+            <button class="btn-soft">Reconnect Wallet</button>
           </article>
           <article class="panel">
             <h3>Enable 2FA</h3>
@@ -352,7 +349,7 @@
               <span class="slider"></span>
             </label>
             <p>Strengthen account protection with two-factor authentication.</p>
-            <button class="btn-soft">Wallet Reconnect</button>
+            <button class="btn-soft">Update Security</button>
           </article>
           <article class="panel">
             <h3>Login Activity</h3>

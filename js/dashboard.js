@@ -9,7 +9,7 @@ if (sidebarArrow) {
 }
 
 // Get token from localStorage
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('smaj_token');
 
 // Helper function to make API calls
 async function apiCall(endpoint, options = {}) {
@@ -215,10 +215,12 @@ if (cancelLogout) {
 
 if (confirmLogout) {
   confirmLogout.addEventListener('click', () => {
+    localStorage.removeItem('smaj_token');
+    localStorage.removeItem('smaj_user');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('pi_user');
-    window.location.href = '../../pages/auth/login.html';
+    window.location.href = '../../index.html';
   });
 }
 
