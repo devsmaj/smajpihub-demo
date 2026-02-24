@@ -1,50 +1,148 @@
+// SMAJ PI HUB - Auth Integration with Backend
 document.addEventListener("DOMContentLoaded", () => {
   const API_BASE = "http://localhost:3000";
-  const USERS_KEY = "smaj_users";
+  const TOKEN_KEY = "smaj_token";
+  const USER_KEY = "smaj_user";
 
-  const getUsers = () => {
+  // Get stored token
+  const getToken = () => localStorage.getItem(TOKEN_KEY);
+
+  // Get stored user
+  const getStoredUser = () => {
     try {
-      const raw = localStorage.getItem(USERS_KEY);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
+      const user = localStorage.getItem(USER_KEY);
+      return user ? JSON.parse(user) : null;
     } catch (_) {
-      return [];
+      return null;
     }
   };
 
-  const setUsers = (users) => {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  // Store token and user
+  const storeAuth = (token, user) => {
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
   };
 
-  const findUser = (identifier) => {
-    const normalized = String(identifier || "").trim().toLowerCase();
-    return getUsers().find(
-      (u) =>
-        String(u.email || "").toLowerCase() === normalized ||
-        String(u.username || "").toLowerCase() === normalized
-    );
+  // Clear auth data (logout)
+  const clearAuth = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
   };
 
-  const persistLogin = (user) => {
-    localStorage.setItem("token", `local-${Date.now()}`);
-    localStorage.setItem("user", JSON.stringify({
-      fullName: user.fullName,
-      email: user.email,
-      username: user.username
-    }));
+  // Check if user is logged in
+  const isLoggedIn = () => !!getToken() && !!getStoredUser();
+
+  // API request helper with auth
+  const apiRequest = async (endpoint, options = {}) => {
+    const token = getToken();
+    const headers = { 'Content-Type': 'application/json', ...options.headers };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const response = await fetch(`${API_BASE}${endpoint}`, { ...options, headers });
+    const data = await response.json();
+    return { response, data };
   };
+
+  // ==========================================
+  // Pi Wallet Connection Handler
+  // ==========================================
+  const connectWallet = async () => {
+    if (!window.Pi) {
+      alert("Pi SDK not loaded. Please refresh the page.");
+      return null;
+    }
+
+    try {
+      const auth = await Pi.authenticate(['username', 'payments'], onIncompletePaymentFound);
+      const walletAddress = auth.user.wallets?.[0]?.address || auth.user.username;
+      const username = auth.user.username;
+      const signature = "sandbox_signature_" + Date.now();
+      const message = `Connect wallet: ${walletAddress}`;
+
+      const { response, data } = await apiRequest('/api/connect-wallet', {
+        method: 'POST',
+        body: JSON.stringify({ walletAddress, signature, message, username })
+      });
+
+      if (response.ok && data.success) {
+        storeAuth(data.token, data.user);
+        console.log('Wallet connected:', data.user);
+        return data;
+      } else {
+        alert(data.message || 'Failed to connect wallet');
+        return null;
+      }
+    } catch (error) {
+      console.error('Wallet connection error:', error);
+      alert('Failed to connect wallet. Please try again.');
+      return null;
+    }
+  };
+
+  // ==========================================
+  // SSO Token for SMAJ STORE
+  // ==========================================
+  const getSSOToken = async () => {
+    if (!isLoggedIn()) {
+      alert('Please connect your wallet first');
+      return null;
+    }
+    try {
+      const { response, data } = await apiRequest('/api/sso-token?service=smajstore');
+      if (response.ok && data.success) return data;
+      alert(data.message || 'Failed to generate SSO token');
+      return null;
+    } catch (error) {
+      alert('Failed to generate SSO token');
+      return null;
+    }
+  };
+
+  // ==========================================
+  // Redirect to SMAJ STORE with SSO
+  // ==========================================
+  const redirectToSmajStore = async () => {
+    const ssoData = await getSSOToken();
+    if (ssoData && ssoData.redirectUrl) {
+      window.location.href = ssoData.redirectUrl;
+    }
+  };
+
+  // ==========================================
+  // Logout Handler
+  // ==========================================
+  const logout = async () => {
+    try {
+      await apiRequest('/api/logout', { method: 'POST' });
+    } catch (_) {}
+    clearAuth();
+    window.location.href = '../index.html';
+  };
+
+  // ==========================================
+  // Check for SSO token in URL
+  // ==========================================
+  const handleSSOCallback = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+      storeAuth(token, { walletAddress: 'sso_user', role: 'buyer' });
+      window.location.href = window.location.pathname;
+    }
+  };
+  handleSSOCallback();
 
   // Initialize Pi SDK
   if (window.Pi) {
-    Pi.init({ version: "2.0", sandbox: true }); // Set sandbox to false in production
+    Pi.init({ version: "2.0", sandbox: true });
   }
 
-  // Register form handler
+  // ==========================================
+  // Register Form Handler
+  // ==========================================
   const registerForm = document.getElementById("registerForm");
   if (registerForm) {
     registerForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const fullName = document.getElementById("fullName").value;
       const email = document.getElementById("email").value;
       const username = document.getElementById("username").value;
@@ -57,145 +155,105 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const response = await fetch(`${API_BASE}/api/register`, {
+        const { response, data } = await apiRequest('/api/register', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ fullName, email, username, password })
         });
-        let data = {};
-        try {
-          data = await response.json();
-        } catch (_) {}
         alert(data.message || (response.ok ? "Registration successful" : "Registration failed"));
         if (response.ok) window.location.href = 'login.html';
       } catch (error) {
-        // Frontend-only fallback when backend is unavailable
-        const users = getUsers();
-        const exists = users.some(
-          (u) =>
-            String(u.email).toLowerCase() === String(email).toLowerCase() ||
-            String(u.username).toLowerCase() === String(username).toLowerCase()
-        );
-        if (exists) {
-          alert("Email or username already exists");
-          return;
-        }
-        users.push({
-          id: Date.now(),
-          fullName: String(fullName).trim(),
-          email: String(email).trim(),
-          username: String(username).trim(),
-          password: String(password)
-        });
-        setUsers(users);
-        alert("Registration successful");
-        window.location.href = 'login.html';
+        alert("Registration failed. Please try again.");
       }
     });
   }
 
-  // Login form handler
+  // ==========================================
+  // Login Form Handler
+  // ==========================================
   const loginForm = document.getElementById("loginForm");
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const identifier = document.querySelector('input[placeholder="Username or Email"]').value;
       const password = document.querySelector('input[placeholder="Password"]').value;
 
       try {
-        const response = await fetch(`${API_BASE}/api/login`, {
+        const { response, data } = await apiRequest('/api/login', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ identifier, password })
         });
-
-        let data = {};
-        try {
-          data = await response.json();
-        } catch (_) {}
         alert(data.message || (response.ok ? "Login successful" : "Login failed"));
-        if (response.ok) {
-          localStorage.setItem('token', data.token);
-          localStorage.setItem('user', JSON.stringify(data.user));
-          window.location.href = '../dashboard/client.html'; // Redirect to dashboard
+        if (response.ok && data.token) {
+          storeAuth(data.token, data.user);
+          window.location.href = '../dashboard/client.html';
         }
       } catch (error) {
-        const user = findUser(identifier);
-        if (!user || user.password !== String(password)) {
-          alert("Invalid username/email or password");
-          return;
-        }
-        persistLogin(user);
-        alert("Login successful");
-        window.location.href = '../dashboard/client.html';
+        alert("Login failed. Please try again.");
       }
     });
   }
 
-  // Pi Wallet login handler
+  // ==========================================
+  // Pi Wallet Login Button
+  // ==========================================
   const piLoginBtn = document.getElementById("piLoginBtn");
   if (piLoginBtn) {
     piLoginBtn.addEventListener("click", async () => {
-      if (!window.Pi) {
-        alert("Pi SDK not loaded");
-        return;
-      }
-
+      piLoginBtn.disabled = true;
+      piLoginBtn.textContent = 'Connecting...';
       try {
-        const auth = await Pi.authenticate(['username', 'payments'], onIncompletePaymentFound);
-        alert(`Pi Wallet login successful for ${auth.user.username}`);
-        // Handle Pi login (e.g., create session, redirect)
-        localStorage.setItem('pi_user', JSON.stringify(auth.user));
-        window.location.href = '../dashboard/client.html';
+        const result = await connectWallet();
+        if (result) {
+          alert('Wallet connected successfully!');
+          window.location.href = '../dashboard/client.html';
+        }
       } catch (error) {
         console.error('Pi login error:', error);
         alert('Pi Wallet login failed.');
+      } finally {
+        piLoginBtn.disabled = false;
+        piLoginBtn.textContent = 'Login with Pi';
       }
     });
   }
 
-  // Pi Wallet register handler
+  // ==========================================
+  // Pi Wallet Register Button
+  // ==========================================
   const piRegisterBtn = document.getElementById("piRegisterBtn");
   if (piRegisterBtn) {
     piRegisterBtn.addEventListener("click", async () => {
-      if (!window.Pi) {
-        alert("Pi SDK not loaded");
-        return;
-      }
-
+      piRegisterBtn.disabled = true;
+      piRegisterBtn.textContent = 'Connecting...';
       try {
-        const auth = await Pi.authenticate(['username', 'payments'], onIncompletePaymentFound);
-        alert(`Pi Wallet registration successful for ${auth.user.username}`);
-        // Handle Pi register (e.g., create account, redirect)
-        localStorage.setItem('pi_user', JSON.stringify(auth.user));
-        window.location.href = '../dashboard/client.html';
+        const result = await connectWallet();
+        if (result) {
+          alert('Wallet connected! Welcome to SMAJ PI HUB!');
+          window.location.href = '../dashboard/client.html';
+        }
       } catch (error) {
         console.error('Pi register error:', error);
         alert('Pi Wallet registration failed.');
+      } finally {
+        piRegisterBtn.disabled = false;
+        piRegisterBtn.textContent = 'Register with Pi';
       }
     });
   }
 
-  // Forgot password form handler
+  // ==========================================
+  // Forgot Password Form
+  // ==========================================
   const forgotForm = document.getElementById("forgotForm");
   if (forgotForm) {
     forgotForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const email = document.getElementById("email").value;
-
       try {
-        const response = await fetch(`${API_BASE}/api/forgot-password`, {
+        const { data } = await apiRequest('/api/forgot-password', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
         });
-
-        let data = {};
-        try {
-          data = await response.json();
-        } catch (_) {}
         alert(data.message || "If an account exists, a reset link has been sent.");
       } catch (error) {
         alert("If an account exists, a reset link has been sent.");
@@ -203,12 +261,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Reset password form handler
+  // ==========================================
+  // Reset Password Form
+  // ==========================================
   const resetForm = document.getElementById("resetForm");
   if (resetForm) {
     resetForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const password = document.getElementById("password").value;
       const confirmPassword = document.getElementById("confirmPassword").value;
       const token = new URLSearchParams(window.location.search).get('token');
@@ -219,27 +278,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (!token) {
-        // Frontend-only mode without email token flow
         alert("Password reset successful. You can now log in.");
         window.location.href = 'login.html';
         return;
       }
 
       try {
-        const response = await fetch(`${API_BASE}/api/reset-password`, {
+        const { response, data } = await apiRequest('/api/reset-password', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token, newPassword: password })
         });
-
-        let data = {};
-        try {
-          data = await response.json();
-        } catch (_) {}
         alert(data.message || (response.ok ? "Password reset successful" : "Password reset failed"));
-        if (response.ok) {
-          window.location.href = 'login.html';
-        }
+        if (response.ok) window.location.href = 'login.html';
       } catch (error) {
         alert("Password reset successful. You can now log in.");
         window.location.href = 'login.html';
@@ -247,10 +297,55 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ==========================================
+  // SSO Button for SMAJ STORE
+  // ==========================================
+  const smajStoreBtn = document.getElementById("smajStoreBtn") || document.getElementById("goToSmajStore");
+  if (smajStoreBtn) {
+    smajStoreBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!isLoggedIn()) {
+        alert('Please connect your wallet first');
+        return;
+      }
+      smajStoreBtn.disabled = true;
+      smajStoreBtn.textContent = 'Redirecting...';
+      await redirectToSmajStore();
+      smajStoreBtn.disabled = false;
+      smajStoreBtn.textContent = 'Go to SMAJ STORE';
+    });
+  }
+
+  // ==========================================
+  // Logout Button
+  // ==========================================
+  const logoutBtn = document.getElementById("logoutBtn") || document.querySelector('.logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      logout();
+    });
+  }
+
+  // ==========================================
+  // Incomplete Payment Handler
+  // ==========================================
   function onIncompletePaymentFound(payment) {
-    // Handle incomplete payments if needed
     console.log('Incomplete payment found:', payment);
   }
-});
 
-console.log("Auth page loaded");
+  // ==========================================
+  // Expose functions globally
+  // ==========================================
+  window.SMAJAuth = {
+    connectWallet,
+    logout,
+    getSSOToken,
+    redirectToSmajStore,
+    getStoredUser,
+    isLoggedIn,
+    apiRequest
+  };
+
+  console.log("Auth page loaded - SMAJ PI HUB Backend Integration");
+});

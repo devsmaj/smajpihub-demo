@@ -1,4 +1,4 @@
-(function () {
+  n (function () {
 
   const sidebar = document.getElementById("dashboardSidebar");
   const sidebarOpen = document.getElementById("sidebarOpen");
@@ -524,16 +524,60 @@
     });
   });
 
+  // SSO redirect function for SMAJ Store
+  const redirectToSmajStore = async () => {
+    const smajStoreUrl = "https://officialsmaj.github.io/smaj-store";
+    
+    // Check if user is logged in via our backend
+    const token = localStorage.getItem("smaj_token");
+    const user = localStorage.getItem("smaj_user");
+    
+    if (token && user) {
+      // User has session, generate SSO token
+      toast("SMAJ Store: Generating SSO token...", "info");
+      try {
+        const response = await fetch("http://localhost:3000/api/sso-token?service=smajstore", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && data.redirectUrl) {
+          toast("SMAJ Store: Redirecting with SSO...", "success");
+          window.location.href = data.redirectUrl;
+          return true;
+        }
+      } catch (error) {
+        console.error("SSO token error:", error);
+      }
+    }
+    return false;
+  };
+
   document.querySelectorAll(".eco-card .btn-soft").forEach((btn) => {
-    bindClick(btn, () => {
+    bindClick(btn, async () => {
       const card = btn.closest(".eco-card");
       if (!card) return;
 
       const project = card.querySelector("h3") ? card.querySelector("h3").textContent.trim() : "Module";
       const statusBadge = card.querySelector(".status-badge");
       const isReady = statusBadge && statusBadge.classList.contains("ready");
+      const isSmajStore = project === "SMAJ STORE";
 
       if (isReady) {
+        // Special handling for SMAJ Store - use SSO token
+        if (isSmajStore) {
+          const ssoSuccess = await redirectToSmajStore();
+          if (ssoSuccess) return;
+          
+          // Fallback if SSO failed
+          toast("SMAJ Store: Using fallback redirect...", "info");
+        }
+        
         toast(`${project} module opened`, "success");
         activateSection("orders");
       } else {
