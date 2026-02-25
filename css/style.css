@@ -72,6 +72,13 @@ nav a:hover {
   color: #7d3cff;
 }
 
+.desktop-wallet-btn {
+  margin-left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .wallet-btn {
   background-color: #7d3cff;
   border: none;
@@ -419,6 +426,10 @@ nav a:hover {
     display: inline-flex;
     align-items: center;
     gap: 6px;
+  }
+
+  .desktop-wallet-btn {
+    display: none;
   }
 
 }

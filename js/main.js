@@ -440,17 +440,17 @@ function setupDashboardGateLinks() {
 removeEmailAuthEntrypoints();
 setupDashboardGateLinks();
 
-function ensureMobileMenuWalletButton() {
+function ensureDesktopWalletButton() {
   const nav = document.getElementById("navMenu");
   if (!nav) return;
-  if (nav.querySelector(".menu-wallet-btn")) return;
+  if (nav.querySelector(".desktop-wallet-btn")) return;
 
-  const menuWalletBtn = document.createElement("button");
-  menuWalletBtn.type = "button";
-  menuWalletBtn.className = "wallet-btn menu-wallet-btn";
-  menuWalletBtn.innerHTML = "<i class='bx bx-wallet'></i> Connect Wallet";
+  const desktopWalletBtn = document.createElement("button");
+  desktopWalletBtn.type = "button";
+  desktopWalletBtn.className = "wallet-btn desktop-wallet-btn";
+  desktopWalletBtn.innerHTML = "<i class='bx bx-wallet'></i> Connect Wallet";
 
-  nav.appendChild(menuWalletBtn);
+  nav.appendChild(desktopWalletBtn);
   updateWalletButtonsUI();
 }
 
@@ -699,11 +699,11 @@ document.addEventListener("click", (e) => {
   }
 });
 
-ensureMobileMenuWalletButton();
+ensureDesktopWalletButton();
 bindWalletButtons();
 
 document.addEventListener("DOMContentLoaded", () => {
-  ensureMobileMenuWalletButton();
+  ensureDesktopWalletButton();
   bindWalletButtons();
 });
 
