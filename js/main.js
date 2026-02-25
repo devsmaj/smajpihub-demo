@@ -368,7 +368,14 @@ function setupUniversalButtonFallback() {
         return;
       }
 
-      appNotify("This action is ready for backend integration and will be active soon.", "info");
+      const connectedUser = getWalletUser();
+      if (connectedUser) {
+        window.location.href = appPath("pages/dashboard/client.html");
+        return;
+      }
+
+      appNotify("Please connect your wallet to continue.", "info");
+      handleWalletButtonClick(document.querySelector(".wallet-btn"));
     });
   });
 }
@@ -433,7 +440,13 @@ function setupDashboardGateLinks() {
   document.querySelectorAll('a[href*="dashboard/client.html"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      window.location.href = appPath('pages/dashboard/client.html');
+      const connectedUser = getWalletUser();
+      if (connectedUser) {
+        window.location.href = appPath('pages/dashboard/client.html');
+        return;
+      }
+      appNotify("Please connect your wallet to continue.", "info");
+      handleWalletButtonClick(document.querySelector(".wallet-btn"));
     });
   });
 }
