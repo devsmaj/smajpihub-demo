@@ -165,6 +165,76 @@
   background: #f5f7fd;
 }
 
+.ecosystem-section {
+  background: #fff;
+}
+
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.eco-card {
+  background: #f7f9ff;
+  border: 1px solid #e6eaf5;
+  border-radius: 14px;
+  padding: 18px;
+  text-align: left;
+  display: grid;
+  gap: 10px;
+}
+
+.eco-card i {
+  font-size: 26px;
+  color: #7d3cff;
+}
+
+.eco-card h3 {
+  font-size: 18px;
+  color: #131b31;
+}
+
+.eco-card p {
+  color: #4d556c;
+  font-size: 14px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.status-badge.ready {
+  background: rgba(38, 201, 114, 0.14);
+  color: #1f8d55;
+}
+
+.status-badge.coming {
+  background: rgba(255, 160, 0, 0.15);
+  color: #b06d00;
+}
+
+.btn-soft {
+  border: none;
+  border-radius: 8px;
+  background: #101425;
+  color: #fff;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-soft:hover {
+  background: #7d3cff;
+}
+
 .hub-card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -278,7 +348,8 @@
   .hub-hero-grid,
   .hub-flow-grid,
   .hub-card-grid,
-  .hub-map-grid {
+  .hub-map-grid,
+  .ecosystem-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -300,7 +371,8 @@
 @media (max-width: 520px) {
   .hub-flow-grid,
   .hub-card-grid,
-  .hub-map-grid {
+  .hub-map-grid,
+  .ecosystem-grid {
     grid-template-columns: 1fr;
   }
 }
