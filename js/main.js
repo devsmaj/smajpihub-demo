@@ -453,6 +453,35 @@ function setupDashboardGateLinks() {
 removeEmailAuthEntrypoints();
 setupDashboardGateLinks();
 
+function setupDashboardGateButtons() {
+  const path = window.location.pathname.replace(/\\/g, '/');
+  if (path.includes('/pages/dashboard/')) return;
+
+  const matchDashboard = (text) => /dashboard/i.test(text || "");
+
+  document.querySelectorAll('button, a').forEach((el) => {
+    if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href')?.includes('dashboard/client.html')) {
+      return;
+    }
+    if (el.dataset.dashboardGate === "true") return;
+    const label = (el.textContent || "").trim();
+    if (!matchDashboard(label)) return;
+
+    el.dataset.dashboardGate = "true";
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const connectedUser = getWalletUser();
+      if (connectedUser) {
+        window.location.href = appPath('pages/dashboard/client.html');
+        return;
+      }
+      appNotify("Please connect your wallet to continue.", "info");
+      handleWalletButtonClick(document.querySelector(".wallet-btn"));
+    });
+  });
+}
+setupDashboardGateButtons();
+
 function ensureDesktopWalletButton() {
   const nav = document.getElementById("navMenu");
   if (!nav) return;
