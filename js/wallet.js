@@ -240,20 +240,44 @@
     const direct = accountPayload.address || accountPayload.walletAddress || accountPayload.wallet_address;
     if (direct) return String(direct || "").trim();
 
+    if (accountPayload.result) {
+      const fromResult = resolveAddress(accountPayload.result);
+      if (fromResult) return fromResult;
+    }
+
+    if (accountPayload.data) {
+      const fromData = resolveAddress(accountPayload.data);
+      if (fromData) return fromData;
+    }
+
     if (accountPayload.user) {
-      const nested = resolveAddress(accountPayload.user);
-      if (nested) return nested;
+      const fromUser = resolveAddress(accountPayload.user);
+      if (fromUser) return fromUser;
     }
 
     if (Array.isArray(accountPayload.wallets) && accountPayload.wallets.length > 0) {
       const primary = accountPayload.wallets.find(function (w) { return w && w.primary; }) || accountPayload.wallets[0];
       if (primary) {
-        const nested = resolveAddress(primary);
-        if (nested) return nested;
+        const fromWallet = resolveAddress(primary);
+        if (fromWallet) return fromWallet;
       }
     }
 
-    return String(direct || "").trim();
+    return "";
+  }
+
+  function resolvePiIdentityFallback(accountPayload) {
+    if (!accountPayload || typeof accountPayload !== "object") return "";
+
+    const user = accountPayload.user || (accountPayload.result && accountPayload.result.user) || null;
+    const uid = user && user.uid ? String(user.uid).trim() : "";
+    const username = user && user.username ? String(user.username).trim() : "";
+    const existing = String(localStorage.getItem(PI_ADDRESS_KEY) || "").trim();
+
+    if (existing) return existing;
+    if (uid) return `pi-user-${uid}`;
+    if (username) return `pi-user-${username}`;
+    return "";
   }
 
   function ensurePiInit() {
@@ -297,7 +321,7 @@
 
     try {
       const account = await requestPiAccount();
-      const address = resolveAddress(account);
+      const address = resolveAddress(account) || resolvePiIdentityFallback(account);
 
       if (!address) {
         alert("Wallet connection failed: no wallet address received");
