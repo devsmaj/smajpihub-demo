@@ -12,6 +12,11 @@
   let isConnecting = false;
   let environmentAlertShown = false;
   let isPiWalletReady = false;
+  let hasDetectionRun = false;
+  let detectionPromise = null;
+
+  const DETECTION_RETRIES = 3;
+  const DETECTION_DELAY_MS = 350;
 
   function safeParse(raw) {
     if (!raw) return null;
@@ -182,20 +187,50 @@
   }
 
   function detectPiWalletEnvironment(showAlert) {
-    const hasPi = !!window.Pi;
-    const hasRequest = hasPi && typeof window.Pi.request === "function";
-    const userAgent = String(navigator.userAgent || "").toLowerCase();
-    const looksLikePiBrowser = userAgent.includes("pibrowser") || userAgent.includes("pi browser");
-    const ready = hasRequest || (hasPi && looksLikePiBrowser);
+    if (typeof window.Pi === "undefined") {
+      isPiWalletReady = false;
+      if (showAlert && !environmentAlertShown) {
+        environmentAlertShown = true;
+        alert("Pi Wallet not detected. Please open this site in Pi Browser.");
+      }
+      return false;
+    }
 
-    isPiWalletReady = ready;
+    const hasRequest = typeof window.Pi.request === "function";
+    isPiWalletReady = hasRequest;
 
-    if (!ready && showAlert && !environmentAlertShown) {
+    if (!hasRequest && showAlert && !environmentAlertShown) {
       environmentAlertShown = true;
       alert("Pi Wallet not detected. Please open this site in Pi Browser.");
     }
 
-    return ready;
+    return hasRequest;
+  }
+
+  function wait(ms) {
+    return new Promise(function (resolve) {
+      setTimeout(resolve, ms);
+    });
+  }
+
+  async function ensurePiWalletDetected(showAlert) {
+    if (isPiWalletReady) return true;
+
+    for (let attempt = 0; attempt < DETECTION_RETRIES; attempt += 1) {
+      if (detectPiWalletEnvironment(false)) return true;
+      await wait(DETECTION_DELAY_MS);
+    }
+
+    return detectPiWalletEnvironment(!!showAlert);
+  }
+
+  function runWalletDetection(showAlert) {
+    if (detectionPromise) return detectionPromise;
+    detectionPromise = ensurePiWalletDetected(showAlert)
+      .finally(function () {
+        detectionPromise = null;
+      });
+    return detectionPromise;
   }
 
   function resolveAddress(accountPayload) {
@@ -206,7 +241,8 @@
 
   async function connectWallet() {
     if (isConnecting) return getState();
-    if (!detectPiWalletEnvironment(true)) return getState();
+    const hasPiWallet = await runWalletDetection(true);
+    if (!hasPiWallet) return getState();
 
     const current = getState();
     if (current.connected && current.address) {
@@ -282,8 +318,9 @@
     });
   }
 
-  function initializeWalletState() {
-    const hasPiEnv = detectPiWalletEnvironment(true);
+  async function initializeWalletState() {
+    const hasPiEnv = await runWalletDetection(false);
+    hasDetectionRun = true;
     const rawState = getState();
     const storedAddress = String(localStorage.getItem(PI_ADDRESS_KEY) || rawState.address || "").trim();
     const connected = !!storedAddress;
@@ -322,6 +359,13 @@
 
   window.addEventListener("storage", function (event) {
     if (event.key === STORAGE_KEY || event.key === PI_USER_KEY || event.key === PI_ADDRESS_KEY || event.key === USER_KEY) {
+      if (hasDetectionRun) {
+        const rawState = getState();
+        const storedAddress = String(localStorage.getItem(PI_ADDRESS_KEY) || rawState.address || "").trim();
+        persistState({ connected: !!storedAddress, address: storedAddress, updatedAt: Date.now() });
+        updateAllButtons();
+        return;
+      }
       initializeWalletState();
     }
   });
