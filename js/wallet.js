@@ -395,7 +395,6 @@
     updateAllButtons();
 
     if (!hasPiEnv) return;
-    if (next.connected) redirectToDashboard();
   }
 
   function init() {
