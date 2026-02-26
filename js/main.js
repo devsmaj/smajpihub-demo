@@ -212,12 +212,32 @@ function appPath(target) {
   return `${getAppPrefix()}${normalized}`;
 }
 
+function requestProtectedAccess(target) {
+  const fallbackTarget = target || "pages/dashboard/client.html";
+  if (window.SmajWallet && typeof window.SmajWallet.requestProtectedAccess === "function") {
+    return window.SmajWallet.requestProtectedAccess(appPath(fallbackTarget));
+  }
+
+  const connectedUser = getWalletUser();
+  if (connectedUser) {
+    window.location.href = appPath(fallbackTarget);
+    return true;
+  }
+
+  appNotify("Please connect your wallet first to access this feature.", "info");
+  return false;
+}
+
 function routeButton(button, target) {
   if (!button || !target) return;
 
   button.dataset.routeBound = "true";
   button.addEventListener('click', (e) => {
     e.preventDefault();
+    if (/dashboard\/client\.html/i.test(target)) {
+      requestProtectedAccess(target);
+      return;
+    }
     window.location.href = appPath(target);
   });
 }
@@ -337,18 +357,15 @@ function setupUniversalButtonFallback() {
 
       e.preventDefault();
       if (target) {
+        if (/dashboard\/client\.html/i.test(target)) {
+          requestProtectedAccess(target);
+          return;
+        }
         window.location.href = appPath(target);
         return;
       }
 
-      const connectedUser = getWalletUser();
-      if (connectedUser) {
-        window.location.href = appPath("pages/dashboard/client.html");
-        return;
-      }
-
-      appNotify("Please connect your wallet to continue.", "info");
-      handleWalletButtonClick(document.querySelector(".wallet-btn"));
+      requestProtectedAccess("pages/dashboard/client.html");
     });
   });
 }
@@ -413,13 +430,8 @@ function setupDashboardGateLinks() {
   document.querySelectorAll('a[href*="dashboard/client.html"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      const connectedUser = getWalletUser();
-      if (connectedUser) {
-        window.location.href = appPath('pages/dashboard/client.html');
-        return;
-      }
-      appNotify("Please connect your wallet to continue.", "info");
-      handleWalletButtonClick(document.querySelector(".wallet-btn"));
+      const href = link.getAttribute("href") || "pages/dashboard/client.html";
+      requestProtectedAccess(href);
     });
   });
 }
@@ -443,13 +455,8 @@ function setupDashboardGateButtons() {
     el.dataset.dashboardGate = "true";
     el.addEventListener('click', (e) => {
       e.preventDefault();
-      const connectedUser = getWalletUser();
-      if (connectedUser) {
-        window.location.href = appPath('pages/dashboard/client.html');
-        return;
-      }
-      appNotify("Please connect your wallet to continue.", "info");
-      handleWalletButtonClick(document.querySelector(".wallet-btn"));
+      const explicitHref = el.tagName.toLowerCase() === "a" ? el.getAttribute("href") : "";
+      requestProtectedAccess(explicitHref || "pages/dashboard/client.html");
     });
   });
 }

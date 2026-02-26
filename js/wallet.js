@@ -8,6 +8,7 @@
   const CONNECT_TEXT = "Connect Wallet";
   const DISCONNECT_TEXT = "Disconnect Wallet";
   const CONNECTING_TEXT = "Connecting...";
+  const PROTECTED_REDIRECT_KEY = "smaj_protected_redirect";
 
   let isConnecting = false;
   let environmentAlertShown = false;
@@ -104,6 +105,39 @@
   function redirectToDashboard() {
     if (isDashboardPage()) return;
     window.location.replace(appPath("pages/dashboard/client.html"));
+  }
+
+  function sanitizeInternalTarget(target) {
+    const fallback = appPath("pages/dashboard/client.html");
+    if (!target) return fallback;
+
+    try {
+      const url = new URL(target, window.location.origin);
+      if (url.origin !== window.location.origin) return fallback;
+      return `${url.pathname}${url.search}${url.hash}`;
+    } catch (_) {
+      if (/^https?:\/\//i.test(target)) return fallback;
+      return appPath(String(target).replace(/^\/+/, ""));
+    }
+  }
+
+  function rememberProtectedTarget(target) {
+    const safeTarget = sanitizeInternalTarget(target);
+    sessionStorage.setItem(PROTECTED_REDIRECT_KEY, safeTarget);
+    return safeTarget;
+  }
+
+  function consumeProtectedTarget() {
+    const value = sessionStorage.getItem(PROTECTED_REDIRECT_KEY);
+    sessionStorage.removeItem(PROTECTED_REDIRECT_KEY);
+    return value ? sanitizeInternalTarget(value) : "";
+  }
+
+  function redirectToTarget(target) {
+    const safeTarget = sanitizeInternalTarget(target);
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (current === safeTarget) return;
+    window.location.replace(safeTarget);
   }
 
   function updateAddressBadge(btn, state) {
@@ -304,15 +338,18 @@
     return null;
   }
 
-  async function connectWallet() {
+  async function connectWallet(options) {
     if (isConnecting) return getState();
+    const opts = options || {};
     const hasPiWallet = await runWalletDetection(true);
     if (!hasPiWallet) return getState();
+    const requestedTarget = opts.redirectTo || consumeProtectedTarget() || "pages/dashboard/client.html";
+    const safeTarget = sanitizeInternalTarget(requestedTarget);
 
     const current = getState();
     if (current.connected && current.address) {
       updateAllButtons();
-      redirectToDashboard();
+      if (opts.redirect !== false) redirectToTarget(safeTarget);
       return current;
     }
 
@@ -332,7 +369,7 @@
       storeConnectedSession(address);
       updateAllButtons();
       alert("Wallet connected successfully.");
-      redirectToDashboard();
+      if (opts.redirect !== false) redirectToTarget(safeTarget);
       return getState();
     } catch (error) {
       console.error("Wallet connect failed:", error);
@@ -378,9 +415,88 @@
         const state = getState();
         if (state.connected) return;
         event.preventDefault();
-        connectWallet();
+        const href = el.getAttribute("href") || "pages/dashboard/client.html";
+        requestProtectedAccess(href);
       });
     });
+  }
+
+  function ensureProtectedAccessModal() {
+    let modal = document.getElementById("walletAccessModal");
+    if (modal) return modal;
+
+    modal = document.createElement("div");
+    modal.id = "walletAccessModal";
+    modal.className = "wallet-access-modal";
+    modal.setAttribute("aria-hidden", "true");
+    modal.innerHTML = `
+      <div class="wallet-access-backdrop" data-wallet-modal-close="true"></div>
+      <div class="wallet-access-dialog" role="dialog" aria-modal="true" aria-labelledby="walletAccessTitle">
+        <h3 id="walletAccessTitle">Wallet Required</h3>
+        <p>Please connect your wallet first to access this feature.</p>
+        <div class="wallet-access-actions">
+          <button type="button" class="wallet-access-btn connect" id="walletAccessConnectBtn">Connect Wallet</button>
+          <button type="button" class="wallet-access-btn cancel" id="walletAccessCancelBtn">Cancel</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const close = function () {
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("wallet-modal-open");
+      sessionStorage.removeItem(PROTECTED_REDIRECT_KEY);
+    };
+
+    modal.addEventListener("click", function (event) {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (target.hasAttribute("data-wallet-modal-close")) close();
+    });
+
+    const cancelBtn = modal.querySelector("#walletAccessCancelBtn");
+    if (cancelBtn) cancelBtn.addEventListener("click", close);
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && modal.classList.contains("show")) close();
+    });
+
+    return modal;
+  }
+
+  function openProtectedAccessModal(target) {
+    const modal = ensureProtectedAccessModal();
+    const connectBtn = modal.querySelector("#walletAccessConnectBtn");
+    const safeTarget = rememberProtectedTarget(target || "pages/dashboard/client.html");
+
+    if (connectBtn) {
+      connectBtn.onclick = function () {
+        sessionStorage.removeItem(PROTECTED_REDIRECT_KEY);
+        modal.classList.remove("show");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("wallet-modal-open");
+        connectWallet({ redirectTo: safeTarget });
+      };
+    }
+
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("wallet-modal-open");
+  }
+
+  function requestProtectedAccess(target) {
+    const state = getState();
+    const safeTarget = sanitizeInternalTarget(target || "pages/dashboard/client.html");
+
+    if (state.connected) {
+      redirectToTarget(safeTarget);
+      return true;
+    }
+
+    openProtectedAccessModal(safeTarget);
+    return false;
   }
 
   async function initializeWalletState() {
@@ -413,7 +529,8 @@
     disconnectWallet,
     toggleWallet,
     updateAllButtons,
-    shortenAddress
+    shortenAddress,
+    requestProtectedAccess
   };
 
   window.getStoredPiUser = getStoredPiUser;

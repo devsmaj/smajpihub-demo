@@ -93,7 +93,15 @@
         event.preventDefault();
         event.stopPropagation();
         sessionLog.textContent = `${title}: blocked until wallet connection.`;
-        alert("Please connect your wallet to access this service.");
+        const target = (clickedAction && clickedAction.tagName.toLowerCase() === "a" && clickedAction.getAttribute("href"))
+          || (cardLink && cardLink.getAttribute("href"))
+          || "pages/dashboard/client.html";
+
+        if (window.SmajWallet && typeof window.SmajWallet.requestProtectedAccess === "function") {
+          window.SmajWallet.requestProtectedAccess(target);
+        } else {
+          alert("Please connect your wallet first to access this feature.");
+        }
         return;
       }
 

@@ -141,6 +141,83 @@ nav a:hover {
   background: rgba(125, 60, 255, 0.18);
 }
 
+.wallet-access-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2200;
+  display: none;
+}
+
+.wallet-access-modal.show {
+  display: block;
+}
+
+.wallet-access-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 14, 28, 0.62);
+}
+
+.wallet-access-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 460px);
+  margin: 12vh auto 0;
+  background: #fff;
+  border: 1px solid #e4e8f1;
+  border-radius: 14px;
+  box-shadow: 0 20px 45px rgba(11, 15, 26, 0.3);
+  padding: 24px;
+}
+
+.wallet-access-dialog h3 {
+  font-size: 1.2rem;
+  color: #0b0f1a;
+  margin-bottom: 10px;
+}
+
+.wallet-access-dialog p {
+  color: #3a4661;
+  margin-bottom: 18px;
+}
+
+.wallet-access-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.wallet-access-btn {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wallet-access-btn.connect {
+  background: #7d3cff;
+  color: #fff;
+}
+
+.wallet-access-btn.connect:hover {
+  background: #5f2bd6;
+}
+
+.wallet-access-btn.cancel {
+  background: #f5f7fc;
+  color: #243052;
+  border-color: #d7dfef;
+}
+
+.wallet-access-btn.cancel:hover {
+  background: #edf2fb;
+}
+
+body.wallet-modal-open {
+  overflow: hidden;
+}
+
 .menu-toggle {
   display: none;
   font-size: 28px;
