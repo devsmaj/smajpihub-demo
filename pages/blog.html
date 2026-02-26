@@ -53,18 +53,18 @@
             across SMAJ Store, digital services, and marketplace expansion.
           </p>
           <div class="blog-hero-actions">
-            <a href="blog-post.html" class="btn-primary">Read Featured Story</a>
+            <a href="blog-post.html" class="btn-primary" data-featured-link>Read Featured Story</a>
             <a href="service.html" class="btn-secondary">Explore Services</a>
           </div>
         </div>
 
-        <article class="blog-featured">
-          <img src="../assets/images/website-hero.png" alt="Featured article for SMAJ PI HUB blog">
+        <article class="blog-featured" id="featuredPost">
+          <img src="../assets/images/website-hero.png" alt="Featured article for SMAJ PI HUB blog" id="featuredImage">
           <div class="blog-featured-content">
-            <p class="blog-meta">Featured . Platform Update</p>
-            <h2>How SMAJ PI HUB Connects Multiple Pi Projects in One Experience</h2>
-            <p>Discover the wallet-connected flow that helps users access services from one trusted hub.</p>
-            <a href="blog-post.html">Read article <i class='bx bx-right-arrow-alt'></i></a>
+            <p class="blog-meta" id="featuredMeta">Featured . Platform Update</p>
+            <h2 id="featuredTitle">How SMAJ PI HUB Connects Multiple Pi Projects in One Experience</h2>
+            <p id="featuredSnippet">Discover the wallet-connected flow that helps users access services from one trusted hub.</p>
+            <a href="blog-post.html" id="featuredReadLink">Read article <i class='bx bx-right-arrow-alt'></i></a>
           </div>
         </article>
       </div>
@@ -74,14 +74,10 @@
       <div class="container blog-toolbar-inner">
         <div class="blog-search-wrap">
           <i class='bx bx-search'></i>
-          <input type="search" placeholder="Search articles, guides, updates...">
+          <input id="blogSearchInput" type="search" placeholder="Search articles, guides, updates..." aria-label="Search blog posts">
         </div>
-        <div class="blog-tags">
-          <button type="button" class="active">All</button>
-          <button type="button">Ecosystem</button>
-          <button type="button">Guides</button>
-          <button type="button">Marketplace</button>
-          <button type="button">Security</button>
+        <div class="blog-tags" id="blogTagFilters" aria-label="Filter posts by category">
+          <button type="button" class="active" data-tag="all">All</button>
         </div>
       </div>
     </section>
@@ -93,61 +89,8 @@
           <a href="contact.html">Submit a topic <i class='bx bx-link-external'></i></a>
         </div>
 
-        <div class="blog-grid">
-          <article class="blog-card">
-            <img src="../assets/images/marketplace.jpg" alt="Marketplace growth in Pi ecosystem">
-            <div class="blog-card-content">
-              <p class="blog-meta">Marketplace . 6 min read</p>
-              <h3><a href="blog-post.html">Building trusted Pi commerce through verified sellers and escrow flow</a></h3>
-              <p>How SMAJ marketplace creates transparent ordering and delivery with Pi Coin utility.</p>
-            </div>
-          </article>
-
-          <article class="blog-card">
-            <img src="../assets/images/business.jpg" alt="Cross-platform services for business users">
-            <div class="blog-card-content">
-              <p class="blog-meta">Guides . 5 min read</p>
-              <h3><a href="blog-post.html">Connect your wallet once and access multiple services across the hub</a></h3>
-              <p>A simple workflow to move from browsing to ordering, delivery, and support.</p>
-            </div>
-          </article>
-
-          <article class="blog-card">
-            <img src="../assets/images/community.jpg" alt="Community growth and participation">
-            <div class="blog-card-content">
-              <p class="blog-meta">Community . 4 min read</p>
-              <h3><a href="blog-post.html">Why pioneers are choosing unified platforms over fragmented apps</a></h3>
-              <p>See how all-in-one design reduces confusion and improves project trust.</p>
-            </div>
-          </article>
-
-          <article class="blog-card">
-            <img src="../assets/images/website.png" alt="Digital platform interface">
-            <div class="blog-card-content">
-              <p class="blog-meta">Security . 7 min read</p>
-              <h3><a href="blog-post.html">Best practices for safer Pi transactions inside a service ecosystem</a></h3>
-              <p>Account protection, request verification, and transparent transaction records.</p>
-            </div>
-          </article>
-
-          <article class="blog-card">
-            <img src="../assets/images/hero.png" alt="Pi ecosystem utility">
-            <div class="blog-card-content">
-              <p class="blog-meta">Ecosystem . 8 min read</p>
-              <h3><a href="blog-post.html">From store to digital services: mapping the SMAJ PI HUB roadmap</a></h3>
-              <p>Current modules, next launch phases, and how users can participate early.</p>
-            </div>
-          </article>
-
-          <article class="blog-card">
-            <img src="../assets/images/smaj.jpg" alt="SMAJ brand and platform vision">
-            <div class="blog-card-content">
-              <p class="blog-meta">Platform . 5 min read</p>
-              <h3><a href="blog-post.html">The role of trust signals in growing a global Pi-powered user base</a></h3>
-              <p>How clear communication and service transparency increase adoption.</p>
-            </div>
-          </article>
-        </div>
+        <div class="blog-grid" id="blogPostsGrid"></div>
+        <p class="blog-empty" id="blogEmptyState" hidden>No posts matched your search. Try a different keyword or category.</p>
       </div>
     </section>
 
@@ -225,6 +168,8 @@
   </footer>
 
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <script src="../js/blog-data.js"></script>
+  <script src="../js/blog.js"></script>
   <script src="../js/main.js"></script>
 </body>
 
