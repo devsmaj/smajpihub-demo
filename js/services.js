@@ -8,27 +8,28 @@
     return;
   }
 
-  const getPiUser = () => {
-    const raw = localStorage.getItem("pi_user");
-    if (!raw) return null;
-
-    try {
-      return JSON.parse(raw);
-    } catch (err) {
-      return null;
+  const getState = () => {
+    if (window.SmajWallet && typeof window.SmajWallet.getState === "function") {
+      return window.SmajWallet.getState();
     }
+
+    return { connected: !!localStorage.getItem("pi_user"), address: localStorage.getItem("pi_wallet_address") || "" };
   };
 
   const setWalletUI = () => {
-    const piUser = getPiUser();
+    const state = getState();
 
-    if (piUser && piUser.username) {
-      walletState.textContent = `Connected: ${piUser.username}`;
+    if (state.connected) {
+      const short = window.SmajWallet && window.SmajWallet.shortenAddress
+        ? window.SmajWallet.shortenAddress(state.address)
+        : (state.address || "Connected");
+
+      walletState.textContent = `Connected: ${short}`;
       walletState.classList.remove("disconnected");
       walletState.classList.add("connected");
       walletHint.textContent = "One-click access is enabled for connected platforms.";
-      connectWalletAction.textContent = "Wallet Connected";
-      connectWalletAction.disabled = true;
+      connectWalletAction.textContent = "Disconnect Wallet";
+      connectWalletAction.disabled = false;
       sessionLog.textContent = "Hub session ready for cross-platform access.";
       return;
     }
@@ -42,28 +43,30 @@
     sessionLog.textContent = "Waiting for wallet connection.";
   };
 
-  connectWalletAction.addEventListener("click", () => {
-    const walletBtn = document.querySelector(".wallet-btn");
+  connectWalletAction.addEventListener("click", async (event) => {
+    event.preventDefault();
 
+    if (window.SmajWallet && typeof window.SmajWallet.toggleWallet === "function") {
+      await window.SmajWallet.toggleWallet();
+      setWalletUI();
+      return;
+    }
+
+    const walletBtn = document.querySelector(".wallet-btn");
     if (walletBtn) {
       walletBtn.click();
-      setTimeout(setWalletUI, 500);
+      setTimeout(setWalletUI, 300);
       return;
     }
 
     sessionLog.textContent = "Connect wallet button is unavailable on this page.";
   });
 
-  // SSO redirect function for SMAJ Store
   const redirectToSmajStore = async () => {
-    const smajStoreUrl = "https://officialsmaj.github.io/smaj-store";
-    
-    // Check if user is logged in via our backend
     const token = localStorage.getItem("smaj_token");
     const user = localStorage.getItem("smaj_user");
-    
+
     if (token && user) {
-      // User has session, generate SSO token
       sessionLog.textContent = "SMAJ Store: Generating SSO token...";
       try {
         const response = await fetch("http://localhost:3000/api/sso-token?service=smajstore", {
@@ -73,9 +76,9 @@
             "Content-Type": "application/json"
           }
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success && data.redirectUrl) {
           sessionLog.textContent = "SMAJ Store: Redirecting with SSO...";
           window.location.href = data.redirectUrl;
@@ -97,7 +100,7 @@
       const platformUrl = card.dataset.platformUrl || "#";
       const requiresWallet = card.dataset.requiresWallet === "true";
       const comingSoon = card.dataset.comingSoon === "true";
-      const piUser = getPiUser();
+      const state = getState();
       const isSmajStore = platformName === "SMAJ Store";
 
       if (comingSoon) {
@@ -106,25 +109,33 @@
         return;
       }
 
-      if (requiresWallet && !piUser) {
+      if (requiresWallet && !state.connected) {
         sessionLog.textContent = `${platformName}: Blocked until wallet connection.`;
         alert(`Please connect your Pi wallet first to open ${platformName}.`);
         return;
       }
 
-      // Special handling for SMAJ Store - use SSO token
       if (isSmajStore) {
         const ssoSuccess = await redirectToSmajStore();
         if (ssoSuccess) return;
-        
-        // Fallback if SSO failed
+
         sessionLog.textContent = "SMAJ Store: Using fallback redirect...";
       }
 
       sessionLog.textContent = `${platformName}: Creating secure hub handoff...`;
 
       setTimeout(() => {
-        const encodedUser = encodeURIComponent((piUser && piUser.username) || "guest");
+        const storedUser = localStorage.getItem("pi_user");
+        let username = "guest";
+
+        if (storedUser) {
+          try {
+            const parsed = JSON.parse(storedUser);
+            username = parsed.username || "guest";
+          } catch (_) {}
+        }
+
+        const encodedUser = encodeURIComponent(username);
         const separator = platformUrl.includes("?") ? "&" : "?";
         const target = `${platformUrl}${separator}hub_user=${encodedUser}&from=smajpihub`;
         window.location.href = target;
@@ -135,16 +146,15 @@
   const comingSoonMessage = "This feature is coming soon.";
   const ecosystemGrid = document.querySelector(".ecosystem-grid");
   if (ecosystemGrid) {
-    const handleComingSoon = (event) => {
+    ecosystemGrid.addEventListener("click", (event) => {
       const card = event.target.closest(".eco-card");
       if (!card || card.dataset.comingSoon !== "true") return;
       event.preventDefault();
       alert(comingSoonMessage);
-    };
-
-    ecosystemGrid.addEventListener("click", handleComingSoon);
+    });
   }
 
   window.addEventListener("storage", setWalletUI);
+  window.addEventListener("smaj:wallet-changed", setWalletUI);
   setWalletUI();
 })();

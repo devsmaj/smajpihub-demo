@@ -456,21 +456,26 @@ function setupDashboardGateButtons() {
 setupDashboardGateButtons();
 
 function ensureDesktopWalletButton() {
+  if (window.SmajWallet && typeof window.SmajWallet.init === "function") {
+    window.SmajWallet.init();
+    return;
+  }
+
   const nav = document.getElementById("navMenu");
-  if (!nav) return;
-  if (nav.querySelector(".desktop-wallet-btn")) return;
+  if (!nav || nav.querySelector(".desktop-wallet-btn")) return;
 
   const desktopWalletBtn = document.createElement("button");
   desktopWalletBtn.type = "button";
   desktopWalletBtn.className = "wallet-btn desktop-wallet-btn";
   desktopWalletBtn.innerHTML = "<i class='bx bx-wallet'></i> Connect Wallet";
-
   nav.appendChild(desktopWalletBtn);
-  updateWalletButtonsUI();
 }
 
-// Pi Wallet Button - Real Implementation
 function getStoredPiUser() {
+  if (window.SmajWallet && typeof window.SmajWallet.getStoredPiUser === "function") {
+    return window.SmajWallet.getStoredPiUser();
+  }
+
   const raw = localStorage.getItem("pi_user");
   if (!raw) return null;
 
@@ -482,194 +487,54 @@ function getStoredPiUser() {
 }
 
 function getWalletUser() {
+  if (window.SmajWallet && typeof window.SmajWallet.getWalletUser === "function") {
+    return window.SmajWallet.getWalletUser();
+  }
   return getStoredUser() || getStoredPiUser();
 }
 
-function deriveWalletAddress(user) {
-  if (!user) return "";
-  const direct = user.wallet_address || user.walletAddress || user.address;
-  if (direct) return String(direct);
-
-  const uid = String(user.uid || user.username || "").replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
-  if (!uid) return "";
-  return `PI${uid.padEnd(24, "X").slice(0, 24)}`;
-}
-
-function persistWalletAddress(user) {
-  const address = deriveWalletAddress(user);
-  if (address) {
-    localStorage.setItem("pi_wallet_address", address);
-  }
-}
-
-function formatWalletAddress(address) {
-  const text = String(address || "");
-  if (text.length <= 10) return text;
-  return `${text.slice(0, 6)}...${text.slice(-4)}`;
-}
-
-function ensureWalletShell(btn) {
-  if (!btn || !btn.parentElement) return null;
-  if (btn.parentElement.classList.contains("wallet-area")) return btn.parentElement;
-
-  const wrapper = document.createElement("div");
-  wrapper.className = "wallet-area";
-  btn.parentElement.insertBefore(wrapper, btn);
-  wrapper.appendChild(btn);
-  return wrapper;
-}
-
-function ensureWalletDropdown(wrapper) {
-  if (!wrapper) return null;
-  let menu = wrapper.querySelector(".wallet-dropdown");
-  if (menu) return menu;
-
-  menu = document.createElement("div");
-  menu.className = "wallet-dropdown";
-  menu.innerHTML = `
-    <a href="${appPath('pages/dashboard/client.html')}">Dashboard</a>
-    <button type="button" data-wallet-action="disconnect">Disconnect</button>
-  `;
-  wrapper.appendChild(menu);
-  return menu;
-}
-
-function closeAllWalletDropdowns() {
-  document.querySelectorAll(".wallet-dropdown.open").forEach((menu) => {
-    menu.classList.remove("open");
-  });
-}
-
 function updateWalletButtonsUI() {
-  const user = getWalletUser();
-  const address = user ? (user.walletAddress || user.wallet_address || user.address || localStorage.getItem("pi_wallet_address")) : "";
-  const label = address ? formatWalletAddress(address) : "";
-
-  document.querySelectorAll(".wallet-btn").forEach((btn) => {
-    btn.type = "button";
-    const wrapper = ensureWalletShell(btn);
-    const dropdown = ensureWalletDropdown(wrapper);
-
-    if (user && label) {
-      btn.innerHTML = `<i class='bx bx-wallet'></i> ${label} <i class='bx bx-chevron-down'></i>`;
-      btn.classList.add("connected");
-      dropdown.classList.add("ready");
-    } else {
-      btn.innerHTML = "<i class='bx bx-wallet'></i> Connect Wallet";
-      btn.classList.remove("connected");
-      dropdown.classList.remove("ready");
-      dropdown.classList.remove("open");
-    }
-  });
-}
-
-let walletActionInFlight = false;
-
-function setWalletButtonsBusy(isBusy) {
-  document.querySelectorAll(".wallet-btn").forEach((btn) => {
-    if (isBusy) {
-      if (!btn.dataset.walletLabel) btn.dataset.walletLabel = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Connecting...";
-      return;
-    }
-
-    btn.disabled = false;
-    if (btn.dataset.walletLabel) {
-      btn.innerHTML = btn.dataset.walletLabel;
-      delete btn.dataset.walletLabel;
-    }
-  });
+  if (window.SmajWallet && typeof window.SmajWallet.updateAllButtons === "function") {
+    window.SmajWallet.updateAllButtons();
+  }
 }
 
 function disconnectWallet() {
+  if (window.SmajWallet && typeof window.SmajWallet.disconnectWallet === "function") {
+    return window.SmajWallet.disconnectWallet();
+  }
+
   clearAuth();
-  closeAllWalletDropdowns();
   updateWalletButtonsUI();
-  appNotify("Disconnected from wallet.", "info");
+  return null;
 }
 
 async function connectWallet() {
-  if (!window.Pi) {
-    appNotify("Pi Wallet is only available in Pi Browser. Open this site inside Pi Browser to connect.", "warn");
-    return null;
+  if (window.SmajWallet && typeof window.SmajWallet.connectWallet === "function") {
+    return window.SmajWallet.connectWallet();
   }
-
-  try {
-    walletActionInFlight = true;
-    setWalletButtonsBusy(true);
-    setAppLoading(true, "Opening Pi Wallet...");
-
-    const scopes = ["username", "payments"];
-    const authResult = await Pi.authenticate(scopes, onIncompletePayment);
-    localStorage.setItem("pi_user", JSON.stringify(authResult.user));
-
-    const walletAddress = authResult.user?.wallets?.[0]?.address || deriveWalletAddress(authResult.user);
-    if (!walletAddress) {
-      throw new Error("Wallet address not available from Pi Wallet.");
-    }
-
-    const username = authResult.user?.username || "";
-    const signature = "sandbox_signature";
-    const message = `Connect wallet: ${walletAddress}`;
-
-    const response = await fetch(`${API_BASE}/api/connect-wallet`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ walletAddress, signature, message, username })
-    });
-
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok || !data.success) {
-      throw new Error(data.message || "Wallet connection failed.");
-    }
-
-    storeAuth(data.token, data.user);
-    persistWalletAddress({ walletAddress });
-    updateWalletButtonsUI();
-    appNotify("Wallet connected successfully!", "success");
-    return data;
-  } catch (err) {
-    console.error("Wallet connection failed:", err);
-    if (err && err.message && err.message.includes("User canceled")) return null;
-    appNotify(err.message || "Login failed. Please try again in Pi Browser.", "warn");
-    return null;
-  } finally {
-    walletActionInFlight = false;
-    setWalletButtonsBusy(false);
-    setAppLoading(false);
-    updateWalletButtonsUI();
-  }
+  return null;
 }
 
 async function handleWalletButtonClick(btn) {
   if (!btn) return false;
-  if (walletActionInFlight) {
-    appNotify("Wallet connection is already in progress.", "info");
-    return false;
-  }
+  const state = window.SmajWallet && window.SmajWallet.getState ? window.SmajWallet.getState() : null;
 
-  const connectedUser = getWalletUser();
-  if (connectedUser) {
-    const wrapper = btn.closest(".wallet-area");
-    if (wrapper) {
-      const dropdown = wrapper.querySelector(".wallet-dropdown");
-      if (dropdown) {
-        dropdown.classList.toggle("open");
-      }
-    }
+  if (state && state.connected) {
+    disconnectWallet();
     return true;
   }
 
   const result = await connectWallet();
-  if (result) {
-    window.location.href = appPath("pages/dashboard/client.html");
-    return true;
-  }
-  return false;
+  return !!result;
 }
 
 function bindWalletButtons() {
+  if (window.SmajWallet && typeof window.SmajWallet.init === "function") {
+    window.SmajWallet.init();
+    return;
+  }
+
   updateWalletButtonsUI();
   document.querySelectorAll(".wallet-btn").forEach((btn) => {
     if (btn.dataset.walletBound === "true") return;
@@ -679,40 +544,7 @@ function bindWalletButtons() {
       handleWalletButtonClick(btn);
     });
   });
-
-  document.querySelectorAll('[data-wallet-connect="true"]').forEach((link) => {
-    if (link.dataset.walletBound === "true") return;
-    link.dataset.walletBound = "true";
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      handleWalletButtonClick(document.querySelector(".wallet-btn"));
-    });
-  });
-
-  const connectAction = document.getElementById("connectWalletAction");
-  if (connectAction && connectAction.dataset.walletBound !== "true") {
-    connectAction.dataset.walletBound = "true";
-    connectAction.addEventListener("click", (e) => {
-      e.preventDefault();
-      handleWalletButtonClick(document.querySelector(".wallet-btn"));
-    });
-  }
-
-  document.querySelectorAll('[data-wallet-action="disconnect"]').forEach((btn) => {
-    if (btn.dataset.walletBound === "true") return;
-    btn.dataset.walletBound = "true";
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      disconnectWallet();
-    });
-  });
 }
-
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".wallet-area")) {
-    closeAllWalletDropdowns();
-  }
-});
 
 ensureDesktopWalletButton();
 bindWalletButtons();
@@ -723,3 +555,4 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 console.log("SMAJ PI HUB navigation loaded");
+
