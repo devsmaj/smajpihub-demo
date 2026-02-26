@@ -132,6 +132,19 @@
     });
   });
 
+  const comingSoonMessage = "This feature is coming soon.";
+  const ecosystemGrid = document.querySelector(".ecosystem-grid");
+  if (ecosystemGrid) {
+    const handleComingSoon = (event) => {
+      const card = event.target.closest(".eco-card");
+      if (!card || card.dataset.comingSoon !== "true") return;
+      event.preventDefault();
+      alert(comingSoonMessage);
+    };
+
+    ecosystemGrid.addEventListener("click", handleComingSoon);
+  }
+
   window.addEventListener("storage", setWalletUI);
   setWalletUI();
 })();

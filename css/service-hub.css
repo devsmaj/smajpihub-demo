@@ -197,6 +197,14 @@
   transform: translateY(-3px);
 }
 
+.eco-card.coming-soon {
+  cursor: pointer;
+}
+
+.eco-card.coming-soon .btn-soft {
+  cursor: pointer;
+}
+
 .eco-card h3 {
   font-size: 18px;
   color: #131b31;
