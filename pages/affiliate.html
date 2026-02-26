@@ -40,6 +40,7 @@
         <a href="../pages/how-it-works.html">How It Works</a>
         <a href="../pages/pricing.html">Pricing</a>
         
+        <a href="../pages/affiliate.html">Affiliate Program</a>
         <a href="../pages/faq.html">FAQ</a>
         <a href="../pages/contact.html">Contact</a>
         <a href="../pages/dashboard/client.html">Dashboard</a>
@@ -49,90 +50,165 @@
 
   <!-- MAIN CONTENT -->
 
-  <!-- Hero / Banner -->
-  <section class="hero-affiliate container">
-    <div class="hero-text">
-      <h1>Join Our Affiliate Program</h1>
-      <p>Earn Pi by referring SMAJ PI HUB services globally. Track your earnings in real-time and receive rewards
-        instantly.</p>
-      <a href="#signup-form" class="btn primary">Sign Up Now</a>
-    </div>
-    <div class="hero-image">
-      <img src="../assets/images/affiliate.png" alt="Affiliate Banner">
+  <section class="affiliate-hero">
+    <div class="container affiliate-hero-grid">
+      <div>
+        <span class="affiliate-kicker">AFFILIATE PROGRAM</span>
+        <h1>Share SMAJ PI HUB and Earn Rewards</h1>
+        <p>Invite users to the hub, help them get value, and earn commission on every approved sale.</p>
+        <div class="affiliate-hero-actions">
+          <a href="#affiliate-signup" class="btn-primary">Join as Affiliate</a>
+          <a href="#affiliate-commission" class="btn-secondary">View Commissions</a>
+        </div>
+      </div>
+      <div class="affiliate-hero-side">
+        <img class="affiliate-hero-image" src="../assets/images/affiliate.png" alt="SMAJ PI HUB Affiliate Program">
+        <div class="affiliate-hero-card">
+          <h3>Program Overview</h3>
+          <ul>
+            <li><i class='bx bx-check-circle'></i> Open to creators, communities, and businesses</li>
+            <li><i class='bx bx-check-circle'></i> Simple signup and fast approval</li>
+            <li><i class='bx bx-check-circle'></i> Easy tracking with a shared dashboard</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- How it Works -->
-  <section class="affiliate-steps container">
-    <h2 class="section-title">How It Works</h2>
-    <div class="features">
-      <div class="step-card">
+  <section class="affiliate-section container" id="affiliate-overview">
+    <div class="affiliate-section-head">
+      <h2>How the Program Works</h2>
+      <p>Join, share your link, and earn when people use SMAJ PI HUB.</p>
+    </div>
+    <div class="affiliate-card-grid">
+      <article class="affiliate-card">
         <i class='bx bx-user-plus'></i>
-        <h4>1. Sign Up</h4>
-        <p>Create your affiliate account in minutes and get a unique referral link.</p>
-      </div>
-      <div class="step-card">
+        <h3>1. Sign Up</h3>
+        <p>Create your affiliate profile and get approved.</p>
+      </article>
+      <article class="affiliate-card">
         <i class='bx bx-link-alt'></i>
-        <h4>2. Share Links</h4>
-        <p>Share your affiliate links via social media, email, or website.</p>
+        <h3>2. Share</h3>
+        <p>Share your referral link on social media or your website.</p>
+      </article>
+      <article class="affiliate-card">
+        <i class='bx bx-badge-check'></i>
+        <h3>3. Earn</h3>
+        <p>Get commission when your referrals complete a purchase.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="affiliate-section affiliate-muted" id="affiliate-commission">
+    <div class="container">
+      <div class="affiliate-section-head">
+        <h2>Commission Details</h2>
+        <p>Clear rates, predictable payouts, and tracked referrals.</p>
       </div>
-      <div class="step-card">
-        <i class='bx bx-purchase-tag'></i>
-        <h4>3. Earn Rewards</h4>
-        <p>Receive a percentage of every purchase made using your referral link, instantly in Pi.</p>
+      <div class="affiliate-card-grid">
+        <article class="affiliate-card">
+          <i class='bx bx-wallet'></i>
+          <h3>Commission Rate</h3>
+          <p>Earn 10% on every approved referral purchase.</p>
+        </article>
+        <article class="affiliate-card">
+          <i class='bx bx-calendar-check'></i>
+          <h3>Payment Frequency</h3>
+          <p>Payouts are sent every 30 days.</p>
+        </article>
+        <article class="affiliate-card">
+          <i class='bx bx-timer'></i>
+          <h3>Cookie Period</h3>
+          <p>Referrals are tracked for 30 days.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- Benefits -->
-  <section class="affiliate-benefits container">
-    <h2 class="section-title">Why Join SMAJ PI HUB Affiliate?</h2>
-    <div class="features">
-      <div class="benefit-card">
-        <i class='bx bx-rocket'></i>
-        <h4>Fast Rewards</h4>
-        <p>Instant Pi payments for every referral purchase.</p>
-      </div>
-      <div class="benefit-card">
-        <i class='bx bx-bar-chart-alt-2'></i>
-        <h4>Track Earnings</h4>
-        <p>Real-time dashboard shows clicks, conversions, and revenue.</p>
-      </div>
-      <div class="benefit-card">
-        <i class='bx bx-globe'></i>
-        <h4>Global Reach</h4>
-        <p>Promote SMAJ PI HUB services to users worldwide.</p>
-      </div>
-      <div class="benefit-card">
-        <i class='bx bx-shield'></i>
-        <h4>Trusted Platform</h4>
-        <p>Work with a reliable and verified Pi utility platform.</p>
+  <section class="affiliate-section container" id="affiliate-signup">
+    <div class="affiliate-section-head">
+      <h2>Sign Up as an Affiliate</h2>
+      <p>Complete the form and our team will respond within 24 hours.</p>
+    </div>
+    <div class="affiliate-signup-grid">
+      <form class="affiliate-form" id="affiliateForm">
+        <div class="form-group">
+          <label for="affiliateName">Full Name</label>
+          <input type="text" id="affiliateName" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label for="affiliateEmail">Email Address</label>
+          <input type="email" id="affiliateEmail" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="affiliateChannel">Website or Social Link</label>
+          <input type="url" id="affiliateChannel" placeholder="Your website or social profile" required>
+        </div>
+        <button type="submit" class="btn-primary">Register Now</button>
+        <p class="form-response" id="affiliateResponse"></p>
+      </form>
+      <div class="affiliate-signup-info">
+        <h3>Affiliate Dashboard</h3>
+        <p>Track clicks, sales, and earnings in one clear view.</p>
+        <ul>
+          <li><i class='bx bx-line-chart'></i> Live clicks and conversions</li>
+          <li><i class='bx bx-receipt'></i> Sales history and payouts</li>
+          <li><i class='bx bx-bell'></i> Alerts for milestones</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- Sign Up Form -->
-  <section id="signup-form" class="affiliate-signup container">
-    <h2 class="section-title">Sign Up to Become an Affiliate</h2>
-    <form action="#" class="affiliate-form">
-      <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" placeholder="Enter your full name" required>
+  <section class="affiliate-section affiliate-muted">
+    <div class="container">
+      <div class="affiliate-section-head">
+        <h2>Rules & Requirements</h2>
+        <p>Keep promotions honest and helpful for everyone.</p>
       </div>
-      <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="Enter your email" required>
+      <div class="affiliate-rule-grid">
+        <div class="affiliate-rule-card">
+          <h3><i class='bx bx-check-circle'></i> Allowed</h3>
+          <ul>
+            <li>Share official links on social platforms</li>
+            <li>Create honest reviews and tutorials</li>
+            <li>Use approved logos and screenshots</li>
+          </ul>
+        </div>
+        <div class="affiliate-rule-card">
+          <h3><i class='bx bx-x-circle'></i> Not Allowed</h3>
+          <ul>
+            <li>Misleading claims or fake discounts</li>
+            <li>Spam emails or fake accounts</li>
+            <li>Paid ads using SMAJ PI HUB brand terms</li>
+          </ul>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="wallet">Pi Wallet Address</label>
-        <input type="text" id="wallet" placeholder="Your Pi wallet address" required>
+    </div>
+  </section>
+
+  <section class="affiliate-section container">
+    <div class="affiliate-section-head">
+      <h2>Affiliate Link Example</h2>
+      <p>Use a unique link so we can track your referrals.</p>
+    </div>
+    <div class="affiliate-link-card">
+      <p>Your referral link will look like this:</p>
+      <code>https://smajpihub.com?ref=yourname</code>
+    </div>
+  </section>
+
+  <section class="affiliate-section affiliate-legal">
+    <div class="container">
+      <div class="affiliate-section-head">
+        <h2>Legal Info & Disclosures</h2>
+        <p>By joining, you agree to the affiliate terms and disclosure rules.</p>
       </div>
-      <div class="form-group">
-        <label for="website">Website or Social Link</label>
-        <input type="url" id="website" placeholder="Your website or social profile">
+      <div class="affiliate-legal-card">
+        <p>Affiliates must clearly disclose that they may earn commissions.</p>
+        <p>All promotions must be truthful and follow local laws.</p>
+        <a class="btn-secondary" href="../pages/legal/terms.html">Read Terms & Conditions</a>
       </div>
-      <button type="submit" class="btn primary">Join Now</button>
-    </form>
+    </div>
   </section>
 
   <!-- FOOTER -->
