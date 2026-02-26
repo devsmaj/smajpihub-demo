@@ -213,47 +213,125 @@
   flex-wrap: wrap;
 }
 
-@media (max-width: 1100px) {
-  .home-service-grid,
-  .home-highlight-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.home-features-strip {
+  padding: 40px 0;
+  background: #f6f8fe;
+  border-top: 1px solid #e6eaf5;
+  border-bottom: 1px solid #e6eaf5;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #131b31;
+  padding: 10px;
+}
+
+.feature-item i {
+  font-size: 24px;
+  color: #7d3cff;
+}
+
+/* ===============================
+   HOMEPAGE RESPONSIVE
+================================ */
+@media (max-width: 992px) {
+  .home-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .home-hero-copy {
+    order: 2;
+  }
+
+  .home-hero-card {
+    order: 1;
+    margin: 0 auto;
+    max-width: 500px;
+  }
+
+  .home-hero-cta {
+    justify-content: center;
   }
 
   .home-proof {
-    grid-template-columns: 1fr;
+    justify-content: center;
   }
 }
 
 @media (max-width: 768px) {
   .home-hero {
-    padding: 46px 0;
-  }
-
-  .home-hero-grid {
-    grid-template-columns: 1fr;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 
   .home-hero-copy h1 {
-    font-size: 34px;
+    font-size: 2.5rem;
   }
 
-  .home-hero-copy p {
-    font-size: 15px;
+  .home-hero-cta {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
   }
 
-  .home-hero-card img {
-    height: 220px;
+  .home-hero-cta .btn-primary,
+  .home-hero-cta .btn-secondary {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .home-proof {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin-top: 40px;
+  }
+
+  .home-proof>div {
+    padding: 0;
+    border: none;
+  }
+
+  .home-service-grid,
+  .home-highlight-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 
   .home-cta-wrap {
     flex-direction: column;
-    align-items: flex-start;
+    text-align: center;
+    gap: 25px;
   }
 }
 
-@media (max-width: 520px) {
-  .home-service-grid,
-  .home-highlight-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 576px) {
+  .home-hero-copy h1 {
+    font-size: 2.2rem;
+  }
+
+  .home-service-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .home-service-card h3 {
+    font-size: 1rem;
+  }
+
+  .feature-item {
+    justify-content: flex-start;
   }
 }

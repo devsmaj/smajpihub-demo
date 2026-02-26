@@ -150,14 +150,25 @@
 
   /* ---------- FOOTER ---------- */
   .footer-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: left;
   }
 
   .footer i {
     margin: 5px;
   }
 
+}
+
+@media (max-width: 576px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-grid>div {
+    margin-bottom: 25px;
+  }
 }
 
 /* ===============================
