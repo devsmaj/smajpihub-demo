@@ -43,24 +43,7 @@
     sessionLog.textContent = "Waiting for wallet connection.";
   };
 
-  connectWalletAction.addEventListener("click", async (event) => {
-    event.preventDefault();
-
-    if (window.SmajWallet && typeof window.SmajWallet.toggleWallet === "function") {
-      await window.SmajWallet.toggleWallet();
-      setWalletUI();
-      return;
-    }
-
-    const walletBtn = document.querySelector(".wallet-btn");
-    if (walletBtn) {
-      walletBtn.click();
-      setTimeout(setWalletUI, 300);
-      return;
-    }
-
-    sessionLog.textContent = "Connect wallet button is unavailable on this page.";
-  });
+  // Wallet button clicks are handled globally by js/wallet.js.
 
   const redirectToSmajStore = async () => {
     const token = localStorage.getItem("smaj_token");

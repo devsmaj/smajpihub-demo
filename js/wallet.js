@@ -14,6 +14,7 @@
   let isPiWalletReady = false;
   let hasDetectionRun = false;
   let detectionPromise = null;
+  let piInitialized = false;
 
   const DETECTION_RETRIES = 3;
   const DETECTION_DELAY_MS = 350;
@@ -197,14 +198,15 @@
     }
 
     const hasRequest = typeof window.Pi.request === "function";
-    isPiWalletReady = hasRequest;
+    const hasAuthenticate = typeof window.Pi.authenticate === "function";
+    isPiWalletReady = hasRequest || hasAuthenticate;
 
-    if (!hasRequest && showAlert && !environmentAlertShown) {
+    if (!isPiWalletReady && showAlert && !environmentAlertShown) {
       environmentAlertShown = true;
       alert("Pi Wallet not detected. Please open this site in Pi Browser.");
     }
 
-    return hasRequest;
+    return isPiWalletReady;
   }
 
   function wait(ms) {
@@ -236,7 +238,46 @@
   function resolveAddress(accountPayload) {
     if (!accountPayload) return "";
     const direct = accountPayload.address || accountPayload.walletAddress || accountPayload.wallet_address;
+    if (direct) return String(direct || "").trim();
+
+    if (accountPayload.user) {
+      const nested = resolveAddress(accountPayload.user);
+      if (nested) return nested;
+    }
+
+    if (Array.isArray(accountPayload.wallets) && accountPayload.wallets.length > 0) {
+      const primary = accountPayload.wallets.find(function (w) { return w && w.primary; }) || accountPayload.wallets[0];
+      if (primary) {
+        const nested = resolveAddress(primary);
+        if (nested) return nested;
+      }
+    }
+
     return String(direct || "").trim();
+  }
+
+  function ensurePiInit() {
+    if (piInitialized || !window.Pi || typeof window.Pi.init !== "function") return;
+    try {
+      window.Pi.init({ version: "2.0", sandbox: true });
+      piInitialized = true;
+    } catch (error) {
+      console.warn("Pi init warning:", error);
+    }
+  }
+
+  async function requestPiAccount() {
+    ensurePiInit();
+
+    if (window.Pi && typeof window.Pi.request === "function") {
+      return window.Pi.request({ method: "getAccount" });
+    }
+
+    if (window.Pi && typeof window.Pi.authenticate === "function") {
+      return window.Pi.authenticate(["username", "payments"], function () {});
+    }
+
+    return null;
   }
 
   async function connectWallet() {
@@ -255,7 +296,7 @@
     updateAllButtons({ busyLabel: CONNECTING_TEXT, skipAddressBadge: true });
 
     try {
-      const account = await window.Pi.request({ method: "getAccount" });
+      const account = await requestPiAccount();
       const address = resolveAddress(account);
 
       if (!address) {
