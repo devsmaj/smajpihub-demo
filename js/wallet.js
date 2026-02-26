@@ -10,7 +10,8 @@
   const CONNECTING_TEXT = "Connecting...";
 
   let isConnecting = false;
-  let isDisconnecting = false;
+  let environmentAlertShown = false;
+  let isPiWalletReady = false;
 
   function safeParse(raw) {
     if (!raw) return null;
@@ -19,15 +20,6 @@
     } catch (_) {
       return null;
     }
-  }
-
-  function randomAddress() {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let out = "PI";
-    for (let i = 0; i < 24; i += 1) {
-      out += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return out;
   }
 
   function shortenAddress(address) {
@@ -42,6 +34,30 @@
 
   function persistState(state) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function clearStoredSession() {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(PI_USER_KEY);
+    localStorage.removeItem(PI_ADDRESS_KEY);
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+  }
+
+  function storeConnectedSession(address) {
+    const walletAddress = String(address || "").trim();
+    const state = { connected: true, address: walletAddress, updatedAt: Date.now() };
+    const user = { username: "pioneer", walletAddress };
+
+    persistState(state);
+    localStorage.setItem(PI_USER_KEY, JSON.stringify(user));
+    localStorage.setItem(PI_ADDRESS_KEY, walletAddress);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem(TOKEN_KEY, "wallet-session");
+    localStorage.setItem("token", "wallet-session");
   }
 
   function getStoredPiUser() {
@@ -69,10 +85,7 @@
   }
 
   function appPath(target) {
-    if (!target || /^https?:\/\//i.test(target)) {
-      return target;
-    }
-
+    if (!target || /^https?:\/\//i.test(target)) return target;
     const normalized = target.replace(/^\/+/, "");
     return `${getAppPrefix()}${normalized}`;
   }
@@ -87,75 +100,11 @@
     window.location.replace(appPath("pages/dashboard/client.html"));
   }
 
-  function syncLegacyKeys(state) {
-    if (!state.connected) {
-      localStorage.removeItem(PI_USER_KEY);
-      localStorage.removeItem(PI_ADDRESS_KEY);
-      localStorage.removeItem(USER_KEY);
-      localStorage.removeItem(TOKEN_KEY);
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      return;
-    }
-
-    const walletAddress = state.address || randomAddress();
-    const user = {
-      username: "pioneer",
-      walletAddress
-    };
-
-    localStorage.setItem(PI_USER_KEY, JSON.stringify(user));
-    localStorage.setItem(PI_ADDRESS_KEY, walletAddress);
-    localStorage.setItem(USER_KEY, JSON.stringify(user));
-    localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem(TOKEN_KEY, "wallet-session");
-    localStorage.setItem("token", "wallet-session");
-  }
-
-  function extractWalletAddress(payload) {
-    if (!payload) return "";
-
-    const direct = payload.walletAddress || payload.wallet_address || payload.address;
-    if (direct) return String(direct).trim();
-
-    const wallets = payload.wallets;
-    if (Array.isArray(wallets) && wallets.length > 0) {
-      const primary = wallets.find(function (w) {
-        return w && w.primary;
-      }) || wallets[0];
-      if (primary && (primary.address || primary.walletAddress || primary.wallet_address)) {
-        return String(primary.address || primary.walletAddress || primary.wallet_address).trim();
-      }
-    }
-
-    const user = payload.user;
-    if (user) return extractWalletAddress(user);
-
-    return "";
-  }
-
-  function inferStateFromStorage() {
-    const saved = getState();
-    const storedPiUser = getStoredPiUser();
-    const storedUser = getStoredUser();
-    const piAddress = String(localStorage.getItem(PI_ADDRESS_KEY) || "").trim();
-
-    const inferredAddress = saved.address || extractWalletAddress(storedPiUser) || extractWalletAddress(storedUser) || piAddress;
-    const inferredConnected = !!(saved.connected || inferredAddress);
-
-    return {
-      connected: inferredConnected,
-      address: inferredConnected ? inferredAddress : "",
-      updatedAt: Date.now()
-    };
-  }
-
   function updateAddressBadge(btn, state) {
     if (!btn || !btn.parentElement) return;
 
     const previous = btn.parentElement.querySelector(`[data-wallet-address-for="${btn.dataset.walletId || ""}"]`);
     if (previous) previous.remove();
-
     if (!state.connected || !state.address) return;
 
     if (!btn.dataset.walletId) {
@@ -167,14 +116,10 @@
     badge.dataset.walletAddressFor = btn.dataset.walletId;
     badge.textContent = shortenAddress(state.address);
     badge.title = state.address;
-
-    if (btn.classList.contains("wallet-btn")) {
-      badge.style.marginLeft = "8px";
-      badge.style.fontSize = "0.82rem";
-      badge.style.opacity = "0.9";
-      badge.style.whiteSpace = "nowrap";
-    }
-
+    badge.style.marginLeft = "8px";
+    badge.style.fontSize = "0.82rem";
+    badge.style.opacity = "0.9";
+    badge.style.whiteSpace = "nowrap";
     btn.insertAdjacentElement("afterend", badge);
   }
 
@@ -183,10 +128,10 @@
     btn.animate(
       [
         { transform: "scale(1)", opacity: 1 },
-        { transform: "scale(0.96)", opacity: 0.9 },
+        { transform: "scale(0.97)", opacity: 0.9 },
         { transform: "scale(1)", opacity: 1 }
       ],
-      { duration: 200, easing: "ease-out" }
+      { duration: 180, easing: "ease-out" }
     );
   }
 
@@ -194,14 +139,14 @@
     if (!btn) return;
     const isConnected = !!state.connected;
     const options = opts || {};
+    const label = options.busyLabel || (isConnected ? DISCONNECT_TEXT : CONNECT_TEXT);
 
     btn.type = "button";
     btn.dataset.walletConnected = isConnected ? "true" : "false";
+    btn.title = isPiWalletReady ? "" : "Open this site in Pi Browser to connect wallet";
 
-    const label = options.busyLabel || (isConnected ? DISCONNECT_TEXT : CONNECT_TEXT);
     if (btn.classList.contains("wallet-btn")) {
-      const icon = "<i class='bx bx-wallet'></i> ";
-      btn.innerHTML = `${icon}${label}`;
+      btn.innerHTML = `<i class='bx bx-wallet'></i> ${label}`;
     } else {
       btn.textContent = label;
     }
@@ -209,29 +154,21 @@
     btn.classList.toggle("connected", isConnected);
     btn.setAttribute("aria-pressed", isConnected ? "true" : "false");
 
-    if (!options.skipAddressBadge) {
-      updateAddressBadge(btn, state);
-    }
-
+    if (!options.skipAddressBadge) updateAddressBadge(btn, state);
     animateButton(btn);
   }
 
   function updateAllButtons(opts) {
     const state = getState();
-    const options = opts || {};
-
     document.querySelectorAll(".wallet-btn, #connectWalletAction").forEach(function (btn) {
-      updateButton(btn, state, options);
+      updateButton(btn, state, opts);
     });
 
     document.querySelectorAll('[data-wallet-connect="true"]').forEach(function (el) {
-      if (el.tagName.toLowerCase() === "a") {
-        el.dataset.walletConnected = state.connected ? "true" : "false";
-      }
+      el.dataset.walletConnected = state.connected ? "true" : "false";
     });
 
-    const event = new CustomEvent("smaj:wallet-changed", { detail: state });
-    window.dispatchEvent(event);
+    window.dispatchEvent(new CustomEvent("smaj:wallet-changed", { detail: state }));
   }
 
   function ensureDesktopWalletButton() {
@@ -244,31 +181,35 @@
     nav.appendChild(btn);
   }
 
-  async function authenticateWithPi() {
-    if (!window.Pi || typeof window.Pi.authenticate !== "function") {
-      throw new Error("Pi Wallet API is unavailable. Please open this in Pi Browser.");
+  function detectPiWalletEnvironment(showAlert) {
+    const hasPi = !!window.Pi;
+    const hasRequest = hasPi && typeof window.Pi.request === "function";
+    const userAgent = String(navigator.userAgent || "").toLowerCase();
+    const looksLikePiBrowser = userAgent.includes("pibrowser") || userAgent.includes("pi browser");
+    const ready = hasRequest || (hasPi && looksLikePiBrowser);
+
+    isPiWalletReady = ready;
+
+    if (!ready && showAlert && !environmentAlertShown) {
+      environmentAlertShown = true;
+      alert("Pi Wallet not detected. Please open this site in Pi Browser.");
     }
 
-    if (typeof window.Pi.init === "function" && !window.__smajPiInit) {
-      window.Pi.init({ version: "2.0", sandbox: true });
-      window.__smajPiInit = true;
-    }
+    return ready;
+  }
 
-    const auth = await window.Pi.authenticate(["username", "payments"], function () {});
-    const address = extractWalletAddress(auth);
-
-    if (!address) {
-      throw new Error("No wallet address received from Pi Wallet.");
-    }
-
-    return address;
+  function resolveAddress(accountPayload) {
+    if (!accountPayload) return "";
+    const direct = accountPayload.address || accountPayload.walletAddress || accountPayload.wallet_address;
+    return String(direct || "").trim();
   }
 
   async function connectWallet() {
     if (isConnecting) return getState();
+    if (!detectPiWalletEnvironment(true)) return getState();
 
     const current = getState();
-    if (current.connected) {
+    if (current.connected && current.address) {
       updateAllButtons();
       redirectToDashboard();
       return current;
@@ -278,19 +219,23 @@
     updateAllButtons({ busyLabel: CONNECTING_TEXT, skipAddressBadge: true });
 
     try {
-      const address = await authenticateWithPi();
+      const account = await window.Pi.request({ method: "getAccount" });
+      const address = resolveAddress(account);
 
-      const next = { connected: true, address, updatedAt: Date.now() };
-      persistState(next);
-      syncLegacyKeys(next);
+      if (!address) {
+        alert("Wallet connection failed: no wallet address received");
+        updateAllButtons();
+        return current;
+      }
+
+      storeConnectedSession(address);
       updateAllButtons();
       alert("Wallet connected successfully.");
       redirectToDashboard();
-      return next;
+      return getState();
     } catch (error) {
       console.error("Wallet connect failed:", error);
-      const message = error && error.message ? error.message : "Please try again.";
-      alert(`Wallet connection failed. ${message}`);
+      alert("Wallet connection failed: no wallet address received");
       updateAllButtons();
       return current;
     } finally {
@@ -298,42 +243,17 @@
     }
   }
 
-  async function disconnectWallet() {
-    if (isDisconnecting) return getState();
-
-    const current = getState();
-    if (!current.connected) {
-      updateAllButtons();
-      return current;
-    }
-
-    isDisconnecting = true;
-
-    try {
-      if (window.Pi && typeof window.Pi.disconnect === "function") {
-        await window.Pi.disconnect();
-      } else if (window.Pi && typeof window.Pi.logout === "function") {
-        await window.Pi.logout();
-      }
-    } catch (error) {
-      console.warn("Wallet provider disconnect warning:", error);
-    }
-
-    const next = { connected: false, address: "", updatedAt: Date.now() };
-    persistState(next);
-    syncLegacyKeys(next);
+  function disconnectWallet() {
+    clearStoredSession();
+    persistState({ connected: false, address: "", updatedAt: Date.now() });
     updateAllButtons();
     alert("Wallet disconnected successfully.");
-
-    isDisconnecting = false;
-    return next;
+    return getState();
   }
 
-  async function toggleWallet() {
+  function toggleWallet() {
     const state = getState();
-    if (state.connected) {
-      return disconnectWallet();
-    }
+    if (state.connected) return disconnectWallet();
     return connectWallet();
   }
 
@@ -363,14 +283,17 @@
   }
 
   function initializeWalletState() {
-    const inferred = inferStateFromStorage();
-    persistState(inferred);
-    syncLegacyKeys(inferred);
+    const hasPiEnv = detectPiWalletEnvironment(true);
+    const rawState = getState();
+    const storedAddress = String(localStorage.getItem(PI_ADDRESS_KEY) || rawState.address || "").trim();
+    const connected = !!storedAddress;
+    const next = { connected, address: connected ? storedAddress : "", updatedAt: Date.now() };
+
+    persistState(next);
     updateAllButtons();
 
-    if (inferred.connected) {
-      redirectToDashboard();
-    }
+    if (!hasPiEnv) return;
+    if (next.connected) redirectToDashboard();
   }
 
   function init() {
