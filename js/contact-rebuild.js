@@ -11,14 +11,14 @@ if (contactForm && formResponse) {
     const serviceType = document.getElementById('serviceType')?.value.trim();
     const message = document.getElementById('message')?.value.trim();
 
-    if (!name || !email || !subject || !serviceType || !message) {
+    if (!name || !email || !message) {
       formResponse.style.color = '#b00020';
       formResponse.textContent = 'Please complete all fields.';
       return;
     }
 
     formResponse.style.color = '#157347';
-    formResponse.textContent = 'Message received. Our team will contact you soon.';
+    formResponse.textContent = 'Your message has been sent. We will reply shortly.';
     contactForm.reset();
   });
 }
