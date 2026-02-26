@@ -91,70 +91,53 @@
     return false;
   };
 
-  document.querySelectorAll(".hub-card").forEach((card) => {
-    const actionBtn = card.querySelector(".hub-open-btn");
-    if (!actionBtn) return;
+  function setupServiceCardAccessGate() {
+    const ecosystemGrid = document.querySelector(".ecosystem-grid");
+    if (!ecosystemGrid) return;
 
-    actionBtn.addEventListener("click", async () => {
-      const platformName = card.dataset.platform || "Platform";
-      const platformUrl = card.dataset.platformUrl || "#";
-      const requiresWallet = card.dataset.requiresWallet === "true";
-      const comingSoon = card.dataset.comingSoon === "true";
-      const state = getState();
-      const isSmajStore = platformName === "SMAJ Store";
-
-      if (comingSoon) {
-        sessionLog.textContent = `${platformName}: Added to waitlist placeholder.`;
-        alert(`${platformName} is coming soon. You will be notified when access opens.`);
-        return;
-      }
-
-      if (requiresWallet && !state.connected) {
-        sessionLog.textContent = `${platformName}: Blocked until wallet connection.`;
-        alert(`Please connect your Pi wallet first to open ${platformName}.`);
-        return;
-      }
-
-      if (isSmajStore) {
-        const ssoSuccess = await redirectToSmajStore();
-        if (ssoSuccess) return;
-
-        sessionLog.textContent = "SMAJ Store: Using fallback redirect...";
-      }
-
-      sessionLog.textContent = `${platformName}: Creating secure hub handoff...`;
-
-      setTimeout(() => {
-        const storedUser = localStorage.getItem("pi_user");
-        let username = "guest";
-
-        if (storedUser) {
-          try {
-            const parsed = JSON.parse(storedUser);
-            username = parsed.username || "guest";
-          } catch (_) {}
-        }
-
-        const encodedUser = encodeURIComponent(username);
-        const separator = platformUrl.includes("?") ? "&" : "?";
-        const target = `${platformUrl}${separator}hub_user=${encodedUser}&from=smajpihub`;
-        window.location.href = target;
-      }, 500);
-    });
-  });
-
-  const comingSoonMessage = "This feature is coming soon.";
-  const ecosystemGrid = document.querySelector(".ecosystem-grid");
-  if (ecosystemGrid) {
-    ecosystemGrid.addEventListener("click", (event) => {
+    ecosystemGrid.addEventListener("click", async (event) => {
       const card = event.target.closest(".eco-card");
-      if (!card || card.dataset.comingSoon !== "true") return;
-      event.preventDefault();
-      alert(comingSoonMessage);
+      if (!card) return;
+      const clickedAction = event.target.closest("a, button");
+      const cardLink = card.querySelector("a[href]");
+
+      const state = getState();
+      const title = (card.querySelector("h3") && card.querySelector("h3").textContent || "Service").trim();
+      const isComingSoon = card.dataset.comingSoon === "true";
+      const isStoreCard = /smaj\s*store/i.test(title);
+
+      if (!state.connected) {
+        event.preventDefault();
+        event.stopPropagation();
+        sessionLog.textContent = `${title}: blocked until wallet connection.`;
+        alert("Please connect your wallet to access this service.");
+        return;
+      }
+
+      sessionLog.textContent = `${title}: access granted.`;
+
+      if (isComingSoon) {
+        event.preventDefault();
+        alert("This feature is coming soon.");
+        return;
+      }
+
+      if (isStoreCard && clickedAction && clickedAction.tagName.toLowerCase() === "a") {
+        const ssoSuccess = await redirectToSmajStore();
+        if (ssoSuccess) {
+          event.preventDefault();
+        }
+        return;
+      }
+
+      if (!clickedAction && cardLink) {
+        window.location.href = cardLink.href;
+      }
     });
   }
 
   window.addEventListener("storage", setWalletUI);
   window.addEventListener("smaj:wallet-changed", setWalletUI);
+  setupServiceCardAccessGate();
   setWalletUI();
 })();
