@@ -96,33 +96,6 @@ function onIncompletePayment(payment) {
   console.log("Incomplete payment found:", payment);
 }
 
-function setupScreenModeAutoRefresh() {
-  const bucketKey = "screen_mode_bucket";
-  const getBucket = () => (window.innerWidth <= 768 ? "mobile" : "desktop");
-  const initial = getBucket();
-  if (!sessionStorage.getItem(bucketKey)) {
-    sessionStorage.setItem(bucketKey, initial);
-  }
-
-  let resizeTimer = null;
-  window.addEventListener("resize", () => {
-    if (resizeTimer) clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      const prev = sessionStorage.getItem(bucketKey) || initial;
-      const current = getBucket();
-      if (current !== prev) {
-        sessionStorage.setItem(bucketKey, current);
-        window.location.reload();
-      }
-    }, 250);
-  });
-
-  window.addEventListener("orientationchange", () => {
-    setTimeout(() => window.location.reload(), 250);
-  });
-}
-setupScreenModeAutoRefresh();
-
 // Mobile Menu Toggle
 const menuToggle = document.getElementById("menuToggle");
 const navMenu = document.getElementById("navMenu");
@@ -750,7 +723,3 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 console.log("SMAJ PI HUB navigation loaded");
-
-
-
-
