@@ -41,6 +41,8 @@ function clearAuth() {
   localStorage.removeItem("user");
   localStorage.removeItem("pi_user");
   localStorage.removeItem("pi_wallet_address");
+  localStorage.removeItem("dashboard_profile_data");
+  localStorage.removeItem("dashboard_profile_photo");
 }
 
 function ensureAppUiPrimitives() {

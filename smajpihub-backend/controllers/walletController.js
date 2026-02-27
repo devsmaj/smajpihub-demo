@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const LoginActivity = require('../models/LoginActivity');
 const { generateSessionToken } = require('../utils/jwt');
 const { verifyWalletSignature, isValidWalletAddress } = require('../utils/wallet');
 const { asyncHandler } = require('../middleware/errorHandler');
@@ -60,6 +61,13 @@ const connectWallet = asyncHandler(async (req, res) => {
     await user.save();
   }
 
+  // Track login activity
+  await LoginActivity.create({
+    user: user._id,
+    ip: req.ip,
+    userAgent: req.headers['user-agent']
+  });
+
   // Generate session token
   const { token, expiresAt, expiresIn } = generateSessionToken(user);
 
@@ -120,22 +128,21 @@ const logout = asyncHandler(async (req, res) => {
  * Update user profile
  */
 const updateProfile = asyncHandler(async (req, res) => {
-  const { username, fullName, bio, avatar } = req.body;
+  const { username, fullName, email, phone, country, bio } = req.body;
   const user = req.user;
 
   // Update fields
   if (username) user.username = username;
+  if (email) user.email = email;
+
+  user.profile = user.profile || {};
   if (fullName) {
-    user.profile = user.profile || {};
     user.profile.fullName = fullName;
   }
+  if (phone) user.profile.phone = phone;
+  if (country) user.profile.country = country;
   if (bio) {
-    user.profile = user.profile || {};
     user.profile.bio = bio;
-  }
-  if (avatar) {
-    user.profile = user.profile || {};
-    user.profile.avatar = avatar;
   }
 
   await user.save();
@@ -146,12 +153,36 @@ const updateProfile = asyncHandler(async (req, res) => {
     user: {
       walletAddress: user.walletAddress,
       username: user.username,
+      email: user.email,
+      phone: user.phone,
       role: user.role,
       profile: user.profile
     }
   });
 });
 
+/**
+ * POST /api/user/avatar
+ * Update user avatar
+ */
+const updateAvatar = asyncHandler(async (req, res) => {
+  const user = req.user;
+
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: 'No image file uploaded.' });
+  }
+
+  // In a real app, you'd upload req.file.buffer to a cloud storage
+  // (S3, Cloudinary, etc.) and save the URL.
+  // For this example, we'll save it as a base64 string.
+  const avatarUrl = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+  user.profile = user.profile || {};
+  user.profile.avatar = avatarUrl;
+  await user.save();
+
+  res.status(200).json({ success: true, message: 'Avatar updated.', avatarUrl });
+});
 /**
  * PUT /api/user/role
  * Update user role
@@ -220,6 +251,7 @@ module.exports = {
   getUser,
   logout,
   updateProfile,
+  updateAvatar,
   updateRole,
   getSSOToken
 };
