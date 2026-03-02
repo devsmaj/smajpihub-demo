@@ -11,6 +11,7 @@ const { notFound, errorHandler } = require('./middleware/errorHandler');
 const authRoutes = require('./routes/auth');
 const serviceRoutes = require('./routes/services');
 const orderRoutes = require('./routes/orders');
+const assistantRoutes = require('./routes/assistant');
 
 // Import JWT utilities for public key endpoint
 const jwtUtils = require('./utils/jwt');
@@ -22,7 +23,7 @@ connectDB();
 
 // Security middleware
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
+  crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
 // CORS configuration
@@ -30,7 +31,7 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    
+
     if (config.corsOrigin.includes(origin)) {
       callback(null, true);
     } else {
@@ -106,6 +107,9 @@ app.get('/api', (req, res) => {
         'GET /api/order/:id': 'Get order details',
         'PUT /api/order/:id/status': 'Update order status (vendor)',
         'PUT /api/order/:id/payment': 'Update payment (admin)'
+      },
+      assistant: {
+        'POST /api/assistant': 'SMAJ AI assistant response (OpenAI with fallback)'
       }
     }
   });
@@ -131,9 +135,7 @@ app.get('/api/public-key', (req, res) => {
 app.use('/api', authRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api', orderRoutes);
-
-// Serve static files from public directory (for uploads, etc.)
-// app.use('/uploads', express.static('uploads'));
+app.use('/api', assistantRoutes);
 
 // Error handling
 app.use(notFound);
@@ -142,21 +144,7 @@ app.use(errorHandler);
 // Start server
 const PORT = config.port;
 app.listen(PORT, () => {
-  console.log(`
-╔═══════════════════════════════════════════════════════╗
-║                                                       ║
-║   🟣 SMAJ PI HUB API SERVER                          ║
-║                                                       ║
-║   Server running on port ${PORT}                        ║
-║   Environment: ${config.nodeEnv}                          ║
-║                                                       ║
-║   Endpoints:                                          ║
-║   - Health: http://localhost:${PORT}/health              ║
-║   - API Info: http://localhost:${PORT}/api              ║
-║   - Public Key: http://localhost:${PORT}/api/public-key  ║
-║                                                       ║
-╚═══════════════════════════════════════════════════════╝
-  `);
+  console.log(`SMAJ PI HUB API server running on port ${PORT} (${config.nodeEnv})`);
 });
 
 module.exports = app;

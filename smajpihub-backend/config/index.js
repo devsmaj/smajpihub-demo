@@ -23,6 +23,12 @@ module.exports = {
   
   // Pi Network
   piNetworkSandbox: process.env.PI_NETWORK_SANDBOX === 'true',
+
+  // AI Assistant
+  openai: {
+    apiKey: process.env.OPENAI_API_KEY || '',
+    model: process.env.OPENAI_MODEL || 'gpt-4.1-mini'
+  },
   
   // Rate Limiting
   rateLimit: {

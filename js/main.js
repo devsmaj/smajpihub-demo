@@ -569,6 +569,41 @@ console.log("SMAJ PI HUB navigation loaded");
 function setupSmajAiAssistant() {
   if (!document.body || document.getElementById("smajAiTrigger")) return;
 
+  const AI_THINK_DELAY_MS = 10000;
+  const ASSISTANT_API_URL = `${API_BASE}/api/assistant`;
+  const chatHistory = [];
+
+  const localKnowledgeBase = [
+    {
+      keywords: ['service', 'services', 'jobs', 'store', 'health', 'education', 'transport', 'charity', 'housing', 'ecosystem'],
+      answer: 'SMAJ PI HUB services are listed on the Services page. You can access jobs, store, healthcare, education, transport, housing, charity, and more at pages/service.html.'
+    },
+    {
+      keywords: ['pricing', 'price', 'plan', 'plans', 'cost', 'payment'],
+      answer: 'You can check package details and platform pricing at pages/pricing.html.'
+    },
+    {
+      keywords: ['wallet', 'connect', 'pi wallet', 'pi coin', 'balance'],
+      answer: 'Use the Connect Wallet button in the top navigation. After wallet connection, protected dashboard features become available.'
+    },
+    {
+      keywords: ['dashboard', 'profile', 'finance', 'orders', 'analytics', 'notification', 'security'],
+      answer: 'Dashboard includes Overview, Profile, Wallet & Finance, Ecosystem, Orders, Jobs, Notifications, Analytics, and Security at pages/dashboard/client.html.'
+    },
+    {
+      keywords: ['contact', 'support', 'help', 'team', 'email'],
+      answer: 'Use the Contact page to submit support requests: pages/contact.html.'
+    },
+    {
+      keywords: ['faq', 'question', 'questions', 'common issue'],
+      answer: 'For common user questions, check pages/faq.html.'
+    },
+    {
+      keywords: ['legal', 'privacy', 'terms', 'cookie', 'report abuse'],
+      answer: 'Legal documents are available under pages/legal: Privacy, Terms, Cookie Policy, and Report Abuse.'
+    }
+  ];
+
   const trigger = document.createElement("button");
   trigger.id = "smajAiTrigger";
   trigger.className = "smaj-ai-trigger";
@@ -609,6 +644,7 @@ function setupSmajAiAssistant() {
   const input = modal.querySelector("#smajAiInput");
   const form = modal.querySelector("#smajAiForm");
   const log = modal.querySelector("#smajAiLog");
+  const sendBtn = modal.querySelector(".smaj-ai-send");
 
   const openModal = () => {
     modal.classList.add("open");
@@ -622,22 +658,64 @@ function setupSmajAiAssistant() {
   };
 
   const addMessage = (type, text) => {
-    if (!log || !text) return;
+    if (!log || !text) return null;
     const item = document.createElement("div");
     item.className = `smaj-ai-msg ${type}`;
     item.textContent = text;
     log.appendChild(item);
     log.scrollTop = log.scrollHeight;
+    return item;
   };
 
-  const getReply = (prompt) => {
-    const q = (prompt || "").toLowerCase();
-    if (q.includes("price") || q.includes("pricing")) return "You can check full SMAJ plans on the Pricing page.";
-    if (q.includes("service") || q.includes("job")) return "Open Services to explore jobs, store, healthcare, education, and more.";
-    if (q.includes("wallet") || q.includes("connect")) return "Use the Connect Wallet button in the top navigation to connect your Pi wallet.";
-    if (q.includes("dashboard")) return "Go to Dashboard from the top menu to manage profile, finance, and ecosystem tools.";
-    if (q.includes("contact") || q.includes("support")) return "Use the Contact page and share your issue. The team will respond quickly.";
-    return "I can help with services, wallet, dashboard, pricing, and support navigation on SMAJ PI HUB.";
+  const normalize = (text) => (text || '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+  const getLocalReply = (prompt) => {
+    const q = normalize(prompt);
+    let best = null;
+    let bestScore = 0;
+
+    for (const item of localKnowledgeBase) {
+      const score = item.keywords.reduce((acc, key) => acc + (q.includes(key) ? 1 : 0), 0);
+      if (score > bestScore) {
+        bestScore = score;
+        best = item;
+      }
+    }
+
+    if (best && bestScore > 0) return best.answer;
+    if (q.includes('hello') || q.includes('hi')) {
+      return 'Hello. Ask me about SMAJ PI HUB services, dashboard, wallet, pricing, support, or legal pages.';
+    }
+    return 'I can help with SMAJ PI HUB pages, services, wallet flow, dashboard access, pricing, and support. Please ask a specific SMAJ PI HUB question.';
+  };
+
+  const fetchAssistantReply = async (prompt) => {
+    try {
+      const response = await fetch(ASSISTANT_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: prompt,
+          history: chatHistory.slice(-8)
+        })
+      });
+
+      if (!response.ok) throw new Error(`Assistant API HTTP ${response.status}`);
+
+      const data = await response.json();
+      if (data && data.success && typeof data.reply === 'string' && data.reply.trim()) {
+        return data.reply.trim();
+      }
+    } catch (error) {
+      console.warn('[SMAJ assistant] backend unavailable, using local fallback:', error.message);
+    }
+
+    return getLocalReply(prompt);
+  };
+
+  const setInputState = (disabled) => {
+    if (input) input.disabled = disabled;
+    if (sendBtn) sendBtn.disabled = disabled;
   };
 
   trigger.addEventListener("click", openModal);
@@ -654,18 +732,38 @@ function setupSmajAiAssistant() {
   form && form.addEventListener("submit", (e) => {
     e.preventDefault();
     if (!input) return;
+
     const value = input.value.trim();
     if (!value) return;
-    addMessage("user", value);
-    addMessage("bot", getReply(value));
-    input.value = "";
+
+    addMessage('user', value);
+    chatHistory.push({ role: 'user', content: value });
+    input.value = '';
+    setInputState(true);
+
+    const thinkingBubble = addMessage('bot', 'Thinking...');
+
+    window.setTimeout(async () => {
+      const reply = await fetchAssistantReply(value);
+
+      if (thinkingBubble && thinkingBubble.parentNode) {
+        thinkingBubble.parentNode.removeChild(thinkingBubble);
+      }
+
+      addMessage('bot', reply);
+      chatHistory.push({ role: 'assistant', content: reply });
+
+      setInputState(false);
+      if (input) input.focus();
+    }, AI_THINK_DELAY_MS);
   });
 }
-
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", setupSmajAiAssistant);
 } else {
   setupSmajAiAssistant();
 }
+
+
 
 
