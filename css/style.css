@@ -486,7 +486,7 @@ body.wallet-modal-open {
     position: absolute;
     top: 12px;
     right: 14px;
-    font-size: 28px;
+    font-size: 21px;
     line-height: 1;
     cursor: pointer;
   }
@@ -872,8 +872,8 @@ body.dark .copyright {
   position: fixed;
   right: 18px;
   bottom: 18px;
-  width: 64px;
-  height: 64px;
+  width: 52px;
+  height: 52px;
   border: none;
   border-radius: 50%;
   background: linear-gradient(140deg, #7b4dff 0%, #9554ff 50%, #6f42ff 100%);
@@ -881,7 +881,7 @@ body.dark .copyright {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 30px;
+  font-size: 24px;
   cursor: pointer;
   box-shadow: 0 14px 30px rgba(91, 56, 214, 0.35);
   z-index: 3000;
@@ -925,6 +925,7 @@ body.dark .copyright {
   display: flex;
   flex-direction: column;
 }
+
 .smaj-ai-head {
   background: linear-gradient(100deg, #a8dce0 0%, #cbbced 100%);
   min-height: 58px;
@@ -936,7 +937,7 @@ body.dark .copyright {
 .smaj-ai-close {
   border: none;
   background: transparent;
-  font-size: 30px;
+  font-size: 24px;
   line-height: 1;
   cursor: pointer;
   color: #14172a;
@@ -1055,17 +1056,17 @@ body.smaj-ai-open {
 
 @media (max-width: 576px) {
   .smaj-ai-trigger {
-    width: 58px;
-    height: 58px;
-    font-size: 28px;
+    width: 46px;
+    height: 46px;
+    font-size: 21px;
     right: 14px;
     bottom: 14px;
   }
 
   .smaj-ai-card {
-    right: 8px;
+    right: 12px;
     bottom: 82px;
-    width: calc(100vw - 16px);
+    width: min(360px, calc(100vw - 28px));
     min-height: 500px;
     height: min(82vh, 560px);
     max-height: calc(100dvh - 98px);
@@ -1075,9 +1076,3 @@ body.smaj-ai-open {
     font-size: 40px;
   }
 }
-
-
-
-
-
-
