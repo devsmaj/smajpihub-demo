@@ -565,3 +565,107 @@ document.addEventListener("DOMContentLoaded", () => {
 
 console.log("SMAJ PI HUB navigation loaded");
 
+
+function setupSmajAiAssistant() {
+  if (!document.body || document.getElementById("smajAiTrigger")) return;
+
+  const trigger = document.createElement("button");
+  trigger.id = "smajAiTrigger";
+  trigger.className = "smaj-ai-trigger";
+  trigger.type = "button";
+  trigger.setAttribute("aria-label", "Open AI assistant");
+  trigger.innerHTML = "?";
+
+  const modal = document.createElement("div");
+  modal.id = "smajAiModal";
+  modal.className = "smaj-ai-modal";
+  modal.innerHTML = `
+    <div class="smaj-ai-overlay" data-ai-close="true"></div>
+    <section class="smaj-ai-card" role="dialog" aria-modal="true" aria-label="SMAJ AI Assistant">
+      <div class="smaj-ai-head">
+        <button class="smaj-ai-close" id="smajAiClose" type="button" aria-label="Close assistant">&times;</button>
+      </div>
+      <div class="smaj-ai-body" id="smajAiBody">
+        <div class="smaj-ai-content">
+          <h3>Get <span>help</span> with anything SMAJ PI HUB</h3>
+          <p>Fast answers. Powered by AI.</p>
+        </div>
+        <div class="smaj-ai-log" id="smajAiLog"></div>
+      </div>
+      <form class="smaj-ai-form" id="smajAiForm">
+        <div class="smaj-ai-input-wrap">
+          <input id="smajAiInput" type="text" placeholder="How can I help?" autocomplete="off">
+          <button class="smaj-ai-send" type="submit" aria-label="Send message"><i class='bx bx-send'></i></button>
+        </div>
+      </form>
+      <p class="smaj-ai-note">AI can make mistakes. Double-check for accuracy.</p>
+    </section>
+  `;
+
+  document.body.appendChild(trigger);
+  document.body.appendChild(modal);
+
+  const closeBtn = modal.querySelector("#smajAiClose");
+  const input = modal.querySelector("#smajAiInput");
+  const form = modal.querySelector("#smajAiForm");
+  const log = modal.querySelector("#smajAiLog");
+
+  const openModal = () => {
+    modal.classList.add("open");
+    document.body.classList.add("smaj-ai-open");
+    setTimeout(() => input && input.focus(), 40);
+  };
+
+  const closeModal = () => {
+    modal.classList.remove("open");
+    document.body.classList.remove("smaj-ai-open");
+  };
+
+  const addMessage = (type, text) => {
+    if (!log || !text) return;
+    const item = document.createElement("div");
+    item.className = `smaj-ai-msg ${type}`;
+    item.textContent = text;
+    log.appendChild(item);
+    log.scrollTop = log.scrollHeight;
+  };
+
+  const getReply = (prompt) => {
+    const q = (prompt || "").toLowerCase();
+    if (q.includes("price") || q.includes("pricing")) return "You can check full SMAJ plans on the Pricing page.";
+    if (q.includes("service") || q.includes("job")) return "Open Services to explore jobs, store, healthcare, education, and more.";
+    if (q.includes("wallet") || q.includes("connect")) return "Use the Connect Wallet button in the top navigation to connect your Pi wallet.";
+    if (q.includes("dashboard")) return "Go to Dashboard from the top menu to manage profile, finance, and ecosystem tools.";
+    if (q.includes("contact") || q.includes("support")) return "Use the Contact page and share your issue. The team will respond quickly.";
+    return "I can help with services, wallet, dashboard, pricing, and support navigation on SMAJ PI HUB.";
+  };
+
+  trigger.addEventListener("click", openModal);
+  closeBtn && closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => {
+    const target = e.target;
+    if (target && target.dataset && target.dataset.aiClose === "true") closeModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+
+  form && form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!input) return;
+    const value = input.value.trim();
+    if (!value) return;
+    addMessage("user", value);
+    addMessage("bot", getReply(value));
+    input.value = "";
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupSmajAiAssistant);
+} else {
+  setupSmajAiAssistant();
+}
+
+
