@@ -123,6 +123,29 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
+.wp-subsection-head {
+  margin-top: 42px;
+}
+
+.wp-ai-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.wp-ai-grid article {
+  border-radius: 18px;
+  border: 1px solid #dbe4f2;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(12, 20, 35, 0.08);
+  padding: 24px;
+}
+
+.wp-ai-grid h3 {
+  color: #0b0f1a;
+  margin-bottom: 10px;
+}
+
 .wp-three-col {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -233,6 +256,7 @@
   .wp-summary-grid,
   .wp-hub-grid,
   .wp-tech-grid,
+  .wp-ai-grid,
   .wp-three-col,
   .wp-trust-grid,
   .wp-verify-flow,
@@ -248,6 +272,7 @@
   .wp-summary-grid,
   .wp-hub-grid,
   .wp-tech-grid,
+  .wp-ai-grid,
   .wp-three-col,
   .wp-trust-grid,
   .wp-verify-flow,

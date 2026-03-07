@@ -67,7 +67,7 @@ window.BLOG_POSTS = [
   {
     slug: "building-trusted-pi-commerce",
     title: "Building Trusted Pi Commerce Through Verified Sellers and Escrow Flow",
-    snippet: "How SMAJ marketplace creates transparent ordering and delivery with Pi Coin utility.",
+    snippet: "How SMAJ marketplace creates transparent ordering and delivery through Pi wallet flow and evolving token utility.",
     author: "Marketplace Ops",
     date: "2026-01-10",
     readTime: "6 min read",
