@@ -11,7 +11,16 @@ if (window.Pi) {
   console.warn("Pi SDK not found. Open in Pi Browser.");
 }
 
-const API_BASE = "http://localhost:3000";
+function getApiBase() {
+  const origin = window.location.origin || "";
+  if (origin && origin !== "null" && !origin.startsWith("file:")) {
+    return origin.replace(/\/$/, "");
+  }
+
+  return "http://localhost:3000";
+}
+
+const API_BASE = getApiBase();
 const TOKEN_KEY = "smaj_token";
 const USER_KEY = "smaj_user";
 
@@ -447,7 +456,8 @@ function setupDashboardGateButtons() {
   const matchDashboard = (text) => /dashboard/i.test(text || "");
 
   document.querySelectorAll('button, a').forEach((el) => {
-    if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href')?.includes('dashboard/client.html')) {
+    const href = el.getAttribute('href');
+    if (el.tagName.toLowerCase() === 'a' && href && href.includes('dashboard/client.html')) {
       return;
     }
     if (el.dataset.dashboardGate === "true") return;
