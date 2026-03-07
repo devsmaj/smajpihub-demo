@@ -35,6 +35,7 @@
       <nav class="sidebar-nav" id="sidebarNav">
         <button class="nav-link active" data-section="overview"><i class='bx bx-grid-alt'></i>Dashboard Overview</button>
         <button class="nav-link" data-section="profile"><i class='bx bx-user'></i>My Profile</button>
+        <button class="nav-link" data-section="kyc"><i class='bx bx-badge-check'></i>KYC Verification</button>
         <button class="nav-link" data-section="finance"><i class='bx bx-wallet-alt'></i>Wallet & Finance</button>
         <button class="nav-link" data-section="ecosystem"><i class='bx bx-planet'></i>My Ecosystem</button>
         <button class="nav-link" data-section="orders"><i class='bx bx-package'></i>Orders & Bookings</button>
@@ -154,6 +155,164 @@
             <div><h4>Country</h4><p id="profileCountry">United States</p></div>
             <div><h4>Wallet Address</h4><p id="profileWalletAddress">GA7H...P91X</p></div>
             <div><h4>Member Since</h4><p id="profileMemberSince">March 21, 2024</p></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="dashboard-section" id="section-kyc">
+        <div class="section-head">
+          <h2>KYC Verification</h2>
+        </div>
+
+        <div class="kyc-overview-grid">
+          <article class="kyc-summary-card">
+            <span class="kyc-label">Overall Status</span>
+            <h3 id="kycOverallStatus">Not Started</h3>
+            <p id="kycStatusMessage">Complete your profile details and upload the required documents to begin verification.</p>
+          </article>
+          <article class="kyc-summary-card">
+            <span class="kyc-label">Completion</span>
+            <h3 id="kycCompletionValue">0%</h3>
+            <p>Progress updates automatically as you fill the KYC form and upload documents.</p>
+          </article>
+          <article class="kyc-summary-card">
+            <span class="kyc-label">Estimated Review</span>
+            <h3 id="kycReviewEta">Pending Submission</h3>
+            <p>Verification requests are reviewed after all required items are submitted.</p>
+          </article>
+          <article class="kyc-summary-card">
+            <span class="kyc-label">Next Action</span>
+            <h3 id="kycNextAction">Start Verification</h3>
+            <p>Upload your identity documents and confirm your details before submission.</p>
+          </article>
+        </div>
+
+        <div class="kyc-layout">
+          <article class="panel">
+            <div class="panel-head">
+              <h3>Required Documents</h3>
+            </div>
+            <div class="kyc-doc-grid">
+              <article class="kyc-doc-card">
+                <div>
+                  <h4>Government ID</h4>
+                  <p>Passport, national ID, or driver's license.</p>
+                </div>
+                <span class="kyc-doc-status pending" id="kycGovIdStatus">Required</span>
+                <p class="kyc-doc-file" id="kycGovIdFile">No file uploaded</p>
+                <input type="file" id="kycGovIdInput" class="kyc-file-input" accept=".jpg,.jpeg,.png,.pdf">
+                <button class="btn-soft" type="button" id="kycGovIdBtn">Upload ID</button>
+              </article>
+
+              <article class="kyc-doc-card">
+                <div>
+                  <h4>Selfie Verification</h4>
+                  <p>Recent selfie to match your identity document.</p>
+                </div>
+                <span class="kyc-doc-status pending" id="kycSelfieStatus">Required</span>
+                <p class="kyc-doc-file" id="kycSelfieFile">No file uploaded</p>
+                <input type="file" id="kycSelfieInput" class="kyc-file-input" accept=".jpg,.jpeg,.png">
+                <button class="btn-soft" type="button" id="kycSelfieBtn">Upload Selfie</button>
+              </article>
+
+              <article class="kyc-doc-card">
+                <div>
+                  <h4>Proof Of Address</h4>
+                  <p>Utility bill, bank statement, or official address document.</p>
+                </div>
+                <span class="kyc-doc-status pending" id="kycAddressStatus">Required</span>
+                <p class="kyc-doc-file" id="kycAddressFile">No file uploaded</p>
+                <input type="file" id="kycAddressInput" class="kyc-file-input" accept=".jpg,.jpeg,.png,.pdf">
+                <button class="btn-soft" type="button" id="kycAddressBtn">Upload Address Proof</button>
+              </article>
+
+              <article class="kyc-doc-card">
+                <div>
+                  <h4>Business Registration</h4>
+                  <p>Optional for merchants, agencies, and organization accounts.</p>
+                </div>
+                <span class="kyc-doc-status optional" id="kycBusinessStatus">Optional</span>
+                <p class="kyc-doc-file" id="kycBusinessFile">Not provided</p>
+                <input type="file" id="kycBusinessInput" class="kyc-file-input" accept=".jpg,.jpeg,.png,.pdf">
+                <button class="btn-soft" type="button" id="kycBusinessBtn">Upload Business Doc</button>
+              </article>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <h3>Verification Flow</h3>
+            </div>
+            <div class="kyc-steps">
+              <div class="kyc-step"><span>1</span><div><h4>Complete profile details</h4><p>Enter your legal identity and contact information exactly as it appears on official records.</p></div></div>
+              <div class="kyc-step"><span>2</span><div><h4>Upload required documents</h4><p>Submit clear files for identity, selfie verification, and proof of address.</p></div></div>
+              <div class="kyc-step"><span>3</span><div><h4>Submit for review</h4><p>Your KYC package moves to review after all required fields and documents are completed.</p></div></div>
+              <div class="kyc-step"><span>4</span><div><h4>Receive verification result</h4><p>Status will change to approved, in review, or action required after the verification check.</p></div></div>
+            </div>
+          </article>
+        </div>
+
+        <article class="panel kyc-form-panel">
+          <div class="panel-head">
+            <h3>Verification Details</h3>
+          </div>
+          <div class="kyc-form-grid">
+            <label>
+              <span>Legal Full Name</span>
+              <input type="text" id="kycLegalName" placeholder="Enter your legal full name">
+            </label>
+            <label>
+              <span>Date Of Birth</span>
+              <input type="date" id="kycDob">
+            </label>
+            <label>
+              <span>Nationality</span>
+              <input type="text" id="kycNationality" placeholder="Nationality">
+            </label>
+            <label>
+              <span>Document Type</span>
+              <select id="kycDocumentType">
+                <option value="">Select document type</option>
+                <option value="passport">Passport</option>
+                <option value="national_id">National ID</option>
+                <option value="drivers_license">Driver's License</option>
+              </select>
+            </label>
+            <label>
+              <span>Document Number</span>
+              <input type="text" id="kycDocumentNumber" placeholder="Document number">
+            </label>
+            <label>
+              <span>Country Of Residence</span>
+              <input type="text" id="kycResidenceCountry" placeholder="Country of residence">
+            </label>
+            <label class="kyc-field-wide">
+              <span>Residential Address</span>
+              <input type="text" id="kycAddressLine" placeholder="Full residential address">
+            </label>
+            <label class="kyc-field-wide">
+              <span>Verification Role</span>
+              <select id="kycRole">
+                <option value="">Select role</option>
+                <option value="user">General User</option>
+                <option value="vendor">Vendor / Merchant</option>
+                <option value="freelancer">Freelancer / Professional</option>
+                <option value="doctor">Doctor / Healthcare Provider</option>
+                <option value="driver">Driver / Transport Operator</option>
+                <option value="property_owner">Property Owner / Organizer</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="kyc-consent">
+            <input type="checkbox" id="kycConsent">
+            <span>I confirm that my submitted details are accurate and that SMAJ PI HUB may review them for KYC verification.</span>
+          </label>
+
+          <div class="kyc-actions">
+            <button class="btn-soft" type="button" id="kycSaveDraftBtn">Save Draft</button>
+            <button class="btn-soft" type="button" id="kycResetBtn">Reset KYC</button>
+            <button class="btn-soft" type="button" id="kycSubmitBtn">Submit For Review</button>
           </div>
         </article>
       </section>

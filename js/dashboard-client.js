@@ -27,6 +27,15 @@
   const profileAvatarTrigger = document.getElementById("profileAvatarTrigger");
   const profileActionRow = document.querySelector(".profile-action-row");
   const themeToggle = document.getElementById("themeToggle");
+  const kycOverallStatus = document.getElementById("kycOverallStatus");
+  const kycCompletionValue = document.getElementById("kycCompletionValue");
+  const kycReviewEta = document.getElementById("kycReviewEta");
+  const kycNextAction = document.getElementById("kycNextAction");
+  const kycStatusMessage = document.getElementById("kycStatusMessage");
+  const kycSaveDraftBtn = document.getElementById("kycSaveDraftBtn");
+  const kycResetBtn = document.getElementById("kycResetBtn");
+  const kycSubmitBtn = document.getElementById("kycSubmitBtn");
+  const kycConsent = document.getElementById("kycConsent");
 
   const handledButtons = new WeakSet();
   let isProfileEditing = false;
@@ -45,6 +54,27 @@
 
   const profileStorageKey = "dashboard_profile_data";
   const profilePhotoStorageKey = "dashboard_profile_photo";
+  const kycFormStorageKey = "dashboard_kyc_form";
+  const kycDocStorageKey = "dashboard_kyc_docs";
+  const kycStateStorageKey = "dashboard_kyc_state";
+
+  const kycFormIds = [
+    "kycLegalName",
+    "kycDob",
+    "kycNationality",
+    "kycDocumentType",
+    "kycDocumentNumber",
+    "kycResidenceCountry",
+    "kycAddressLine",
+    "kycRole"
+  ];
+
+  const kycDocConfig = [
+    { id: "govId", inputId: "kycGovIdInput", buttonId: "kycGovIdBtn", statusId: "kycGovIdStatus", fileId: "kycGovIdFile", required: true },
+    { id: "selfie", inputId: "kycSelfieInput", buttonId: "kycSelfieBtn", statusId: "kycSelfieStatus", fileId: "kycSelfieFile", required: true },
+    { id: "address", inputId: "kycAddressInput", buttonId: "kycAddressBtn", statusId: "kycAddressStatus", fileId: "kycAddressFile", required: true },
+    { id: "business", inputId: "kycBusinessInput", buttonId: "kycBusinessBtn", statusId: "kycBusinessStatus", fileId: "kycBusinessFile", required: false }
+  ];
 
   const sectionMap = {
     "Pi Balance": "finance",
@@ -60,6 +90,8 @@
   const DASHBOARD_THEME_KEY = "dashboard_theme";
   const DASHBOARD_BALANCE_VISIBILITY_KEY = "dashboard_balance_visible";
   const DEFAULT_OVERVIEW_BALANCE = "3,250.90 Pi";
+  let kycState = { status: "not_started" };
+  let kycDocs = {};
 
   function applyDashboardTheme(theme) {
     const isDark = theme === "dark";
@@ -94,6 +126,196 @@
       : "<i class='bx bx-show'></i>";
     overviewBalanceToggle.setAttribute("aria-label", visible ? "Hide balance" : "Show balance");
     localStorage.setItem(DASHBOARD_BALANCE_VISIBILITY_KEY, visible ? "true" : "false");
+  }
+
+  function getKycInputs() {
+    return kycFormIds.reduce((acc, id) => {
+      acc[id] = document.getElementById(id);
+      return acc;
+    }, {});
+  }
+
+  function collectKycFormData() {
+    const fields = getKycInputs();
+    const data = {};
+    Object.entries(fields).forEach(([id, el]) => {
+      if (!el) return;
+      data[id] = el.type === "checkbox" ? el.checked : el.value.trim();
+    });
+    data.kycConsent = !!(kycConsent && kycConsent.checked);
+    return data;
+  }
+
+  function applyKycFormData(data) {
+    if (!data) return;
+    Object.entries(getKycInputs()).forEach(([id, el]) => {
+      if (!el || !(id in data)) return;
+      el.value = typeof data[id] === "string" ? data[id] : "";
+    });
+    if (kycConsent) kycConsent.checked = !!data.kycConsent;
+  }
+
+  function persistKycFormData() {
+    localStorage.setItem(kycFormStorageKey, JSON.stringify(collectKycFormData()));
+  }
+
+  function loadPersistedKycForm() {
+    const raw = localStorage.getItem(kycFormStorageKey);
+    if (!raw) return;
+    try {
+      applyKycFormData(JSON.parse(raw));
+    } catch (_) {
+      localStorage.removeItem(kycFormStorageKey);
+    }
+  }
+
+  function persistKycDocs() {
+    localStorage.setItem(kycDocStorageKey, JSON.stringify(kycDocs));
+  }
+
+  function loadPersistedKycDocs() {
+    const raw = localStorage.getItem(kycDocStorageKey);
+    if (!raw) return;
+    try {
+      kycDocs = JSON.parse(raw) || {};
+    } catch (_) {
+      kycDocs = {};
+      localStorage.removeItem(kycDocStorageKey);
+    }
+  }
+
+  function persistKycState() {
+    localStorage.setItem(kycStateStorageKey, JSON.stringify(kycState));
+  }
+
+  function loadPersistedKycState() {
+    const raw = localStorage.getItem(kycStateStorageKey);
+    if (!raw) return;
+    try {
+      kycState = JSON.parse(raw) || { status: "not_started" };
+    } catch (_) {
+      kycState = { status: "not_started" };
+      localStorage.removeItem(kycStateStorageKey);
+    }
+  }
+
+  function updateKycDocUI() {
+    kycDocConfig.forEach((doc) => {
+      const statusEl = document.getElementById(doc.statusId);
+      const fileEl = document.getElementById(doc.fileId);
+      const state = kycDocs[doc.id];
+      if (!statusEl || !fileEl) return;
+
+      if (state && state.fileName) {
+        statusEl.textContent = "Uploaded";
+        statusEl.classList.remove("pending", "optional");
+        statusEl.classList.add("uploaded");
+        fileEl.textContent = state.fileName;
+      } else {
+        statusEl.classList.remove("uploaded");
+        statusEl.classList.add(doc.required ? "pending" : "optional");
+        statusEl.textContent = doc.required ? "Required" : "Optional";
+        fileEl.textContent = doc.required ? "No file uploaded" : "Not provided";
+      }
+    });
+  }
+
+  function getKycProgress() {
+    const formData = collectKycFormData();
+    const requiredFieldIds = kycFormIds;
+    const completedFields = requiredFieldIds.filter((id) => formData[id]).length;
+    const requiredDocs = kycDocConfig.filter((doc) => doc.required);
+    const uploadedDocs = requiredDocs.filter((doc) => kycDocs[doc.id] && kycDocs[doc.id].fileName).length;
+    const consentDone = formData.kycConsent ? 1 : 0;
+    const totalItems = requiredFieldIds.length + requiredDocs.length + 1;
+    const completeItems = completedFields + uploadedDocs + consentDone;
+    return Math.round((completeItems / totalItems) * 100);
+  }
+
+  function applyKycSummary() {
+    const progress = getKycProgress();
+    if (kycCompletionValue) kycCompletionValue.textContent = `${progress}%`;
+
+    let status = kycState.status || "not_started";
+    if (status !== "in_review" && progress === 0) status = "not_started";
+    if (status !== "in_review" && progress > 0) status = "in_progress";
+
+    const statusMap = {
+      not_started: {
+        title: "Not Started",
+        eta: "Pending Submission",
+        next: "Start Verification",
+        message: "Complete your profile details and upload the required documents to begin verification."
+      },
+      in_progress: {
+        title: "In Progress",
+        eta: "Not Submitted Yet",
+        next: "Finish Missing Items",
+        message: "Your KYC draft is saved locally. Complete all required fields, upload documents, and submit for review."
+      },
+      in_review: {
+        title: "In Review",
+        eta: "24-72 Hours",
+        next: "Wait For Review",
+        message: "Your KYC package has been submitted and is currently under review."
+      }
+    };
+
+    const config = statusMap[status] || statusMap.not_started;
+    if (kycOverallStatus) kycOverallStatus.textContent = config.title;
+    if (kycReviewEta) kycReviewEta.textContent = config.eta;
+    if (kycNextAction) kycNextAction.textContent = config.next;
+    if (kycStatusMessage) kycStatusMessage.textContent = config.message;
+  }
+
+  function saveKycDraft() {
+    persistKycFormData();
+    kycState.status = getKycProgress() > 0 ? "in_progress" : "not_started";
+    persistKycState();
+    applyKycSummary();
+    toast("KYC draft saved", "success");
+  }
+
+  function resetKyc() {
+    Object.values(getKycInputs()).forEach((el) => {
+      if (!el) return;
+      el.value = "";
+    });
+    if (kycConsent) kycConsent.checked = false;
+    kycDocs = {};
+    kycState = { status: "not_started" };
+    localStorage.removeItem(kycFormStorageKey);
+    localStorage.removeItem(kycDocStorageKey);
+    localStorage.removeItem(kycStateStorageKey);
+    updateKycDocUI();
+    applyKycSummary();
+    toast("KYC form reset", "info");
+  }
+
+  function submitKyc() {
+    const formData = collectKycFormData();
+    const missingField = kycFormIds.find((id) => !formData[id]);
+    const missingDoc = kycDocConfig.find((doc) => doc.required && !(kycDocs[doc.id] && kycDocs[doc.id].fileName));
+
+    if (missingField) {
+      toast("Please complete all required KYC fields", "warn");
+      return;
+    }
+    if (missingDoc) {
+      toast("Please upload all required KYC documents", "warn");
+      return;
+    }
+    if (!formData.kycConsent) {
+      toast("Please confirm the KYC consent statement", "warn");
+      return;
+    }
+
+    persistKycFormData();
+    persistKycDocs();
+    kycState.status = "in_review";
+    persistKycState();
+    applyKycSummary();
+    toast("KYC submitted for review", "success");
   }
 
   function loadOverviewBalanceVisibility() {
@@ -405,6 +627,66 @@
 
   loadPersistedProfile();
   loadPersistedAvatarPhoto();
+  loadPersistedKycForm();
+  loadPersistedKycDocs();
+  loadPersistedKycState();
+  updateKycDocUI();
+  applyKycSummary();
+
+  kycDocConfig.forEach((doc) => {
+    const input = document.getElementById(doc.inputId);
+    const button = document.getElementById(doc.buttonId);
+    if (button && input) {
+      bindClick(button, () => input.click());
+      input.addEventListener("change", () => {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        kycDocs[doc.id] = { fileName: file.name };
+        persistKycDocs();
+        updateKycDocUI();
+        if (kycState.status !== "in_review") {
+          kycState.status = "in_progress";
+          persistKycState();
+        }
+        applyKycSummary();
+        toast(`${file.name} uploaded`, "success");
+        input.value = "";
+      });
+    }
+  });
+
+  kycFormIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("input", () => {
+      if (kycState.status !== "in_review") {
+        kycState.status = getKycProgress() > 0 ? "in_progress" : "not_started";
+        persistKycState();
+      }
+      applyKycSummary();
+    });
+    el.addEventListener("change", () => {
+      if (kycState.status !== "in_review") {
+        kycState.status = getKycProgress() > 0 ? "in_progress" : "not_started";
+        persistKycState();
+      }
+      applyKycSummary();
+    });
+  });
+
+  if (kycConsent) {
+    kycConsent.addEventListener("change", () => {
+      if (kycState.status !== "in_review") {
+        kycState.status = getKycProgress() > 0 ? "in_progress" : "not_started";
+        persistKycState();
+      }
+      applyKycSummary();
+    });
+  }
+
+  bindClick(kycSaveDraftBtn, saveKycDraft);
+  bindClick(kycResetBtn, resetKyc);
+  bindClick(kycSubmitBtn, submitKyc);
 
   bindClick(profileAvatarTrigger, () => {
     if (!profilePhotoInput) return;
