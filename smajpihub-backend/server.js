@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -17,6 +18,7 @@ const assistantRoutes = require('./routes/assistant');
 const jwtUtils = require('./utils/jwt');
 
 const app = express();
+const frontendRoot = path.resolve(__dirname, '..');
 
 // Connect to database
 connectDB();
@@ -136,6 +138,16 @@ app.use('/api', authRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', assistantRoutes);
+
+// Frontend static routes
+app.use('/assets', express.static(path.join(frontendRoot, 'assets')));
+app.use('/css', express.static(path.join(frontendRoot, 'css')));
+app.use('/js', express.static(path.join(frontendRoot, 'js')));
+app.use('/pages', express.static(path.join(frontendRoot, 'pages')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(frontendRoot, 'index.html'));
+});
 
 // Error handling
 app.use(notFound);
