@@ -223,6 +223,22 @@ function appPath(target) {
   return `${getAppPrefix()}${normalized}`;
 }
 
+function ensureLogoHomeLink() {
+  const logoContainer = document.querySelector(".logo");
+  if (!logoContainer || logoContainer.querySelector(".logo-link")) return;
+  const image = logoContainer.querySelector("img");
+  if (!image) return;
+
+  const link = document.createElement("a");
+  link.className = "logo-link";
+  link.href = appPath("index.html");
+  link.setAttribute("aria-label", "Go to SMAJ PI HUB homepage");
+
+  logoContainer.removeChild(image);
+  link.appendChild(image);
+  logoContainer.appendChild(link);
+}
+
 function requestProtectedAccess(target) {
   const fallbackTarget = target || "pages/dashboard/client.html";
   if (window.SmajWallet && typeof window.SmajWallet.requestProtectedAccess === "function") {
@@ -601,10 +617,12 @@ function bindWalletButtons() {
   });
 }
 
+ensureLogoHomeLink();
 ensureDesktopWalletButton();
 bindWalletButtons();
 
 document.addEventListener("DOMContentLoaded", () => {
+  ensureLogoHomeLink();
   ensureDesktopWalletButton();
   bindWalletButtons();
 });

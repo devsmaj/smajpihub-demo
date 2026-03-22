@@ -56,6 +56,11 @@ img {
   gap: 10px;
 }
 
+.logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
 .logo img {
   width: 150px;
 }
