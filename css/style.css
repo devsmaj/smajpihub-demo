@@ -72,6 +72,16 @@ nav a:hover {
   color: #7d3cff;
 }
 
+.nav-dashboard-link {
+  transition: opacity 0.2s ease;
+}
+
+.nav-dashboard-link.dashboard-hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
 .desktop-wallet-btn {
   margin-left: 12px;
   display: inline-flex;

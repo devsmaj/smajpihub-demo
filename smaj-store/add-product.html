@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SMAJ STORE | Add Product</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/store.css">
+</head>
+<body data-page="store-add-product">
+  <header class="store-topbar">
+    <div class="store-shell store-topbar-inner">
+      <a class="store-brand" href="index.html">
+        <span class="store-brand-mark">S</span>
+        <span>
+          <strong>SMAJ STORE</strong>
+          <small>Seller listing form</small>
+        </span>
+      </a>
+      <nav class="store-nav" aria-label="Store">
+        <a href="../index.html">Back to Hub</a>
+        <a href="index.html">Home</a>
+        <a href="vendor.html">Storefront</a>
+        <a href="vendor-dashboard.html">Vendor Dashboard</a>
+        <a href="add-product.html" aria-current="page">Add Product</a>
+        <a href="cart.html">Cart <span id="storeCartCount" class="cart-badge">0</span></a>
+      </nav>
+      <div id="storeSessionChip" class="session-chip">Checking session...</div>
+    </div>
+  </header>
+
+  <main class="store-shell">
+    <section class="page-hero compact-hero">
+      <span class="eyebrow">Seller Form</span>
+      <h1>Create a new storefront listing.</h1>
+      <p>The product submission flow belongs inside the same SMAJ ecosystem identity so sellers do not maintain a separate auth stack.</p>
+    </section>
+
+    <form id="addProductForm" class="checkout-form">
+      <div class="form-grid">
+        <label>
+          Product Name
+          <input id="productName" type="text" required>
+        </label>
+        <label>
+          Category
+          <select id="productCategory" required>
+            <option value="">Select category</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Agro">Agro</option>
+            <option value="Home">Home</option>
+            <option value="Office">Office</option>
+          </select>
+        </label>
+        <label>
+          Price In Pi
+          <input id="productPrice" type="number" min="1" step="0.01" required>
+        </label>
+        <label>
+          Stock
+          <input id="productStock" type="number" min="1" step="1" required>
+        </label>
+      </div>
+
+      <div class="form-stack">
+        <label>
+          Description
+          <textarea id="productDescription" rows="4" required></textarea>
+        </label>
+        <label>
+          Image URL
+          <input id="productImage" type="url" placeholder="https://example.com/product-image.jpg" required>
+        </label>
+      </div>
+
+      <div class="callout-card">
+        <strong>Seller verification</strong>
+        <p>Products added here appear under the existing verified seller view for this frontend milestone.</p>
+      </div>
+
+      <div class="dashboard-actions">
+        <button class="btn-primary" type="submit">Publish Product</button>
+        <a class="btn-secondary" href="vendor-dashboard.html">Back to Dashboard</a>
+      </div>
+    </form>
+  </main>
+
+  <footer class="store-footer">
+    <div class="store-shell footer-row">
+      <div>
+        <strong>SMAJ STORE</strong>
+        <p>Seller listing workflow inside the standalone store module.</p>
+      </div>
+      <div class="footer-links">
+        <a href="vendor-dashboard.html">Dashboard</a>
+        <a href="vendor.html">Storefront</a>
+        <a href="../index.html">Hub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/store-data.js"></script>
+  <script src="./js/store.js"></script>
+  <script src="./js/store-vendor.js"></script>
+</body>
+</html>

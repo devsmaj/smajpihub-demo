@@ -474,6 +474,42 @@ function setupDashboardGateButtons() {
 }
 setupDashboardGateButtons();
 
+function getWalletStateForNav() {
+  if (window.SmajWallet && typeof window.SmajWallet.getState === "function") {
+    return window.SmajWallet.getState();
+  }
+  return { connected: false };
+}
+
+function getNavDashboardLinks() {
+  const links = Array.from(document.querySelectorAll('a[href*="dashboard/client.html"]'));
+  links.forEach((link) => link.classList.add("nav-dashboard-link"));
+  return links;
+}
+
+function updateDashboardLinksForState(state) {
+  const connected = !!(state && state.connected);
+  const links = getNavDashboardLinks();
+  if (!links.length) return;
+
+  links.forEach((link) => {
+    link.classList.toggle("dashboard-hidden", !connected);
+    link.setAttribute("aria-hidden", (!connected).toString());
+    link.tabIndex = connected ? 0 : -1;
+  });
+}
+
+function initNavigationWalletSync() {
+  const refresh = () => updateDashboardLinksForState(getWalletStateForNav());
+  window.addEventListener("smaj:wallet-changed", (event) => {
+    updateDashboardLinksForState(event.detail || getWalletStateForNav());
+  });
+  document.addEventListener("DOMContentLoaded", refresh);
+  refresh();
+}
+
+initNavigationWalletSync();
+
 function ensureDesktopWalletButton() {
   if (window.SmajWallet && typeof window.SmajWallet.init === "function") {
     window.SmajWallet.init();

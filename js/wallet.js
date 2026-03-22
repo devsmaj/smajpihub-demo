@@ -6,7 +6,7 @@
   const PI_ADDRESS_KEY = "pi_wallet_address";
 
   const CONNECT_TEXT = "Connect Wallet";
-  const DISCONNECT_TEXT = "Disconnect Wallet";
+  const DISCONNECT_TEXT = "Log Out";
   const CONNECTING_TEXT = "Connecting...";
   const PROTECTED_REDIRECT_KEY = "smaj_protected_redirect";
 
