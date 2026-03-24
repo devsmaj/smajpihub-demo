@@ -446,8 +446,8 @@
                 <span>Back to PI HUB</span>
             </a>
             <div class="store-logo">
-                <img src="../assets/images/logo.png" alt="SMAJ STORE">
-                <span>SMAJ STORE</span>
+                <img src="../assets/images/logo.png" alt="Pi Hub logo">
+                
             </div>
         </div>
         
@@ -528,7 +528,7 @@
                     <div class="seller-avatar" id="sellerAvatar">S</div>
                     <div class="seller-details">
                         <h4 id="sellerName">Seller Name</h4>
-                        <span id="sellerInfo">Verified Seller • 0 sales</span>
+                        <span id="sellerInfo">Verified Seller â€¢ 0 sales</span>
                     </div>
                 </div>
                 
@@ -588,7 +588,7 @@
         <div class="footer-top">
             <div class="footer-brand">
                 <img src="../assets/images/logo.png" alt="SMAJ">
-                <div><h3>SMAJ STORE</h3><p>Part of SMAJ Ecosystem</p></div>
+                <div><h3>Pi Hub Marketplace</h3><p>Part of SMAJ Ecosystem</p></div>
             </div>
         </div>
         <div class="footer-bottom"><p>&copy; 2026 SMAJ PI HUB. All rights reserved.</p></div>
@@ -649,7 +649,7 @@
             // Seller info
             document.getElementById('sellerAvatar').textContent = currentProduct.seller.name.substring(0, 2).toUpperCase();
             document.getElementById('sellerName').textContent = currentProduct.seller.name;
-            document.getElementById('sellerInfo').textContent = `Verified Seller • ${currentProduct.seller.totalSales} sales`;
+            document.getElementById('sellerInfo').textContent = `Verified Seller â€¢ ${currentProduct.seller.totalSales} sales`;
             
             // Image
             document.getElementById('mainImage').src = currentProduct.image;
@@ -728,4 +728,7 @@
     </script>
 </body>
 </html>
+
+
+
 

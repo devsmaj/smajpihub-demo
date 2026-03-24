@@ -5,9 +5,9 @@
 
 /* CSS Variables */
 :root {
-    --primary-color: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-light: #818cf8;
+    --primary-color: #7d3cff;
+    --primary-dark: #5b21b6;
+    --primary-light: #a78bfa;
     --secondary-color: #f59e0b;
     --secondary-dark: #d97706;
     --success-color: #10b981;
@@ -15,23 +15,23 @@
     --warning-color: #f59e0b;
     --info-color: #3b82f6;
     
-    --bg-color: #f9fafb;
-    --bg-white: #ffffff;
-    --bg-dark: #1f2937;
-    --bg-gray: #f3f4f6;
+    --bg-color: #03050c;
+    --bg-white: #0a0e1f;
+    --bg-dark: #05070f;
+    --bg-gray: rgba(255, 255, 255, 0.05);
     
-    --text-primary: #111827;
-    --text-secondary: #6b7280;
-    --text-light: #9ca3af;
+    --text-primary: #f4f4ff;
+    --text-secondary: #b1b6d3;
+    --text-light: #8a91b2;
     --text-white: #ffffff;
     
-    --border-color: #e5e7eb;
-    --border-dark: #374151;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-dark: #111624;
     
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 10px 20px -5px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 15px 35px -10px rgba(0, 0, 0, 0.45);
+    --shadow-xl: 0 20px 50px -15px rgba(0, 0, 0, 0.5);
     
     --radius-sm: 4px;
     --radius-md: 8px;
@@ -60,7 +60,7 @@ html {
 body {
     font-family: var(--font-family);
     background-color: var(--bg-color);
-    color: var(--text-primary);
+    color: var(--text-white);
     line-height: 1.6;
     min-height: 100vh;
 }
@@ -94,7 +94,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 24px;
+    padding: 8px 24px;
     background: var(--bg-white);
     border-bottom: 1px solid var(--border-color);
     position: sticky;
@@ -134,15 +134,16 @@ img {
 }
 
 .store-logo img {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
+    width: 88px;
+    height: 88px;
+    border-radius: var(--radius-lg);
+    border: none;
+    object-fit: cover;
+    display: block;
 }
 
 .store-logo span {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--primary-color);
+    display: none;
 }
 
 .header-center {
@@ -156,7 +157,7 @@ img {
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
-    background: var(--bg-gray);
+    background: rgba(255, 255, 255, 0.06);
     border-radius: var(--radius-full);
     border: 2px solid transparent;
     transition: var(--transition-fast);
@@ -164,8 +165,8 @@ img {
 
 .search-bar:focus-within {
     border-color: var(--primary-color);
-    background: var(--bg-white);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    background: rgba(99, 102, 241, 0.08);
+    box-shadow: 0 0 0 3px rgba(125, 60, 255, 0.25);
 }
 
 .search-bar i {
@@ -523,24 +524,25 @@ img {
 }
 
 .btn-primary {
-    background: var(--text-white);
-    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--text-white);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-lg);
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     color: var(--text-white);
-    border: 2px solid var(--text-white);
+    border: 2px solid rgba(255, 255, 255, 0.35);
 }
 
 .btn-secondary:hover {
-    background: var(--text-white);
-    color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--primary-light);
 }
 
 .hero-stats {
@@ -608,7 +610,7 @@ img {
     justify-content: center;
     gap: 32px;
     padding: 24px;
-    background: var(--bg-white);
+    background: var(--bg-dark);
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -624,7 +626,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-gray);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-md);
     color: var(--primary-color);
     font-size: 18px;
@@ -681,7 +683,7 @@ section {
    ======================================== */
 
 .categories-section {
-    background: var(--bg-white);
+    background: var(--bg-dark);
 }
 
 .categories-grid {
@@ -744,23 +746,23 @@ section {
 }
 
 .product-card {
-    background: var(--bg-white);
+    background: #0f1325;
     border-radius: var(--radius-lg);
     overflow: hidden;
     transition: var(--transition-fast);
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-xl);
 }
 
 .product-image {
     position: relative;
     height: 200px;
     overflow: hidden;
-    background: var(--bg-gray);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .product-image img {
@@ -976,10 +978,10 @@ section {
 }
 
 .vendor-card {
-    background: var(--bg-white);
+    background: var(--bg-dark);
     border-radius: var(--radius-lg);
     padding: 24px;
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: var(--transition-fast);
 }
 
@@ -1078,7 +1080,7 @@ section {
    ======================================== */
 
 .promo-banner {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #05070f 0%, #312074 100%);
     padding: 60px 24px;
     text-align: center;
     position: relative;
@@ -1131,8 +1133,9 @@ section {
 }
 
 .promo-banner .btn-primary {
-    background: var(--text-white);
-    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--text-white);
+    box-shadow: var(--shadow-md);
 }
 
 /* ========================================
