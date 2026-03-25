@@ -511,6 +511,45 @@ img {
     margin-bottom: 48px;
 }
 
+.pi-rate-info {
+    margin: 0 auto;
+    max-width: 520px;
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.25);
+    color: var(--text-white);
+    font-size: 16px;
+}
+
+.pi-rate-info i {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--secondary-color);
+    font-size: 20px;
+}
+
+.pi-rate-info strong {
+    font-size: 16px;
+    display: block;
+    color: var(--text-white);
+}
+
+.pi-rate-info p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 4px;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;

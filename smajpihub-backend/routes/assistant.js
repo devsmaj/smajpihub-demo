@@ -31,7 +31,7 @@ const localKnowledgeBase = [
   },
   {
     keywords: ['wallet', 'connect', 'pi wallet', 'pi coin', 'balance'],
-    answer: 'Use the Connect Wallet button in the top navigation. After wallet connection, protected dashboard features become available.'
+    answer: 'Use the Login with Pi button in the top navigation. After wallet connection, protected dashboard features become available.'
   },
   {
     keywords: ['dashboard', 'profile', 'finance', 'orders', 'analytics', 'notification', 'security'],

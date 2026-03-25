@@ -157,7 +157,7 @@ function updateWalletButton() {
         walletBtn.innerHTML = '<span class="wallet-icon">🪙</span><span>' + formatAddress(walletState.address) + '</span><span class="wallet-balance">' + formatPIBalance(walletState.balance) + ' PI</span>';
     } else {
         walletBtn.classList.remove('connected');
-        walletBtn.innerHTML = '<span class="wallet-icon">🔗</span><span>Connect Wallet</span>';
+        walletBtn.innerHTML = '<span class="wallet-icon">🔗</span><span>Login with Pi</span>';
     }
 }
 
@@ -358,4 +358,3 @@ window.walletModule = {
     SMAJ_PIHUB_URL: SMAJ_PIHUB_URL,
     PI_NETWORK: PI_NETWORK
 };
-

@@ -29,9 +29,9 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 80%, rgba(108, 92, 231, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(0, 206, 201, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(253, 203, 110, 0.05) 0%, transparent 70%);
+        radial-gradient(circle at 20% 80%, rgba(125, 60, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(77, 163, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(125, 60, 255, 0.05) 0%, transparent 70%);
     pointer-events: none;
     z-index: -1;
 }
@@ -68,7 +68,7 @@ img {
     right: 0;
     z-index: 1000;
     padding: var(--space-md) 0;
-    border-bottom: 1px solid rgba(108, 92, 231, 0.2);
+    border-bottom: 1px solid rgba(125, 60, 255, 0.2);
 }
 
 .header .container {
@@ -172,13 +172,13 @@ img {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 30px rgba(108, 92, 231, 0.5);
+    box-shadow: 0 0 30px rgba(125, 60, 255, 0.55);
 }
 
 .btn-secondary {
     background: var(--bg-tertiary);
     color: var(--text-primary);
-    border: 1px solid rgba(108, 92, 231, 0.3);
+    border: 1px solid rgba(125, 60, 255, 0.35);
 }
 
 .btn-secondary:hover {
@@ -218,7 +218,7 @@ img {
     gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
     background: var(--bg-tertiary);
-    border: 1px solid rgba(108, 92, 231, 0.3);
+    border: 1px solid rgba(125, 60, 255, 0.35);
     border-radius: var(--radius-full);
     color: var(--text-primary);
     cursor: pointer;
@@ -261,8 +261,8 @@ img {
     align-items: center;
     gap: var(--space-sm);
     padding: var(--space-xs) var(--space-md);
-    background: rgba(108, 92, 231, 0.1);
-    border: 1px solid rgba(108, 92, 231, 0.3);
+    background: rgba(125, 60, 255, 0.12);
+    border: 1px solid rgba(125, 60, 255, 0.45);
     border-radius: var(--radius-full);
     font-size: var(--font-size-sm);
     color: var(--primary-light);
@@ -337,7 +337,7 @@ img {
     background: var(--bg-card);
     padding: var(--space-sm);
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(108, 92, 231, 0.2);
+    border: 1px solid rgba(125, 60, 255, 0.25);
     max-width: 700px;
     margin: 0 auto;
 }
@@ -388,7 +388,7 @@ img {
     background: var(--bg-card);
     border-radius: var(--radius-lg);
     padding: var(--space-lg);
-    border: 1px solid rgba(108, 92, 231, 0.1);
+    border: 1px solid rgba(125, 60, 255, 0.12);
     transition: var(--transition-normal);
     cursor: pointer;
 }
@@ -409,7 +409,7 @@ img {
 .job-category {
     display: inline-block;
     padding: var(--space-xs) var(--space-sm);
-    background: rgba(108, 92, 231, 0.2);
+    background: rgba(125, 60, 255, 0.25);
     color: var(--primary-light);
     font-size: var(--font-size-xs);
     border-radius: var(--radius-sm);
@@ -459,7 +459,7 @@ img {
     align-items: center;
     justify-content: space-between;
     padding-top: var(--space-md);
-    border-top: 1px solid rgba(108, 92, 231, 0.1);
+    border-top: 1px solid rgba(125, 60, 255, 0.12);
 }
 
 .job-client {
@@ -516,7 +516,7 @@ img {
     border-radius: var(--radius-md);
     padding: var(--space-lg);
     text-align: center;
-    border: 1px solid rgba(108, 92, 231, 0.1);
+    border: 1px solid rgba(125, 60, 255, 0.12);
     transition: var(--transition-normal);
     cursor: pointer;
 }
@@ -565,7 +565,7 @@ img {
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
     text-align: center;
-    border: 1px solid rgba(108, 92, 231, 0.1);
+    border: 1px solid rgba(125, 60, 255, 0.12);
     transition: var(--transition-normal);
 }
 
@@ -600,7 +600,7 @@ img {
 .footer {
     background: var(--bg-secondary);
     padding: var(--space-3xl) 0 var(--space-lg);
-    border-top: 1px solid rgba(108, 92, 231, 0.1);
+    border-top: 1px solid rgba(125, 60, 255, 0.12);
 }
 
 .footer-content {
@@ -677,7 +677,7 @@ img {
     align-items: center;
     justify-content: space-between;
     padding-top: var(--space-lg);
-    border-top: 1px solid rgba(108, 92, 231, 0.1);
+    border-top: 1px solid rgba(125, 60, 255, 0.12);
     color: var(--text-muted);
     font-size: var(--font-size-sm);
 }
@@ -712,7 +712,7 @@ img {
     width: 90%;
     transform: scale(0.9);
     transition: var(--transition-normal);
-    border: 1px solid rgba(108, 92, 231, 0.2);
+    border: 1px solid rgba(125, 60, 255, 0.18);
 }
 
 .modal-overlay.active .modal {
@@ -880,7 +880,7 @@ img {
     width: 100%;
     padding: var(--space-md);
     background: var(--bg-input);
-    border: 1px solid rgba(108, 92, 231, 0.2);
+    border: 1px solid rgba(125, 60, 255, 0.2);
     border-radius: var(--radius-md);
     color: var(--text-primary);
     font-size: var(--font-size-base);
@@ -893,7 +893,7 @@ img {
 .form-textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+    box-shadow: 0 0 0 3px rgba(125, 60, 255, 0.12);
 }
 
 .form-input::placeholder,
@@ -968,7 +968,7 @@ img {
 
 .sidebar-menu a:hover,
 .sidebar-menu a.active {
-    background: rgba(108, 92, 231, 0.1);
+    background: rgba(125, 60, 255, 0.12);
     color: var(--text-primary);
 }
 
@@ -993,7 +993,7 @@ img {
     background: var(--bg-tertiary);
     border-radius: var(--radius-md);
     padding: var(--space-lg);
-    border: 1px solid rgba(108, 92, 231, 0.1);
+    border: 1px solid rgba(125, 60, 255, 0.14);
 }
 
 .stat-card-icon {
@@ -1051,7 +1051,7 @@ img {
 .filter-select {
     padding: var(--space-sm) var(--space-md);
     background: var(--bg-card);
-    border: 1px solid rgba(108, 92, 231, 0.2);
+    border: 1px solid rgba(125, 60, 255, 0.2);
     border-radius: var(--radius-md);
     color: var(--text-primary);
     font-size: var(--font-size-sm);
@@ -1306,7 +1306,7 @@ img {
 
 /* Gradient Text */
 .gradient-text {
-    background: linear-gradient(135deg, #6C5CE7 0%, #00CEC9 50%, #FDCB6E 100%);
+    background: linear-gradient(135deg, #7d3cff 0%, #5f2bd6 50%, #5860ff 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1318,7 +1318,7 @@ img {
     align-items: center;
     gap: var(--space-sm);
     padding: var(--space-sm) var(--space-lg);
-    background: rgba(0, 206, 201, 0.15);
+    background: rgba(125, 60, 255, 0.15);
     border: 1px solid var(--secondary-color);
     border-radius: var(--radius-full);
     margin-top: var(--space-lg);
@@ -1370,7 +1370,7 @@ img {
     transform: translateX(-50%);
     font-size: var(--font-size-3xl);
     font-weight: 800;
-    color: rgba(108, 92, 231, 0.2);
+    color: rgba(125, 60, 255, 0.25);
 }
 
 .step-icon {

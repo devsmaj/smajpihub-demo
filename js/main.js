@@ -442,7 +442,7 @@ function removeEmailAuthEntrypoints() {
       el.setAttribute('href', '#');
       el.dataset.walletConnect = 'true';
       if (el.textContent && el.textContent.trim()) {
-        el.textContent = 'Connect Wallet';
+        el.textContent = 'Login with Pi';
       }
     });
   });
@@ -538,7 +538,7 @@ function ensureDesktopWalletButton() {
   const desktopWalletBtn = document.createElement("button");
   desktopWalletBtn.type = "button";
   desktopWalletBtn.className = "wallet-btn desktop-wallet-btn";
-  desktopWalletBtn.innerHTML = "<i class='bx bx-wallet'></i> Connect Wallet";
+  desktopWalletBtn.innerHTML = "<i class='bx bx-wallet'></i> Login with Pi";
   nav.appendChild(desktopWalletBtn);
 }
 
@@ -648,7 +648,7 @@ function setupSmajAiAssistant() {
     },
     {
       keywords: ['wallet', 'connect', 'pi wallet', 'pi coin', 'balance'],
-      answer: 'Use the Connect Wallet button in the top navigation. After wallet connection, protected dashboard features become available.'
+      answer: 'Use the Login with Pi button in the top navigation. After wallet connection, protected dashboard features become available.'
     },
     {
       keywords: ['dashboard', 'profile', 'finance', 'orders', 'analytics', 'notification', 'security'],
@@ -827,7 +827,3 @@ if (document.readyState === "loading") {
 } else {
   setupSmajAiAssistant();
 }
-
-
-
-

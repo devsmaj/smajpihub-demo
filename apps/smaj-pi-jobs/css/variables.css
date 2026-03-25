@@ -1,48 +1,48 @@
 /* SMAJ PI JOBS - CSS Variables */
 :root {
     /* Primary Colors */
-    --primary-color: #6C5CE7;
-    --primary-dark: #5B4CD4;
-    --primary-light: #8B7FE8;
+    --primary-color: #7d3cff;
+    --primary-dark: #5f2bd6;
+    --primary-light: #5860ff;
     
     /* Secondary Colors */
-    --secondary-color: #00CEC9;
-    --secondary-dark: #00B5B0;
-    --secondary-light: #33D9D4;
+    --secondary-color: #9b74ff;
+    --secondary-dark: #7b4dff;
+    --secondary-light: #c9b7ff;
     
     /* Accent Colors */
-    --accent-color: #FDCB6E;
-    --accent-dark: #F0B93D;
+    --accent-color: #9d4cff;
+    --accent-dark: #6b39ff;
     
     /* Background Colors */
-    --bg-primary: #0F0F1A;
-    --bg-secondary: #1A1A2E;
-    --bg-tertiary: #252542;
-    --bg-card: #1E1E36;
-    --bg-input: #2A2A4A;
+    --bg-primary: #0b0f1a;
+    --bg-secondary: #0f172b;
+    --bg-tertiary: #1f2437;
+    --bg-card: #111933;
+    --bg-input: #131b31;
     
     /* Text Colors */
-    --text-primary: #FFFFFF;
-    --text-secondary: #B8B8D0;
-    --text-muted: #6C6C8A;
-    --text-dark: #0F0F1A;
+    --text-primary: #ffffff;
+    --text-secondary: #b9c6e4;
+    --text-muted: #9eabca;
+    --text-dark: #0b0f1a;
     
     /* Status Colors */
-    --success: #00B894;
-    --warning: #FDCB6E;
-    --error: #E74C3C;
-    --info: #3498DB;
+    --success: #1b83be;
+    --warning: #cbbced;
+    --error: #ff6a86;
+    --info: #5860ff;
     
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, #6C5CE7 0%, #A29BFE 100%);
-    --gradient-secondary: linear-gradient(135deg, #00CEC9 0%, #81ECEC 100%);
-    --gradient-dark: linear-gradient(180deg, #1A1A2E 0%, #0F0F1A 100%);
+    --gradient-primary: linear-gradient(135deg, #7d3cff 0%, #5f2bd6 50%, #5860ff 100%);
+    --gradient-secondary: linear-gradient(135deg, #9b74ff 0%, #7d3cff 100%);
+    --gradient-dark: linear-gradient(180deg, #1f2437 0%, #0b0f1a 100%);
     
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-    --shadow-glow: 0 0 20px rgba(108, 92, 231, 0.3);
+    --shadow-glow: 0 0 20px rgba(125, 60, 255, 0.35);
     
     /* Border Radius */
     --radius-sm: 6px;

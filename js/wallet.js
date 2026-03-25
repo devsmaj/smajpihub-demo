@@ -5,7 +5,7 @@
   const PI_USER_KEY = "pi_user";
   const PI_ADDRESS_KEY = "pi_wallet_address";
 
-  const CONNECT_TEXT = "Connect Wallet";
+  const CONNECT_TEXT = "Login with Pi";
   const DISCONNECT_TEXT = "Log Out";
   const CONNECTING_TEXT = "Connecting...";
   const PROTECTED_REDIRECT_KEY = "smaj_protected_redirect";
@@ -435,7 +435,7 @@
         <h3 id="walletAccessTitle">Wallet Required</h3>
         <p>Please connect your wallet first to access this feature.</p>
         <div class="wallet-access-actions">
-          <button type="button" class="wallet-access-btn connect" id="walletAccessConnectBtn">Connect Wallet</button>
+          <button type="button" class="wallet-access-btn connect" id="walletAccessConnectBtn">Login with Pi</button>
           <button type="button" class="wallet-access-btn cancel" id="walletAccessCancelBtn">Cancel</button>
         </div>
       </div>
@@ -557,4 +557,3 @@
     init();
   }
 })();
-
