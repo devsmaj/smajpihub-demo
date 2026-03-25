@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMAJ PI JOBS - Freelance Marketplace</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body data-page="home">
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+    
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge fade-in">
+                    <span>🚀</span>
+                    <span>Powered by SMAJ PI HUB</span>
+                </div>
+                <h1 class="hero-title fade-in fade-in-delay-1">
+                    Find Top Freelance Jobs<br>
+                    <span class="gradient-text">Earn PI Tokens</span>
+                </h1>
+                <p class="hero-description fade-in fade-in-delay-2">
+                    Connect with clients worldwide and get paid securely with smart contracts. 
+                    The premier freelance marketplace powered by blockchain technology.
+                </p>
+                <div class="hero-actions fade-in fade-in-delay-3">
+                    <a href="jobs.html" class="btn btn-primary btn-lg">
+                        <span>🔍</span> Browse Jobs
+                    </a>
+                    <a href="post-job.html" class="btn btn-secondary btn-lg">
+                        <span>➕</span> Post a Job
+                    </a>
+                </div>
+                <div class="hero-stats fade-in fade-in-delay-3">
+                    <div class="stat-item">
+                        <span class="stat-value">10K+</span>
+                        <span class="stat-label">Active Jobs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">5K+</span>
+                        <span class="stat-label">Freelancers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">500K+</span>
+                        <span class="stat-label">PI Paid</span>
+                    </div>
+                </div>
+                
+                <!-- PI Price Display -->
+                <div class="pi-price-badge fade-in fade-in-delay-4">
+                    <span class="pi-icon">🪙</span>
+                    <span>1 PI = $314,159 USD</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search for jobs, skills, or categories...">
+                    <button id="searchBtn" class="btn btn-primary">Search Jobs</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Browse by Category</h2>
+                    <p class="section-subtitle">Find your perfect job in these popular categories</p>
+                </div>
+                <div class="categories-grid" id="categoriesGrid">
+                </div>
+            </div>
+        </section>
+
+        <!-- Jobs Section -->
+        <section class="jobs-section">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Latest Jobs</h2>
+                        <p class="section-subtitle">Discover new opportunities posted by clients worldwide</p>
+                    </div>
+                    <a href="jobs.html" class="btn btn-outline">View All Jobs →</a>
+                </div>
+                <div class="jobs-grid" id="jobsGrid">
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <div class="container">
+                <div class="section-header" style="text-align: center; display: block;">
+                    <h2 class="section-title">How It Works</h2>
+                    <p style="color: var(--text-secondary); max-width: 600px; margin: var(--space-md) auto 0;">Get started in three simple steps</p>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-icon">🔗</div>
+                        <h3>Connect Wallet</h3>
+                        <p>Link your PI wallet through SMAJ PI HUB to get started securely</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-icon">🔍</div>
+                        <h3>Find Jobs</h3>
+                        <p>Browse thousands of jobs or post your own opportunities</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-icon">💰</div>
+                        <h3>Get Paid</h3>
+                        <p>Complete work and receive instant PI payments via smart contracts</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <div class="section-header" style="text-align: center; display: block;">
+                    <h2 class="section-title">Why Choose SMAJ PI JOBS</h2>
+                    <p style="color: var(--text-secondary); max-width: 600px; margin: var(--space-md) auto 0;">Experience the future of freelancing with blockchain-powered payments and AI-driven matching.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3 class="feature-title">Secure Payments</h3>
+                        <p class="feature-description">Smart contract-based escrow ensures safe transactions. Get paid instantly upon job completion.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Fast Payments</h3>
+                        <p class="feature-description">No more waiting for bank transfers. Receive payments directly in your PI wallet.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3 class="feature-title">AI Matching</h3>
+                        <p class="feature-description">Our AI finds the perfect match between freelancers and clients based on skills and preferences.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✅</div>
+                        <h3 class="feature-title">Verified Profiles</h3>
+                        <p class="feature-description">All users are verified through SMAJ PI HUB, ensuring trust and reliability in every transaction.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <h3 class="feature-title">Global Reach</h3>
+                        <p class="feature-description">Work with clients from around the world without currency conversion or transfer fees.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🪙</div>
+                        <h3 class="feature-title">PI Token Rewards</h3>
+                        <p class="feature-description">Earn bonus PI tokens for completed jobs, referrals, and platform engagement.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <div class="cta-text">
+                        <h2>Ready to Get Started?</h2>
+                        <p>Connect your SMAJ PI HUB wallet and join thousands of freelancers already earning in the new digital economy.</p>
+                    </div>
+                    <div class="cta-actions">
+                        <button id="ctaWalletBtn" class="btn btn-primary btn-lg">
+                            <span>🔗</span> Connect Wallet
+                        </button>
+                        <a href="jobs.html" class="btn btn-outline-light btn-lg">
+                            Explore Jobs
+                        </a>
+                    </div>
+                    <div class="cta-stats">
+                        <div><strong>$500K+</strong> Paid to Freelancers</div>
+                        <div><strong>10K+</strong> Jobs Posted</div>
+                        <div><strong>5K+</strong> Active Users</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/wallet.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/jobs.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctaWalletBtn = document.getElementById('ctaWalletBtn');
+            if (ctaWalletBtn) {
+                ctaWalletBtn.addEventListener('click', function() {
+                    window.walletModule.openWalletModal();
+                });
+            }
+
+            var searchBtn = document.getElementById('searchBtn');
+            var searchInput = document.getElementById('searchInput');
+            
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', function() {
+                    var query = searchInput.value;
+                    if (query) {
+                        window.location.href = 'jobs.html?search=' + encodeURIComponent(query);
+                    }
+                });
+
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        var query = searchInput.value;
+                        if (query) {
+                            window.location.href = 'jobs.html?search=' + encodeURIComponent(query);
+                        }
+                    }
+                });
+            }
+
+            if (window.jobsModule) {
+                window.jobsModule.renderCategories('categoriesGrid');
+                var homeJobs = window.jobsModule.getAllJobs().slice(0, 6);
+                window.jobsModule.renderJobsGrid(homeJobs, 'jobsGrid');
+            }
+        });
+    </script>
+</body>
+</html>

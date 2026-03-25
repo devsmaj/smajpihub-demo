@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Jobs - SMAJ PI JOBS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body data-page="jobs">
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title">Browse Jobs</h1>
+                <p class="page-subtitle">Find your next freelance opportunity. Browse thousands of jobs from verified clients.</p>
+            </div>
+        </section>
+
+        <!-- Jobs Listing Section -->
+        <section class="jobs-section" style="padding-top: 0;">
+            <div class="container">
+                <!-- Search and Filters -->
+                <div class="search-section" style="padding: 0 0 var(--space-xl);">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search jobs by title, skill, or keyword...">
+                        <button id="searchBtn" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+
+                <!-- Filters Bar -->
+                <div class="filters-bar">
+                    <select id="categoryFilter" class="filter-select">
+                        <option value="all">All Categories</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Mobile Development">Mobile Development</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Data Science">Data Science</option>
+                        <option value="Blockchain">Blockchain</option>
+                        <option value="Graphic Design">Graphic Design</option>
+                        <option value="Content Writing">Content Writing</option>
+                        <option value="Digital Marketing">Digital Marketing</option>
+                        <option value="Video Editing">Video Editing</option>
+                    </select>
+                    <select id="budgetFilter" class="filter-select">
+                        <option value="all">All Budgets</option>
+                        <option value="0-100">Under 100 SMAJ</option>
+                        <option value="100-300">100 - 300 SMAJ</option>
+                        <option value="300-500">300 - 500 SMAJ</option>
+                        <option value="500-1000">500 - 1000 SMAJ</option>
+                        <option value="1000+">1000+ SMAJ</option>
+                    </select>
+                    <select id="experienceFilter" class="filter-select">
+                        <option value="all">All Experience Levels</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                        <option value="Expert">Expert</option>
+                    </select>
+                    <select id="sortFilter" class="filter-select">
+                        <option value="recent">Most Recent</option>
+                        <option value="budget-high">Highest Budget</option>
+                        <option value="budget-low">Lowest Budget</option>
+                        <option value="proposals">Least Proposals</option>
+                    </select>
+                </div>
+
+                <!-- Results Count -->
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-lg);">
+                    Showing <span id="jobsCount" style="color: var(--primary-light); font-weight: 600;">10</span> jobs available
+                </p>
+
+                <!-- Jobs Grid -->
+                <div class="jobs-grid" id="jobsGrid">
+                    <!-- Jobs will be rendered by JavaScript -->
+                </div>
+
+                <!-- Load More -->
+                <div style="text-align: center; margin-top: var(--space-2xl);">
+                    <button class="btn btn-secondary btn-lg">Load More Jobs</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Explore Categories</h2>
+                </div>
+                <div class="categories-grid" id="categoriesGrid">
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section style="padding: var(--space-3xl) 0; text-align: center;">
+            <div class="container">
+                <h2 style="font-size: var(--font-size-2xl); margin-bottom: var(--space-md);">Can't Find What You're Looking For?</h2>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-xl); max-width: 500px; margin-left: auto; margin-right: auto;">Post a job and let freelancers come to you. Get proposals from talented professionals.</p>
+                <a href="post-job.html" class="btn btn-primary btn-lg">Post a Job</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/wallet.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/jobs.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize jobs page
+            if (window.jobsModule) {
+                window.jobsModule.initJobsPage();
+            }
+
+            // Update jobs count
+            var jobsCount = document.getElementById('jobsCount');
+            if (jobsCount && window.jobsModule) {
+                jobsCount.textContent = window.jobsModule.getAllJobs().length;
+            }
+
+            // Filter handlers
+            var categoryFilter = document.getElementById('categoryFilter');
+            var budgetFilter = document.getElementById('budgetFilter');
+            var experienceFilter = document.getElementById('experienceFilter');
+            var sortFilter = document.getElementById('sortFilter');
+
+            function applyFilters() {
+                var category = categoryFilter ? categoryFilter.value : 'all';
+                var experience = experienceFilter ? experienceFilter.value : 'all';
+                var sort = sortFilter ? sortFilter.value : 'recent';
+                var searchInput = document.getElementById('searchInput');
+                var search = searchInput ? searchInput.value : '';
+
+                var filters = {
+                    category: category,
+                    experience: experience,
+                    search: search
+                };
+
+                var filtered = window.jobsModule.filterJobs(filters);
+
+                // Sort results
+                if (sort === 'budget-high') {
+                    filtered.sort(function(a, b) { return b.budget - a.budget; });
+                } else if (sort === 'budget-low') {
+                    filtered.sort(function(a, b) { return a.budget - b.budget; });
+                } else if (sort === 'proposals') {
+                    filtered.sort(function(a, b) { return a.proposals - b.proposals; });
+                }
+
+                window.jobsModule.renderJobsGrid(filtered, 'jobsGrid');
+                
+                if (jobsCount) {
+                    jobsCount.textContent = filtered.length;
+                }
+            }
+
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', applyFilters);
+            }
+            if (experienceFilter) {
+                experienceFilter.addEventListener('change', applyFilters);
+            }
+            if (sortFilter) {
+                sortFilter.addEventListener('change', applyFilters);
+            }
+
+            var searchInput = document.getElementById('searchInput');
+            var searchBtn = document.getElementById('searchBtn');
+            
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', applyFilters);
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        applyFilters();
+                    }
+                });
+            }
+
+            // Check URL params for search query
+            var urlParams = new URLSearchParams(window.location.search);
+            var searchQuery = urlParams.get('search');
+            if (searchQuery && searchInput) {
+                searchInput.value = searchQuery;
+                applyFilters();
+            }
+        });
+    </script>
+</body>
+</html>

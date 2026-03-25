@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - SMAJ PI JOBS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body data-page="profile">
+    <main class="dashboard">
+        <div class="container">
+            <div class="dashboard-header" style="margin-bottom: var(--space-xl);">
+                <h1 class="dashboard-title">My Profile</h1>
+                <p class="dashboard-subtitle">Manage your profile, skills, and portfolio.</p>
+            </div>
+            <div class="dashboard-grid">
+                <div id="dashboardSidebar"></div>
+                <div class="dashboard-content">
+                    <!-- Profile Header -->
+                    <div style="background: var(--gradient-dark); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.2);">
+                        <div style="display: flex; align-items: flex-start; gap: var(--space-xl);">
+                            <div style="position: relative;">
+                                <div id="profileAvatar" style="width: 120px; height: 120px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 48px; border: 4px solid var(--bg-card);">👤</div>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-sm);">
+                                    <h2 id="profileName" style="font-size: var(--font-size-xl); font-weight: 700;">John Developer</h2>
+                                    <span class="badge badge-success">✓ Verified</span>
+                                </div>
+                                <p id="profileTitle" style="color: var(--text-secondary); margin-bottom: var(--space-md);">Full Stack Developer | React & Node.js Expert</p>
+                                <div style="display: flex; align-items: center; gap: var(--space-lg);">
+                                    <div><span style="color: var(--accent-color);">★</span> <span id="profileRating" style="font-weight: 600;">4.9</span> <span style="color: var(--text-muted); font-size: var(--font-size-sm);">(48 reviews)</span></div>
+                                    <div><span>📍</span> <span style="color: var(--text-secondary); font-size: var(--font-size-sm);">Remote</span></div>
+                                </div>
+                            </div>
+                            <button id="editProfileBtn" class="btn btn-secondary">✏️ Edit Profile</button>
+                        </div>
+                    </div>
+                    <!-- Stats -->
+                    <div class="stats-grid" style="margin-bottom: var(--space-xl);">
+                        <div class="stat-card"><div class="stat-card-icon">💰</div><div class="stat-card-value" id="profileEarnings">2,450 SMAJ</div><div class="stat-card-label">Total Earnings</div></div>
+                        <div class="stat-card"><div class="stat-card-icon">✅</div><div class="stat-card-value">52</div><div class="stat-card-label">Jobs Completed</div></div>
+                        <div class="stat-card"><div class="stat-card-icon">📋</div><div class="stat-card-value">3</div><div class="stat-card-label">Active Jobs</div></div>
+                        <div class="stat-card"><div class="stat-card-icon">🏆</div><div class="stat-card-value">Top Rated</div><div class="stat-card-label">Badge</div></div>
+                    </div>
+                    <!-- About -->
+                    <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                        <h3 style="font-size: var(--font-size-lg); font-weight: 700; margin-bottom: var(--space-md);">About Me</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.8;">Passionate full-stack developer with 5+ years of experience building web applications. Specialized in React, Node.js, and blockchain development.</p>
+                    </div>
+                    <!-- Skills -->
+                    <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                        <h3 style="font-size: var(--font-size-lg); font-weight: 700; margin-bottom: var(--space-md);">Skills</h3>
+                        <div class="job-tags"><span class="job-tag">React</span><span class="job-tag">Node.js</span><span class="job-tag">JavaScript</span><span class="job-tag">TypeScript</span><span class="job-tag">Python</span><span class="job-tag">Solidity</span></div>
+                    </div>
+                    <!-- Portfolio -->
+                    <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                        <h3 style="font-size: var(--font-size-lg); font-weight: 700; margin-bottom: var(--space-md);">Portfolio</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--space-md);">
+                            <div style="background: var(--bg-tertiary); border-radius: var(--radius-md); padding: var(--space-md);"><div style="height: 100px; background: var(--gradient-primary); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: flex; align-items: center; justify-content: center; font-size: 32px;">🛒</div><h4 style="font-size: var(--font-size-sm);">E-commerce Platform</h4></div>
+                            <div style="background: var(--bg-tertiary); border-radius: var(--radius-md); padding: var(--space-md);"><div style="height: 100px; background: var(--gradient-secondary); border-radius: var(--radius-sm); margin-bottom: var(--space-sm); display: flex; align-items: center; justify-content: center; font-size: 32px;">📊</div><h4 style="font-size: var(--font-size-sm);">Crypto Dashboard</h4></div>
+                        </div>
+                    </div>
+                    <!-- Reviews -->
+                    <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); border: 1px solid rgba(108, 92, 231, 0.1);">
+                        <h3 style="font-size: var(--font-size-lg); font-weight: 700; margin-bottom: var(--space-md);">Reviews (48)</h3>
+                        <div style="display: flex; flex-direction: column; gap: var(--space-md);">
+                            <div><div style="display: flex; gap: var(--space-md);"><div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%;">T</div><div><div><strong>TechStore Inc.</strong> <span style="color:var(--text-muted)">★ 5.0</span></div><p style="color:var(--text-secondary);font-size:14px">Excellent work! Delivered on time.</p></div></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/wallet.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/jobs.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

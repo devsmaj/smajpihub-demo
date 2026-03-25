@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - SMAJ PI JOBS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body data-page="job-details">
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <a href="jobs.html" style="color: var(--text-secondary); margin-bottom: var(--space-md); display: inline-block;">← Back to Jobs</a>
+                <h1 class="page-title" id="jobTitle">Job Details</h1>
+                <p class="page-subtitle">View job details and apply to get started.</p>
+            </div>
+        </section>
+
+        <!-- Job Details Section -->
+        <section style="padding: 0 0 var(--space-3xl);">
+            <div class="container">
+                <div style="display: grid; grid-template-columns: 1fr 350px; gap: var(--space-xl);">
+                    <!-- Main Content -->
+                    <div>
+                        <!-- Job Info Card -->
+                        <div class="job-card" style="cursor: default; margin-bottom: var(--space-lg);">
+                            <div class="job-card-header">
+                                <span class="job-category" id="jobCategory">Category</span>
+                                <span class="job-budget" id="jobBudget">Budget</span>
+                            </div>
+                            <div id="jobBudgetUSD" style="font-size: var(--font-size-sm); color: var(--secondary-color); font-weight: 600; margin-bottom: var(--space-sm);">
+                                ~$0.00 USD
+                            </div>
+                            <h2 class="job-title" id="jobTitleMain" style="font-size: var(--font-size-xl);">Job Title</h2>
+                            <p class="job-description" id="jobDescription" style="-webkit-line-clamp: unset;">Description</p>
+                        </div>
+
+                        <!-- Skills Required -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-lg); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--space-md);">Skills Required</h3>
+                            <div class="job-tags" id="jobSkills">
+                            </div>
+                        </div>
+
+                        <!-- Job Details -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-lg); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--space-lg);">Job Details</h3>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg);">
+                                <div>
+                                    <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-bottom: var(--space-xs);">Duration</p>
+                                    <p style="font-weight: 600;" id="jobDuration">Duration</p>
+                                </div>
+                                <div>
+                                    <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-bottom: var(--space-xs);">Experience Level</p>
+                                    <p style="font-weight: 600;" id="jobExperience">Experience</p>
+                                </div>
+                                <div>
+                                    <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-bottom: var(--space-xs);">Posted</p>
+                                    <p style="font-weight: 600;">2 hours ago</p>
+                                </div>
+                                <div>
+                                    <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-bottom: var(--space-xs);">Proposals</p>
+                                    <p style="font-weight: 600;">5 proposals</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- How to Apply -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--space-md);">How to Apply</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">Submit your proposal including your approach, timeline, and relevant experience. Make sure to highlight how your skills match the job requirements.</p>
+                            <button id="applyJobBtn" class="btn btn-primary btn-lg" style="width: 100%;">Apply for This Job</button>
+                            <p style="color: var(--text-muted); font-size: var(--font-size-sm); text-align: center; margin-top: var(--space-md);">🔒 Secure payment via smart contract</p>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div>
+                        <!-- Client Info -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-lg); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--space-lg);">About the Client</h3>
+                            <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-md);">
+                                <div class="client-avatar" style="width: 48px; height: 48px; font-size: var(--font-size-lg);">C</div>
+                                <div>
+                                    <p style="font-weight: 600;" id="clientName">Client Name</p>
+                                    <p style="color: var(--accent-color); font-size: var(--font-size-sm);" id="clientRating">★ 4.8</p>
+                                </div>
+                            </div>
+                            <div style="padding-top: var(--space-md); border-top: 1px solid rgba(108, 92, 231, 0.1);">
+                                <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-bottom: var(--space-xs);">Jobs Posted</p>
+                                <p style="font-weight: 600;" id="clientJobs">12 jobs</p>
+                            </div>
+                            <div style="margin-top: var(--space-md);">
+                                <span class="badge badge-success">✓ Verified Client</span>
+                            </div>
+                        </div>
+
+                        <!-- Similar Jobs -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--space-lg);">Similar Jobs</h3>
+                            <div id="similarJobs">
+                                <a href="#" style="display: block; padding: var(--space-md) 0; border-bottom: 1px solid rgba(108, 92, 231, 0.1);">
+                                    <p style="font-weight: 600; margin-bottom: var(--space-xs); font-size: var(--font-size-sm);">React Developer Needed</p>
+                                    <p style="color: var(--secondary-color); font-size: var(--font-size-sm);">400 SMAJ</p>
+                                </a>
+                                <a href="#" style="display: block; padding: var(--space-md) 0; border-bottom: 1px solid rgba(108, 92, 231, 0.1);">
+                                    <p style="font-weight: 600; margin-bottom: var(--space-xs); font-size: var(--font-size-sm);">Full Stack Developer</p>
+                                    <p style="color: var(--secondary-color); font-size: var(--font-size-sm);">800 SMAJ</p>
+                                </a>
+                                <a href="#" style="display: block; padding: var(--space-md) 0;">
+                                    <p style="font-weight: 600; margin-bottom: var(--space-xs); font-size: var(--font-size-sm);">UI/UX Designer</p>
+                                    <p style="color: var(--secondary-color); font-size: var(--font-size-sm);">300 SMAJ</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/wallet.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/jobs.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.jobsModule) {
+                window.jobsModule.initJobDetailsPage();
+            }
+        });
+    </script>
+</body>
+</html>

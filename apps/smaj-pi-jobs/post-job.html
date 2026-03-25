@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job - SMAJ PI JOBS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body data-page="post-job">
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title">Post a Job</h1>
+                <p class="page-subtitle">Find the perfect freelancer for your project. Describe your job and receive proposals from talented professionals.</p>
+            </div>
+        </section>
+
+        <!-- Post Job Form Section -->
+        <section style="padding: 0 0 var(--space-3xl);">
+            <div class="container">
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <form id="postJobForm">
+                        <!-- Job Details -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h2 style="font-size: var(--font-size-xl); margin-bottom: var(--space-lg);">Job Details</h2>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Job Title *</label>
+                                <input type="text" id="jobTitle" class="form-input" placeholder="e.g., Build a React E-commerce Website" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Job Description *</label>
+                                <textarea id="jobDescription" class="form-textarea" placeholder="Describe your project in detail. Include requirements, deliverables, and any specific instructions..." required></textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Category *</label>
+                                    <select id="jobCategory" class="form-select" required>
+                                        <option value="">Select a category</option>
+                                        <option value="Web Development">Web Development</option>
+                                        <option value="Mobile Development">Mobile Development</option>
+                                        <option value="UI/UX Design">UI/UX Design</option>
+                                        <option value="Data Science">Data Science</option>
+                                        <option value="Blockchain">Blockchain</option>
+                                        <option value="Graphic Design">Graphic Design</option>
+                                        <option value="Content Writing">Content Writing</option>
+                                        <option value="Digital Marketing">Digital Marketing</option>
+                                        <option value="Video Editing">Video Editing</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Experience Level *</label>
+                                    <select id="jobExperience" class="form-select" required>
+                                        <option value="">Select experience level</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Expert">Expert</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Budget & Timeline -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h2 style="font-size: var(--font-size-xl); margin-bottom: var(--space-lg);">Budget & Timeline</h2>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Budget (SMAJ/PI) *</label>
+                                    <input type="number" id="jobBudget" class="form-input" placeholder="e.g., 0.001" min="0.0001" step="0.0001" required>
+                                    <div id="budgetConversion" style="margin-top: var(--space-sm); padding: var(--space-sm) var(--space-md); background: rgba(108, 92, 231, 0.1); border-radius: var(--radius-sm); font-size: var(--font-size-sm); color: var(--text-secondary);">
+                                        <span style="font-weight: 600; color: var(--secondary-color);">$0.00 USD</span> = <span style="font-weight: 600;">0.00000000 PI</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Budget Type *</label>
+                                    <select id="jobBudgetType" class="form-select" required>
+                                        <option value="fixed">Fixed Price</option>
+                                        <option value="hourly">Hourly Rate</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Duration *</label>
+                                <select id="jobDuration" class="form-select" required>
+                                    <option value="">Select duration</option>
+                                    <option value="Less than 1 week">Less than 1 week</option>
+                                    <option value="1-2 weeks">1-2 weeks</option>
+                                    <option value="2-4 weeks">2-4 weeks</option>
+                                    <option value="1-3 months">1-3 months</option>
+                                    <option value="3+ months">3+ months</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Quick USD to PI Converter -->
+                            <div style="margin-top: var(--space-lg); padding: var(--space-md); background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                                <p style="font-size: var(--font-size-sm); font-weight: 600; margin-bottom: var(--space-sm);">💡 Quick Converter (1 PI = $314,159 USD)</p>
+                                <div style="display: flex; gap: var(--space-md); flex-wrap: wrap;">
+                                    <div style="flex: 1; min-width: 150px;">
+                                        <input type="number" id="quickUsdInput" class="form-input" placeholder="$ USD" min="1" step="1">
+                                        <button type="button" id="convertUsdToPi" style="margin-top: var(--space-xs);" class="btn btn-secondary btn-sm">Convert to PI</button>
+                                    </div>
+                                    <div id="quickConversionResult" style="flex: 1; min-width: 200px; display: flex; align-items: center; font-size: var(--font-size-sm); color: var(--text-secondary);">
+                                        Enter USD amount to see PI equivalent
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills Required -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h2 style="font-size: var(--font-size-xl); margin-bottom: var(--space-lg);">Skills Required</h2>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Required Skills (comma separated) *</label>
+                                <input type="text" id="jobSkills" class="form-input" placeholder="e.g., React, JavaScript, Node.js, CSS" required>
+                                <p style="color: var(--text-muted); font-size: var(--font-size-sm); margin-top: var(--space-xs);">Add at least 3 skills</p>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div style="background: var(--bg-card); border-radius: var(--radius-lg); padding: var(--space-xl); margin-bottom: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                            <h2 style="font-size: var(--font-size-xl); margin-bottom: var(--space-lg);">Payment</h2>
+                            
+                            <div style="background: rgba(108, 92, 231, 0.1); border-radius: var(--radius-md); padding: var(--space-lg);">
+                                <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-md);">
+                                    <span style="font-size: var(--font-size-xl);">💎</span>
+                                    <div>
+                                        <p style="font-weight: 600;">SMAJ Token Payment</p>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-sm);">Secure payment via smart contract</p>
+                                    </div>
+                                </div>
+                                <p style="color: var(--text-secondary); font-size: var(--font-size-sm);">Payment will be held in escrow until job is completed and approved. Funds will be released to the freelancer's SMAJ wallet automatically.</p>
+                            </div>
+                        </div>
+
+                        <!-- Submit -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-md);">
+                            <a href="jobs.html" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary btn-lg">Post Job</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/wallet.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/jobs.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

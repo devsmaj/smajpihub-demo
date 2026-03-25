@@ -1,0 +1,171 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SMAJ PI JOBS</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body data-page="dashboard">
+    <main class="dashboard">
+        <div class="container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Welcome back!</h1>
+                <p class="dashboard-subtitle">Here's an overview of your freelance activity and earnings.</p>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Sidebar -->
+                <div id="dashboardSidebar">
+                    <!-- Sidebar will be rendered by JavaScript -->
+                </div>
+
+                <!-- Main Content -->
+                <div class="dashboard-content">
+                    <!-- Stats -->
+                    <div id="dashboardStats">
+                        <!-- Stats will be rendered by JavaScript -->
+                    </div>
+
+                    <!-- Connected Wallet Info -->
+                    <div id="connectedWallet" style="display: none; margin-bottom: var(--space-xl);">
+                        <div class="connected-wallet">
+                            <div class="wallet-address">
+                                <span id="walletAddress">0x0000...0000</span>
+                                <button id="copyAddressBtn" class="copy-btn">Copy</button>
+                            </div>
+                            <div class="wallet-balance-detail">
+                                <span>Balance</span>
+                                <span id="walletBalanceDisplay">0 SMAJ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Jobs -->
+                    <div style="margin-bottom: var(--space-xl);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-lg);">
+                            <h2 style="font-size: var(--font-size-xl); font-weight: 700;">Active Jobs</h2>
+                            <a href="jobs.html" class="btn btn-outline btn-sm">Browse More</a>
+                        </div>
+                        <div style="display: grid; gap: var(--space-md);">
+                            <!-- Sample Active Jobs -->
+                            <div style="background: var(--bg-tertiary); border-radius: var(--radius-md); padding: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                                <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: var(--space-sm);">
+                                    <div>
+                                        <h4 style="font-weight: 600; margin-bottom: var(--space-xs);">E-commerce Website Development</h4>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-sm);">Client: TechStore Inc.</p>
+                                    </div>
+                                    <span class="badge badge-info">In Progress</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: var(--space-lg); margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid rgba(108, 92, 231, 0.1);">
+                                    <div>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-xs);">Budget</p>
+                                        <p style="color: var(--secondary-color); font-weight: 600;">500 PI</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-xs);">Deadline</p>
+                                        <p style="font-weight: 600;">Dec 15, 2026</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-xs);">Progress</p>
+                                        <p style="font-weight: 600;">60%</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: var(--bg-tertiary); border-radius: var(--radius-md); padding: var(--space-lg); border: 1px solid rgba(108, 92, 231, 0.1);">
+                                <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: var(--space-sm);">
+                                    <div>
+                                        <h4 style="font-weight: 600; margin-bottom: var(--space-xs);">Mobile App UI Design</h4>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-sm);">Client: FitLife App</p>
+                                    </div>
+                                    <span class="badge badge-info">In Progress</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: var(--space-lg); margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid rgba(108, 92, 231, 0.1);">
+                                    <div>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-xs);">Budget</p>
+                                        <p style="color: var(--secondary-color); font-weight: 600;">300 SMAJ</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-xs);">Deadline</p>
+                                        <p style="font-weight: 600;">Dec 20, 2026</p>
+                                    </div>
+                                    <div>
+                                        <p style="color: var(--text-muted); font-size: var(--font-size-xs);">Progress</p>
+                                        <p style="font-weight: 600;">25%</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div>
+                        <h2 style="font-size: var(--font-size-xl); font-weight: 700; margin-bottom: var(--space-lg);">Recent Transactions</h2>
+                        <div style="background: var(--bg-tertiary); border-radius: var(--radius-md); overflow: hidden;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: var(--bg-input);">
+                                        <th style="padding: var(--space-md); text-align: left; font-weight: 600; font-size: var(--font-size-sm); color: var(--text-secondary);">Transaction</th>
+                                        <th style="padding: var(--space-md); text-align: left; font-weight: 600; font-size: var(--font-size-sm); color: var(--text-secondary);">Date</th>
+                                        <th style="padding: var(--space-md); text-align: left; font-weight: 600; font-size: var(--font-size-sm); color: var(--text-secondary);">Status</th>
+                                        <th style="padding: var(--space-md); text-align: right; font-weight: 600; font-size: var(--font-size-sm); color: var(--text-secondary);">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid rgba(108, 92, 231, 0.1);">
+                                        <td style="padding: var(--space-md); font-size: var(--font-size-sm);">Job Payment - Logo Design</td>
+                                        <td style="padding: var(--space-md); font-size: var(--font-size-sm); color: var(--text-muted);">Dec 1, 2026</td>
+                                        <td style="padding: var(--space-md);"><span class="badge badge-success">Completed</span></td>
+                                        <td style="padding: var(--space-md); text-align: right; color: var(--success); font-weight: 600;">+250 SMAJ</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid rgba(108, 92, 231, 0.1);">
+                                        <td style="padding: var(--space-md); font-size: var(--font-size-sm);">Platform Fee</td>
+                                        <td style="padding: var(--space-md); font-size: var(--font-size-sm); color: var(--text-muted);">Dec 1, 2026</td>
+                                        <td style="padding: var(--space-md);"><span class="badge badge-success">Paid</span></td>
+                                        <td style="padding: var(--space-md); text-align: right; color: var(--error); font-weight: 600;">-25 SMAJ</td>
+                                    </tr>
+                                    <tr style="border-bottom: 1px solid rgba(108, 92, 231, 0.1);">
+                                        <td style="padding: var(--space-md); font-size: var(--font-size-sm);">Job Payment - React Project</td>
+                                        <td style="padding: var(--space-md); font-size: var(--font-size-sm); color: var(--text-muted);">Nov 28, 2026</td>
+                                        <td style="padding: var(--space-md);"><span class="badge badge-success">Completed</span></td>
+                                        <td style="padding: var(--space-md); text-align: right; color: var(--success); font-weight: 600;">+450 SMAJ</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: var(--space-md); font-size: var(--font-size-sm);">Withdrawal to Wallet</td>
+                                        <td style="padding: var(--space-md); font-size: var(--font-size-sm); color: var(--text-muted);">Nov 25, 2026</td>
+                                        <td style="padding: var(--space-md);"><span class="badge badge-success">Completed</span></td>
+                                        <td style="padding: var(--space-md); text-align: right; color: var(--error); font-weight: 600;">-500 SMAJ</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/wallet.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/jobs.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dashboard components
+            if (window.jobsModule) {
+                // Dashboard specific initialization
+            }
+            
+            // Update wallet display
+            setTimeout(function() {
+                window.walletModule.updateWalletDisplay();
+            }, 100);
+        });
+    </script>
+</body>
+</html>
