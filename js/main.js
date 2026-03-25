@@ -629,6 +629,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
 console.log("SMAJ PI HUB navigation loaded");
 
+const EXTERNAL_DASHBOARD_URL = "https://officialsmaj.github.io/smaj-ecosystem-dashboard/";
+const EXTERNAL_DASHBOARD_LABEL = "Ecosystem Dashboard";
+
+function ensureExternalDashboardLink() {
+  const navMenu = document.getElementById("navMenu");
+  if (navMenu && !navMenu.querySelector(`a[href="${EXTERNAL_DASHBOARD_URL}"]`)) {
+    const navLink = document.createElement("a");
+    navLink.href = EXTERNAL_DASHBOARD_URL;
+    navLink.textContent = EXTERNAL_DASHBOARD_LABEL;
+    navLink.setAttribute("target", "_blank");
+    navLink.setAttribute("rel", "noopener noreferrer");
+    navMenu.appendChild(navLink);
+  }
+
+  const footerSections = Array.from(document.querySelectorAll(".footer-grid > div"));
+  const platformSection = footerSections.find((section) => {
+    const heading = section.querySelector("h4");
+    return heading && heading.textContent.trim().toLowerCase() === "platform";
+  });
+
+  if (platformSection && !platformSection.querySelector(`a[href="${EXTERNAL_DASHBOARD_URL}"]`)) {
+    const footerLink = document.createElement("a");
+    footerLink.href = EXTERNAL_DASHBOARD_URL;
+    footerLink.textContent = EXTERNAL_DASHBOARD_LABEL;
+    footerLink.setAttribute("target", "_blank");
+    footerLink.setAttribute("rel", "noopener noreferrer");
+    platformSection.appendChild(footerLink);
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", ensureExternalDashboardLink);
+} else {
+  ensureExternalDashboardLink();
+}
+
 
 function setupSmajAiAssistant() {
   if (!document.body || document.getElementById("smajAiTrigger")) return;
