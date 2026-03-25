@@ -127,7 +127,7 @@ function renderCartItems() {
                     <span>${item.seller.name}</span>
                 </div>
                 <div class="cart-item-price">
-                    ${item.price.toFixed(2)} Pi
+                    ${formatPiLabel(item.price)}
                     ${item.price < 1 ? `(${Math.round(item.price * 1000)} Pi)` : ''}
                 </div>
             </div>
@@ -141,7 +141,7 @@ function renderCartItems() {
                 </button>
             </div>
             <div class="cart-item-total">
-                ${(item.price * item.quantity).toFixed(2)} Pi
+                ${formatPiLabel(item.price * item.quantity)}
             </div>
             <button class="cart-item-remove" onclick="removeFromCart(${item.id})">
                 <i class="fas fa-trash"></i>
@@ -149,9 +149,9 @@ function renderCartItems() {
         </div>
     `).join('');
     
-    if (cartSubtotal) cartSubtotal.textContent = subtotal.toFixed(2) + ' Pi';
-    if (cartDelivery) cartDelivery.textContent = deliveryFee === 0 ? 'FREE' : deliveryFee.toFixed(2) + ' Pi';
-    if (cartTotal) cartTotal.textContent = total.toFixed(2) + ' Pi';
+    if (cartSubtotal) cartSubtotal.textContent = formatPiLabel(subtotal);
+    if (cartDelivery) cartDelivery.textContent = deliveryFee === 0 ? 'FREE' : formatPiLabel(deliveryFee);
+    if (cartTotal) cartTotal.textContent = formatPiLabel(total);
 }
 
 // Show notification

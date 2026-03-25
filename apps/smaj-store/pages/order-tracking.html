@@ -118,7 +118,7 @@
             
             document.getElementById('trackingId').textContent = order.id;
             document.getElementById('detailId').textContent = order.id;
-            document.getElementById('detailTotal').textContent = order.total.toFixed(2) + ' Pi';
+            document.getElementById('detailTotal').textContent = formatPiLabel(order.total);
             
             const now = new Date();
             document.getElementById('date1').textContent = now.toLocaleString();

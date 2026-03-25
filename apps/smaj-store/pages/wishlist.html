@@ -67,6 +67,7 @@
             <a href="../index.html" class="btn btn-primary">Start Shopping</a>
         </div>
 
+    <script src="../js/format-pi.js"></script>
     <script src="../js/products.js"></script>
     <script src="../js/cart.js"></script>
     <script src="../js/app.js"></script>
@@ -106,7 +107,7 @@
                             ${item.seller.verified ? '<span class="verified-badge"><i class="fas fa-check"></i></span>' : ''}
                             ${item.seller.name}
                         </div>
-                        <div class="wishlist-price">${item.price.toFixed(2)} Pi</div>
+                        <div class="wishlist-price">${formatPiLabel(item.price)}</div>
                         <div class="wishlist-actions">
                             <button class="btn-add-cart" onclick="addToCartFromWishlist(${item.id})"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
                         </div>
@@ -148,6 +149,10 @@
     <script src="../js/pi-rate.js"></script>
 </body>
 </html>
+
+
+
+
 
 
 

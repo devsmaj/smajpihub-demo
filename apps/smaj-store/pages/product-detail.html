@@ -594,6 +594,7 @@
         <div class="footer-bottom"><p>&copy; 2026 SMAJ PI HUB. All rights reserved.</p></div>
     </footer>
 
+    <script src="../js/format-pi.js"></script>
     <script src="../js/products.js"></script>
     <script src="../js/cart.js"></script>
     <script src="../js/app.js"></script>
@@ -620,11 +621,11 @@
             document.getElementById('productName').textContent = currentProduct.name;
             document.getElementById('productTitle').textContent = currentProduct.name;
             document.getElementById('productCategory').textContent = currentProduct.category;
-            document.getElementById('currentPrice').textContent = currentProduct.price.toFixed(2) + ' Pi';
+            document.getElementById('currentPrice').textContent = formatPiLabel(currentProduct.price);
             document.getElementById('productDescription').textContent = currentProduct.description;
             
             if (currentProduct.originalPrice) {
-                document.getElementById('originalPrice').textContent = currentProduct.originalPrice.toFixed(2) + ' Pi';
+                document.getElementById('originalPrice').textContent = formatPiLabel(currentProduct.originalPrice);
                 const discount = Math.round((1 - currentProduct.price / currentProduct.originalPrice) * 100);
                 document.getElementById('discountBadge').textContent = discount + '% OFF';
                 document.getElementById('discountBadge').style.display = 'inline-block';
@@ -729,6 +730,10 @@
     <script src="../js/pi-rate.js"></script>
 </body>
 </html>
+
+
+
+
 
 
 

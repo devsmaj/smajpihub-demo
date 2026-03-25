@@ -70,6 +70,7 @@
             <a href="../index.html" class="btn btn-primary">Start Shopping</a>
         </div>
 
+    <script src="../js/format-pi.js"></script>
     <script src="../js/products.js"></script>
     <script src="../js/cart.js"></script>
     <script src="../js/app.js"></script>
@@ -112,11 +113,11 @@
                                         <h4>${item.name}</h4>
                                         <span>Qty: ${item.quantity}</span>
                                     </div>
-                                    <div class="order-item-price">${(item.price * item.quantity).toFixed(2)} Pi</div>
+                                    <div class="order-item-price">${formatPiLabel(item.price * item.quantity)}</div>
                             `).join('')}
                         </div>
                     <div class="order-footer">
-                        <div class="order-total">Total: <span>${order.total.toFixed(2)} Pi</span></div>
+                        <div class="order-total">Total: <span>${formatPiLabel(order.total)}</span></div>
                         <a href="order-tracking.html?order=${order.id}" class="btn-track"><i class="fas fa-map-marker-alt"></i> Track Order</a>
                     </div>
                 `;
@@ -126,6 +127,10 @@
     <script src="../js/pi-rate.js"></script>
 </body>
 </html>
+
+
+
+
 
 
 

@@ -347,8 +347,8 @@ function createProductCard(product) {
                     <span class="seller-name">${product.seller.name}</span>
                 </div>
                 <div class="product-price">
-                    <span class="current-price">${product.price.toFixed(2)} Pi</span>
-                    ${product.originalPrice ? `<span class="original-price">${product.originalPrice.toFixed(2)} Pi</span>` : ''}
+                    <span class="current-price">${formatPiLabel(product.price)}</span>
+                    ${product.originalPrice ? `<span class="original-price">${formatPiLabel(product.originalPrice)}</span>` : ''}
                 </div>
                 <div class="product-rating">
                     <span class="rating-stars">${getStarRating(product.rating)}</span>

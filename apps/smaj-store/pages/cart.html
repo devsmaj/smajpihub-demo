@@ -391,6 +391,7 @@
         <div class="footer-bottom"><p>&copy; 2026 SMAJ PI HUB. All rights reserved.</p></div>
     </footer>
 
+    <script src="../js/format-pi.js"></script>
     <script src="../js/products.js"></script>
     <script src="../js/cart.js"></script>
     <script src="../js/app.js"></script>
@@ -419,9 +420,9 @@
             const subtotal = getCartTotal();
             const total = subtotal + deliveryFee;
             
-            document.getElementById('cartSubtotal').textContent = subtotal.toFixed(2) + ' Pi';
-            document.getElementById('cartDelivery').textContent = deliveryFee === 0 ? 'FREE' : deliveryFee.toFixed(2) + ' Pi';
-            document.getElementById('cartTotal').textContent = total.toFixed(2) + ' Pi';
+            document.getElementById('cartSubtotal').textContent = formatPiLabel(subtotal);
+            document.getElementById('cartDelivery').textContent = deliveryFee === 0 ? 'FREE' : formatPiLabel(deliveryFee);
+            document.getElementById('cartTotal').textContent = formatPiLabel(total);
             
             cartContainer.innerHTML = cart.map(item => `
                 <div class="cart-item">
@@ -433,7 +434,7 @@
                                 ${item.seller.verified ? '<span class="verified-badge"><i class="fas fa-check"></i> Verified</span>' : ''}
                                 <span>${item.seller.name}</span>
                             </div>
-                            <div class="cart-item-price">${item.price.toFixed(2)} Pi</div>
+                            <div class="cart-item-price">${formatPiLabel(item.price)}</div>
                         </div>
                     </div>
                     <div class="cart-item-quantity">
@@ -445,7 +446,7 @@
                             <i class="fas fa-plus"></i>
                         </button>
                     </div>
-                    <div class="cart-item-total">${(item.price * item.quantity).toFixed(2)} Pi</div>
+                    <div class="cart-item-total">${formatPiLabel(item.price * item.quantity)}</div>
                     <button class="cart-item-remove" onclick="removeFromCart(${item.id})">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -498,6 +499,8 @@
     <script src="../js/pi-rate.js"></script>
 </body>
 </html>
+
+
 
 
 
