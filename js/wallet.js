@@ -173,12 +173,14 @@
     window.location.replace(safeTarget);
   }
 
-  function updateAddressBadge(btn, state) {
+  function updateAddressBadge(btn, state, opts) {
     if (!btn || !btn.parentElement) return;
 
     const previous = btn.parentElement.querySelector(`[data-wallet-address-for="${btn.dataset.walletId || ""}"]`);
     if (previous) previous.remove();
     if (!state.connected || !state.address) return;
+
+    if (opts && opts.skipAddressBadge) return;
 
     if (!btn.dataset.walletId) {
       btn.dataset.walletId = `wallet-${Math.random().toString(36).slice(2, 10)}`;
@@ -228,15 +230,21 @@
     btn.classList.toggle("connected", isConnected);
     btn.setAttribute("aria-pressed", isConnected ? "true" : "false");
 
-    if (!options.skipAddressBadge) updateAddressBadge(btn, state);
+    updateAddressBadge(btn, state, options);
     animateButton(btn);
   }
 
   function updateAllButtons(opts) {
     const state = getState();
-    document.querySelectorAll(".wallet-btn, #connectWalletAction").forEach(function (btn) {
+    document.querySelectorAll(".wallet-btn").forEach(function (btn) {
       updateButton(btn, state, opts);
     });
+
+    const heroBtn = document.getElementById("connectWalletAction");
+    if (heroBtn) {
+      const heroOpts = Object.assign({}, opts, { skipAddressBadge: true });
+      updateButton(heroBtn, state, heroOpts);
+    }
 
     document.querySelectorAll('[data-wallet-connect="true"]').forEach(function (el) {
       el.dataset.walletConnected = state.connected ? "true" : "false";
