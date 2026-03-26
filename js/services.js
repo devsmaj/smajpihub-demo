@@ -3,6 +3,7 @@
   const walletHint = document.getElementById("walletHint");
   const sessionLog = document.getElementById("sessionLog");
   const connectWalletAction = document.getElementById("connectWalletAction");
+  const DASHBOARD_URL = window.SmajDashboardUrl || "pages/dashboard/client.html";
 
   if (!walletState || !walletHint || !sessionLog || !connectWalletAction) {
     return;
@@ -20,11 +21,11 @@
     const state = getState();
 
     if (state.connected) {
-      const short = window.SmajWallet && window.SmajWallet.shortenAddress
+      const displayName = state.displayName || (window.SmajWallet && window.SmajWallet.shortenAddress
         ? window.SmajWallet.shortenAddress(state.address)
-        : (state.address || "Connected");
+        : (state.address || "Connected"));
 
-      walletState.textContent = `Connected: ${short}`;
+      walletState.textContent = `Connected: ${displayName}`;
       walletState.classList.remove("disconnected");
       walletState.classList.add("connected");
       walletHint.textContent = "One-click access is enabled for connected platforms.";
@@ -95,7 +96,7 @@
         sessionLog.textContent = `${title}: blocked until wallet connection.`;
         const target = (clickedAction && clickedAction.tagName.toLowerCase() === "a" && clickedAction.getAttribute("href"))
           || (cardLink && cardLink.getAttribute("href"))
-          || "pages/dashboard/client.html";
+          || DASHBOARD_URL;
 
         if (window.SmajWallet && typeof window.SmajWallet.requestProtectedAccess === "function") {
           window.SmajWallet.requestProtectedAccess(target);

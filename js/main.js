@@ -21,6 +21,8 @@ function getApiBase() {
 }
 
 const API_BASE = getApiBase();
+const DASHBOARD_URL = window.SmajDashboardUrl || "pages/dashboard/client.html";
+const DASHBOARD_LINK_SELECTOR = 'a[href*="dashboard/client.html"], a[href*="smaj-ecosystem-dashboard"]';
 const TOKEN_KEY = "smaj_token";
 const USER_KEY = "smaj_user";
 
@@ -253,7 +255,7 @@ function ensureLogoHomeLink() {
 }
 
 function requestProtectedAccess(target) {
-  const fallbackTarget = target || "pages/dashboard/client.html";
+  const fallbackTarget = target || DASHBOARD_URL;
   if (window.SmajWallet && typeof window.SmajWallet.requestProtectedAccess === "function") {
     return window.SmajWallet.requestProtectedAccess(appPath(fallbackTarget));
   }
@@ -285,7 +287,7 @@ function routeButton(button, target) {
 // Service main CTA
 Array.from(document.querySelectorAll('.cta-btn')).forEach((btn) => {
   if (btn.type && btn.type.toLowerCase() === 'submit') return;
-  routeButton(btn, 'pages/dashboard/client.html');
+  routeButton(btn, DASHBOARD_URL);
 });
 
 function setupGlobalButtonRouting() {
@@ -310,7 +312,7 @@ function setupGlobalButtonRouting() {
   const resolveTarget = (label) => {
     if (label.includes('view project')) return 'pages/service-detail.html';
     if (label.includes('hire service')) return 'pages/contact.html';
-    if (label.includes('subscribe')) return 'pages/dashboard/client.html';
+    if (label.includes('subscribe')) return DASHBOARD_URL;
     if (label.includes('start a project')) return 'pages/contact.html';
     if (label.includes('view pricing')) return 'pages/pricing.html';
     if (label.includes('contact support')) return 'pages/contact.html';
@@ -359,11 +361,11 @@ function setupUniversalButtonFallback() {
   const resolveTarget = (label) => {
     if (label.includes('view project')) return 'pages/service-detail.html';
     if (label.includes('hire service')) return 'pages/contact.html';
-    if (label.includes('subscribe')) return 'pages/dashboard/client.html';
-    if (label.includes('join now')) return 'pages/dashboard/client.html';
-    if (label.includes('continue with pi')) return 'pages/dashboard/client.html';
-    if (label.includes('open dashboard')) return 'pages/dashboard/client.html';
-    if (label.includes('unified dashboard')) return 'pages/dashboard/client.html';
+    if (label.includes('subscribe')) return DASHBOARD_URL;
+    if (label.includes('join now')) return DASHBOARD_URL;
+    if (label.includes('continue with pi')) return DASHBOARD_URL;
+    if (label.includes('open dashboard')) return DASHBOARD_URL;
+    if (label.includes('unified dashboard')) return DASHBOARD_URL;
     if (label.includes('start now')) return 'pages/service.html';
     if (label.includes('view pricing')) return 'pages/pricing.html';
     if (label.includes('contact support')) return 'pages/contact.html';
@@ -397,7 +399,7 @@ function setupUniversalButtonFallback() {
 
       e.preventDefault();
       if (target) {
-        if (/dashboard\/client\.html/i.test(target)) {
+        if (/dashboard\/client\.html/i.test(target) || target.includes('smaj-ecosystem-dashboard')) {
           requestProtectedAccess(target);
           return;
         }
@@ -405,7 +407,7 @@ function setupUniversalButtonFallback() {
         return;
       }
 
-      requestProtectedAccess("pages/dashboard/client.html");
+      requestProtectedAccess(DASHBOARD_URL);
     });
   });
 }
@@ -467,10 +469,10 @@ function removeEmailAuthEntrypoints() {
 }
 
 function setupDashboardGateLinks() {
-  document.querySelectorAll('a[href*="dashboard/client.html"]').forEach((link) => {
+  document.querySelectorAll(DASHBOARD_LINK_SELECTOR).forEach((link) => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
-      const href = link.getAttribute("href") || "pages/dashboard/client.html";
+      const href = link.getAttribute("href") || DASHBOARD_URL;
       requestProtectedAccess(href);
     });
   });
@@ -486,7 +488,7 @@ function setupDashboardGateButtons() {
 
   document.querySelectorAll('button, a').forEach((el) => {
     const href = el.getAttribute('href');
-    if (el.tagName.toLowerCase() === 'a' && href && href.includes('dashboard/client.html')) {
+    if (el.tagName.toLowerCase() === 'a' && href && (href.includes('dashboard/client.html') || href.includes('smaj-ecosystem-dashboard'))) {
       return;
     }
     if (el.dataset.dashboardGate === "true") return;
@@ -497,7 +499,7 @@ function setupDashboardGateButtons() {
     el.addEventListener('click', (e) => {
       e.preventDefault();
       const explicitHref = el.tagName.toLowerCase() === "a" ? el.getAttribute("href") : "";
-      requestProtectedAccess(explicitHref || "pages/dashboard/client.html");
+      requestProtectedAccess(explicitHref || DASHBOARD_URL);
     });
   });
 }
@@ -512,7 +514,7 @@ function getWalletStateForNav() {
 }
 
 function getNavDashboardLinks() {
-  const links = Array.from(document.querySelectorAll('a[href*="dashboard/client.html"]'));
+  const links = Array.from(document.querySelectorAll(DASHBOARD_LINK_SELECTOR));
   links.forEach((link) => link.classList.add("nav-dashboard-link"));
   return links;
 }
@@ -664,7 +666,7 @@ function setupSmajAiAssistant() {
     },
     {
       keywords: ['dashboard', 'profile', 'finance', 'orders', 'analytics', 'notification', 'security'],
-      answer: 'Dashboard includes Overview, Profile, Wallet & Finance, Ecosystem, Orders, Jobs, Notifications, Analytics, and Security at pages/dashboard/client.html.'
+      answer: `Dashboard includes Overview, Profile, Wallet & Finance, Ecosystem, Orders, Jobs, Notifications, Analytics, and Security at ${DASHBOARD_URL}.`
     },
     {
       keywords: ['contact', 'support', 'help', 'team', 'email'],

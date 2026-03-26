@@ -4,6 +4,9 @@
   const TOKEN_KEY = "smaj_token";
   const PI_USER_KEY = "pi_user";
   const PI_ADDRESS_KEY = "pi_wallet_address";
+  const DASHBOARD_EXTERNAL_URL = "https://officialsmaj.github.io/smaj-ecosystem-dashboard/";
+  const DASHBOARD_HOSTNAME = "officialsmaj.github.io";
+  window.SmajDashboardUrl = window.SmajDashboardUrl || DASHBOARD_EXTERNAL_URL;
 
   const CONNECT_TEXT = "Login with Pi";
   const DISCONNECT_TEXT = "Log Out";
@@ -53,10 +56,21 @@
     localStorage.removeItem("user");
   }
 
-  function storeConnectedSession(address) {
+  function storeConnectedSession(address, accountPayload) {
     const walletAddress = String(address || "").trim();
-    const state = { connected: true, address: walletAddress, updatedAt: Date.now() };
-    const user = { username: "pioneer", walletAddress };
+    const profile = createPiUserRecord(accountPayload, walletAddress);
+    const state = {
+      connected: true,
+      address: walletAddress,
+      displayName: profile.displayName,
+      updatedAt: Date.now()
+    };
+    const user = {
+      username: profile.username || profile.displayName,
+      uid: profile.uid,
+      displayName: profile.displayName,
+      walletAddress
+    };
 
     persistState(state);
     localStorage.setItem(PI_USER_KEY, JSON.stringify(user));
@@ -97,19 +111,38 @@
     return `${getAppPrefix()}${normalized}`;
   }
 
+  function getDefaultDashboardTarget() {
+    return window.SmajDashboardUrl || DASHBOARD_EXTERNAL_URL;
+  }
+
+  function isExternalDashboardTarget(target) {
+    if (!target) return false;
+    const text = String(target).trim();
+    if (!text) return false;
+    try {
+      const url = new URL(text, window.location.origin);
+      return url.host.toLowerCase().includes(DASHBOARD_HOSTNAME);
+    } catch (_) {
+      return text.toLowerCase().includes(DASHBOARD_HOSTNAME);
+    }
+  }
+
   function isDashboardPage() {
     const path = window.location.pathname.replace(/\\/g, "/").toLowerCase();
+    if (isExternalDashboardTarget(window.location.href)) return true;
     return path.includes("/pages/dashboard/client.html");
   }
 
   function redirectToDashboard() {
     if (isDashboardPage()) return;
-    window.location.replace(appPath("pages/dashboard/client.html"));
+    window.location.replace(getDefaultDashboardTarget());
   }
 
   function sanitizeInternalTarget(target) {
-    const fallback = appPath("pages/dashboard/client.html");
+    const fallback = getDefaultDashboardTarget();
     if (!target) return fallback;
+
+    if (isExternalDashboardTarget(target)) return target;
 
     try {
       const url = new URL(target, window.location.origin);
@@ -122,7 +155,7 @@
   }
 
   function rememberProtectedTarget(target) {
-    const safeTarget = sanitizeInternalTarget(target);
+    const safeTarget = sanitizeInternalTarget(target || getDefaultDashboardTarget());
     sessionStorage.setItem(PROTECTED_REDIRECT_KEY, safeTarget);
     return safeTarget;
   }
@@ -134,7 +167,7 @@
   }
 
   function redirectToTarget(target) {
-    const safeTarget = sanitizeInternalTarget(target);
+    const safeTarget = sanitizeInternalTarget(target || getDefaultDashboardTarget());
     const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     if (current === safeTarget) return;
     window.location.replace(safeTarget);
@@ -154,8 +187,9 @@
     const badge = document.createElement("span");
     badge.className = "wallet-inline-address";
     badge.dataset.walletAddressFor = btn.dataset.walletId;
-    badge.textContent = shortenAddress(state.address);
-    badge.title = state.address;
+    const label = state.displayName || shortenAddress(state.address);
+    badge.textContent = label;
+    badge.title = state.address || label;
     badge.style.marginLeft = "8px";
     badge.style.fontSize = "0.82rem";
     badge.style.opacity = "0.9";
@@ -314,6 +348,72 @@
     return "";
   }
 
+  function parsePiUserSuffix(value) {
+    if (!value) return "";
+    const match = String(value).match(/^pi-user-(.+)$/i);
+    return match ? match[1] : "";
+  }
+
+  function findPiUserSegment(accountPayload) {
+    if (!accountPayload || typeof accountPayload !== "object") return null;
+    const candidates = [
+      accountPayload.user,
+      accountPayload.result && accountPayload.result.user,
+      accountPayload.result,
+      accountPayload.data && accountPayload.data.user,
+      accountPayload.data,
+      accountPayload
+    ];
+
+    for (const candidate of candidates) {
+      if (!candidate) continue;
+      if (candidate.username || candidate.uid || candidate.id || candidate.userId) {
+        return candidate;
+      }
+    }
+
+    return null;
+  }
+
+  function resolvePiDisplayInfo(accountPayload, fallbackAddress) {
+    const candidate = findPiUserSegment(accountPayload);
+    let username = "";
+    let uid = "";
+
+    if (candidate) {
+      if (candidate.username) username = String(candidate.username).trim();
+      if (candidate.uid) uid = String(candidate.uid).trim();
+      if (!uid && candidate.id) uid = String(candidate.id).trim();
+      if (!uid && candidate.userId) uid = String(candidate.userId).trim();
+    }
+
+    let displayName = username || uid;
+    if (!displayName && fallbackAddress) {
+      const suffix = parsePiUserSuffix(fallbackAddress);
+      if (suffix) displayName = suffix;
+    }
+    if (!displayName && fallbackAddress) {
+      displayName = fallbackAddress;
+    }
+
+    return { username, uid, displayName };
+  }
+
+  function createPiUserRecord(accountPayload, fallbackAddress) {
+    const walletAddress = String(fallbackAddress || "").trim();
+    const displayInfo = resolvePiDisplayInfo(accountPayload, walletAddress);
+    const username = displayInfo.username || displayInfo.displayName || "";
+    const uid = displayInfo.uid || "";
+    const displayName = displayInfo.displayName || walletAddress;
+
+    return {
+      username,
+      uid,
+      displayName,
+      walletAddress
+    };
+  }
+
   function ensurePiInit() {
     if (piInitialized || !window.Pi || typeof window.Pi.init !== "function") return;
     try {
@@ -343,7 +443,7 @@
     const opts = options || {};
     const hasPiWallet = await runWalletDetection(true);
     if (!hasPiWallet) return getState();
-    const requestedTarget = opts.redirectTo || consumeProtectedTarget() || "pages/dashboard/client.html";
+    const requestedTarget = opts.redirectTo || consumeProtectedTarget() || getDefaultDashboardTarget();
     const safeTarget = sanitizeInternalTarget(requestedTarget);
 
     const current = getState();
@@ -366,7 +466,7 @@
         return current;
       }
 
-      storeConnectedSession(address);
+      storeConnectedSession(address, account);
       updateAllButtons();
       alert("Wallet connected successfully.");
       if (opts.redirect !== false) redirectToTarget(safeTarget);
@@ -469,7 +569,7 @@
   function openProtectedAccessModal(target) {
     const modal = ensureProtectedAccessModal();
     const connectBtn = modal.querySelector("#walletAccessConnectBtn");
-    const safeTarget = rememberProtectedTarget(target || "pages/dashboard/client.html");
+    const safeTarget = rememberProtectedTarget(target || getDefaultDashboardTarget());
 
     if (connectBtn) {
       connectBtn.onclick = function () {
@@ -488,7 +588,7 @@
 
   function requestProtectedAccess(target) {
     const state = getState();
-    const safeTarget = sanitizeInternalTarget(target || "pages/dashboard/client.html");
+    const safeTarget = sanitizeInternalTarget(target || getDefaultDashboardTarget());
 
     if (state.connected) {
       redirectToTarget(safeTarget);
@@ -505,7 +605,14 @@
     const rawState = getState();
     const storedAddress = String(localStorage.getItem(PI_ADDRESS_KEY) || rawState.address || "").trim();
     const connected = !!storedAddress;
-    const next = { connected, address: connected ? storedAddress : "", updatedAt: Date.now() };
+    const storedUser = getStoredPiUser();
+    const displayName = (storedUser && storedUser.displayName) || rawState.displayName || "";
+    const next = {
+      connected,
+      address: connected ? storedAddress : "",
+      displayName,
+      updatedAt: Date.now()
+    };
 
     persistState(next);
     updateAllButtons();
@@ -543,7 +650,14 @@
       if (hasDetectionRun) {
         const rawState = getState();
         const storedAddress = String(localStorage.getItem(PI_ADDRESS_KEY) || rawState.address || "").trim();
-        persistState({ connected: !!storedAddress, address: storedAddress, updatedAt: Date.now() });
+        const storedUser = getStoredPiUser();
+        const displayName = (storedUser && storedUser.displayName) || rawState.displayName || "";
+        persistState({
+          connected: !!storedAddress,
+          address: storedAddress,
+          displayName,
+          updatedAt: Date.now()
+        });
         updateAllButtons();
         return;
       }
