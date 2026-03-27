@@ -13,6 +13,7 @@ const authRoutes = require('./routes/auth');
 const serviceRoutes = require('./routes/services');
 const orderRoutes = require('./routes/orders');
 const assistantRoutes = require('./routes/assistant');
+const piTransactionRoutes = require('./routes/piTransactions');
 
 // Import JWT utilities for public key endpoint
 const jwtUtils = require('./utils/jwt');
@@ -138,6 +139,7 @@ app.use('/api', authRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', assistantRoutes);
+app.use('/api', piTransactionRoutes);
 
 // Frontend static routes
 app.use('/assets', express.static(path.join(frontendRoot, 'assets')));

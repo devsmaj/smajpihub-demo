@@ -23,6 +23,11 @@ module.exports = {
   
   // Pi Network
   piNetworkSandbox: process.env.PI_NETWORK_SANDBOX === 'true',
+  pi: {
+    transactionApiKey: process.env.PI_API_KEY || '',
+    transactionEndpoint: process.env.PI_TRANSACTION_ENDPOINT || 'https://officialsmaj.github.io/pi-relay/transactions',
+    transactionTimeoutMs: parseInt(process.env.PI_TRANSACTION_TIMEOUT_MS) || 15000
+  },
 
   // AI Assistant
   openai: {

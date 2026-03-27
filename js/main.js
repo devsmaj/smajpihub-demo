@@ -31,6 +31,8 @@ function getToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
 
+window.SmajApiEndpoint = API_BASE;
+
 function getStoredUser() {
   const raw = localStorage.getItem(USER_KEY);
   if (!raw) return null;
