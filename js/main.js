@@ -591,6 +591,24 @@ function initNavigationWalletSync() {
 
 initNavigationWalletSync();
 
+function syncSmalaNameVisibility(state) {
+  const usernameEl = document.getElementById("smalaajimi36");
+  if (!usernameEl) return;
+  const connected = !!(state && state.connected);
+  usernameEl.classList.toggle("smala-user-hidden", connected);
+}
+
+function initSmalaNameVisibility() {
+  const refresh = () => syncSmalaNameVisibility(getWalletStateForNav());
+  window.addEventListener("smaj:wallet-changed", (event) => {
+    syncSmalaNameVisibility(event.detail || getWalletStateForNav());
+  });
+  document.addEventListener("DOMContentLoaded", refresh);
+  refresh();
+}
+
+initSmalaNameVisibility();
+
 function ensureDesktopWalletButton() {
   if (window.SmajWallet && typeof window.SmajWallet.init === "function") {
     window.SmajWallet.init();
