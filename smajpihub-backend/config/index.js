@@ -28,6 +28,9 @@ module.exports = {
     transactionEndpoint: process.env.PI_TRANSACTION_ENDPOINT || 'https://officialsmaj.github.io/pi-relay/transactions',
     transactionTimeoutMs: parseInt(process.env.PI_TRANSACTION_TIMEOUT_MS) || 15000
   },
+  dashboard: {
+    host: process.env.DASHBOARD_HOST || 'https://officialsmaj.github.io/smajpihub/'
+  },
 
   // AI Assistant
   openai: {

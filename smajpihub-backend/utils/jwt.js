@@ -127,6 +127,28 @@ function generateSSOToken(user) {
 }
 
 /**
+ * Generate dashboard SSO token
+ * @param {Object} user
+ */
+function generateDashboardSSOToken(user) {
+  const payload = {
+    wallet_address: user.walletAddress,
+    role: user.role || 'buyer',
+    type: 'sso',
+    service: 'smajdashboard'
+  };
+
+  const token = signToken(payload);
+  const decoded = jwt.decode(token);
+
+  return {
+    token,
+    expiresAt: decoded.exp * 1000,
+    expiresIn: config.jwtExpiresIn
+  };
+}
+
+/**
  * Get the public key (for sharing with SMAJ STORE)
  * @returns {string} Public key in PEM format
  */
@@ -139,6 +161,7 @@ module.exports = {
   verifyToken,
   generateSessionToken,
   generateSSOToken,
+  generateDashboardSSOToken,
   getPublicKey,
   loadKeys
 };

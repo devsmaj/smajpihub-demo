@@ -22,13 +22,14 @@ function getApiBase() {
 
 const API_BASE = getApiBase();
 const DASHBOARD_URL = window.SmajDashboardUrl || "pages/dashboard/client.html";
+const DASHBOARD_SSO_ENDPOINT = `${API_BASE}/api/dashboard/sso-token`;
 const DASHBOARD_LINK_SELECTOR = 'a[href*="dashboard/client.html"], a[href*="smaj-ecosystem-dashboard"]';
 const BACK_TO_HOME_URL = "https://officialsmaj.github.io/smajpihub/";
 const TOKEN_KEY = "smaj_token";
 const USER_KEY = "smaj_user";
 
 function getToken() {
-  return localStorage.getItem(TOKEN_KEY);
+  return localStorage.getItem(TOKEN_KEY) || localStorage.getItem("token");
 }
 
 window.SmajApiEndpoint = API_BASE;
@@ -269,6 +270,52 @@ function ensureBackToHomeLink() {
   nav.appendChild(link);
 }
 
+function getDashboardAuthHeaders() {
+  const token = getToken();
+  if (!token) return {};
+  return {
+    Authorization: `Bearer ${token}`
+  };
+}
+
+async function fetchDashboardSSORedirect(target) {
+  const normalizedTarget = appPath(target || "pages/dashboard/client.html");
+  const token = getToken();
+  if (!token) {
+    return normalizedTarget;
+  }
+
+  const params = new URLSearchParams();
+  if (normalizedTarget) {
+    params.set("redirect", normalizedTarget);
+  }
+
+  const url = `${DASHBOARD_SSO_ENDPOINT}${params.toString() ? `?${params.toString()}` : ""}`;
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: getDashboardAuthHeaders(),
+      cache: "no-store"
+    });
+    if (!response.ok) {
+      return normalizedTarget;
+    }
+    const data = await response.json().catch(() => ({}));
+    return data.redirectUrl || normalizedTarget;
+  } catch (error) {
+    console.warn("Dashboard SSO fetch failed:", error);
+    return normalizedTarget;
+  }
+}
+
+function redirectDashboardWithSSO(target) {
+  const normalizedTarget = appPath(target || "pages/dashboard/client.html");
+  (async function () {
+    const redirectUrl = await fetchDashboardSSORedirect(normalizedTarget);
+    window.location.href = redirectUrl || normalizedTarget;
+  })();
+}
+
 function requestProtectedAccess(target) {
   const fallbackTarget = target || DASHBOARD_URL;
   if (window.SmajWallet && typeof window.SmajWallet.requestProtectedAccess === "function") {
@@ -277,7 +324,7 @@ function requestProtectedAccess(target) {
 
   const connectedUser = getWalletUser();
   if (connectedUser) {
-    window.location.href = appPath(fallbackTarget);
+    redirectDashboardWithSSO(fallbackTarget);
     return true;
   }
 

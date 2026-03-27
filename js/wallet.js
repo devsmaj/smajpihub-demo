@@ -13,6 +13,8 @@
   const DISCONNECT_TEXT = "Log Out";
   const CONNECTING_TEXT = "Connecting...";
   const PROTECTED_REDIRECT_KEY = "smaj_protected_redirect";
+  const API_BASE = getApiBase();
+  const DASHBOARD_SSO_ENDPOINT = `${API_BASE}/api/dashboard/sso-token`;
 
   let isConnecting = false;
   let environmentAlertShown = false;
@@ -106,6 +108,14 @@
     return "/";
   }
 
+  function getApiBase() {
+    const origin = window.location.origin || "";
+    if (origin && origin !== "null" && !origin.startsWith("file:")) {
+      return origin.replace(/\/$/, "");
+    }
+    return "http://localhost:3000";
+  }
+
   function appPath(target) {
     if (!target || /^https?:\/\//i.test(target)) return target;
     const normalized = target.replace(/^\/+/, "");
@@ -136,7 +146,7 @@
 
   function redirectToDashboard() {
     if (isDashboardPage()) return;
-    window.location.replace(getDefaultDashboardTarget());
+    redirectToDashboardWithSSO(getDefaultDashboardTarget());
   }
 
   function sanitizeInternalTarget(target) {
@@ -155,6 +165,57 @@
     }
   }
 
+  function getSessionToken() {
+    return localStorage.getItem(TOKEN_KEY) || localStorage.getItem("token");
+  }
+
+  function buildAuthHeaders() {
+    const headers = {};
+    const token = getSessionToken();
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    return headers;
+  }
+
+  async function fetchDashboardRedirect(target) {
+    const fallback = target || getDefaultDashboardTarget();
+    const token = getSessionToken();
+    if (!token) return fallback;
+    const params = new URLSearchParams();
+    if (target) {
+      params.set("redirect", target);
+    }
+    const query = params.toString();
+    const url = `${DASHBOARD_SSO_ENDPOINT}${query ? `?${query}` : ""}`;
+    try {
+      const response = await fetch(url, {
+        headers: buildAuthHeaders(),
+        cache: "no-store"
+      });
+      if (!response.ok) {
+        return fallback;
+      }
+      const body = await response.json().catch(() => ({}));
+      return body.redirectUrl || fallback;
+    } catch (error) {
+      console.warn("Dashboard SSO fetch failed:", error);
+      return fallback;
+    }
+  }
+
+  function redirectToDashboardWithSSO(target) {
+    const safeTarget = sanitizeInternalTarget(target || getDefaultDashboardTarget());
+    if (!safeTarget) return;
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (current === safeTarget) return;
+
+    (async function () {
+      const redirectUrl = await fetchDashboardRedirect(safeTarget);
+      window.location.replace(redirectUrl || safeTarget);
+    })();
+  }
+
   function rememberProtectedTarget(target) {
     const safeTarget = sanitizeInternalTarget(target || getDefaultDashboardTarget());
     sessionStorage.setItem(PROTECTED_REDIRECT_KEY, safeTarget);
@@ -171,7 +232,7 @@
     const safeTarget = sanitizeInternalTarget(target || getDefaultDashboardTarget());
     const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     if (current === safeTarget) return;
-    window.location.replace(safeTarget);
+    redirectToDashboardWithSSO(safeTarget);
   }
 
   function updateAddressBadge(btn, state, opts) {
@@ -647,7 +708,7 @@
     const safeTarget = sanitizeInternalTarget(target || getDefaultDashboardTarget());
 
     if (state.connected) {
-      redirectToTarget(safeTarget);
+      redirectToDashboardWithSSO(safeTarget);
       return true;
     }
 
