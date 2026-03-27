@@ -299,7 +299,11 @@
   function updateAllButtons(opts) {
     const state = getState();
     document.querySelectorAll(".wallet-btn").forEach(function (btn) {
-      updateButton(btn, state, opts);
+      const buttonOpts = Object.assign({}, opts || {});
+      if (btn.classList.contains("desktop-wallet-btn") || btn.closest("header") || btn.closest("nav")) {
+        buttonOpts.skipAddressBadge = true;
+      }
+      updateButton(btn, state, buttonOpts);
     });
 
     const heroBtn = document.getElementById("connectWalletAction");

@@ -200,15 +200,6 @@ function requireAuth() {
     window.location.href = getAuthEntryPath();
   }
 }
-const storedUser = getStoredUser() || getStoredPiUser();
-if (storedUser) {
-  const el = document.getElementById("piUsername");
-  const icon = document.getElementById("walletConnectedIcon");
-  if (el) {
-    el.style.display = "none";
-  }
-  if (icon) icon.style.display = "inline-block";
-}
 
 const logoutBtn = document.getElementById("logoutBtn");
 
@@ -595,10 +586,16 @@ function syncSmalaNameVisibility(state) {
   const usernameEl = document.getElementById("smalaajimi36");
   const piUserEl = document.getElementById("piUsername");
   const statusIconEl = document.getElementById("walletConnectedIcon");
+  const headerBadges = document.querySelectorAll("header .wallet-inline-address, nav .wallet-inline-address");
+
   const connected = !!(state && state.connected);
   if (usernameEl) usernameEl.style.display = connected ? "none" : "";
   if (piUserEl) piUserEl.style.display = connected ? "none" : "";
   if (statusIconEl) statusIconEl.style.display = connected ? "inline-block" : "none";
+
+  headerBadges.forEach(badge => {
+    badge.style.display = connected ? "none" : "";
+  });
 }
 
 function initSmalaNameVisibility() {
