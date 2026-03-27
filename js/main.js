@@ -24,7 +24,6 @@ const API_BASE = getApiBase();
 const DASHBOARD_URL = window.SmajDashboardUrl || "pages/dashboard/client.html";
 const DASHBOARD_SSO_ENDPOINT = `${API_BASE}/api/dashboard/sso-token`;
 const DASHBOARD_LINK_SELECTOR = 'a[href*="dashboard/client.html"], a[href*="smaj-ecosystem-dashboard"]';
-const BACK_TO_HOME_URL = "https://officialsmaj.github.io/smajpihub/";
 const TOKEN_KEY = "smaj_token";
 const USER_KEY = "smaj_user";
 
@@ -256,18 +255,6 @@ function ensureLogoHomeLink() {
   logoContainer.removeChild(image);
   link.appendChild(image);
   logoContainer.appendChild(link);
-}
-
-function ensureBackToHomeLink() {
-  const nav = document.getElementById("navMenu");
-  if (!nav || nav.querySelector('[data-back-home="true"]')) return;
-  const link = document.createElement("a");
-  link.href = BACK_TO_HOME_URL;
-  link.textContent = "Back to Home";
-  link.setAttribute("data-back-home", "true");
-  link.setAttribute("aria-label", "Back to Home");
-  link.setAttribute("rel", "noopener noreferrer");
-  nav.appendChild(link);
 }
 
 function getDashboardAuthHeaders() {
@@ -593,31 +580,6 @@ function updateDashboardLinksForState(state) {
   });
 }
 
-function resolveSmalaHeaderElement() {
-  const header = document.getElementById("smalaajimi36") || document.querySelector("header.header");
-  if (!header) return null;
-  if (header.id !== "smalaajimi36") {
-    header.id = "smalaajimi36";
-  }
-  return header;
-}
-
-function syncSmalaHeaderVisibility(state) {
-  const header = resolveSmalaHeaderElement();
-  if (!header) return;
-  const connected = !!(state && state.connected);
-  header.classList.toggle("smala-header-hidden", connected);
-}
-
-function initSmalaHeaderVisibility() {
-  const refresh = () => syncSmalaHeaderVisibility(getWalletStateForNav());
-  window.addEventListener("smaj:wallet-changed", (event) => {
-    syncSmalaHeaderVisibility(event.detail || getWalletStateForNav());
-  });
-  document.addEventListener("DOMContentLoaded", refresh);
-  refresh();
-}
-
 function initNavigationWalletSync() {
   const refresh = () => updateDashboardLinksForState(getWalletStateForNav());
   window.addEventListener("smaj:wallet-changed", (event) => {
@@ -628,7 +590,6 @@ function initNavigationWalletSync() {
 }
 
 initNavigationWalletSync();
-initSmalaHeaderVisibility();
 
 function ensureDesktopWalletButton() {
   if (window.SmajWallet && typeof window.SmajWallet.init === "function") {
@@ -722,13 +683,11 @@ function bindWalletButtons() {
 }
 
 ensureLogoHomeLink();
-ensureBackToHomeLink();
 ensureDesktopWalletButton();
 bindWalletButtons();
 
 document.addEventListener("DOMContentLoaded", () => {
   ensureLogoHomeLink();
-  ensureBackToHomeLink();
   ensureDesktopWalletButton();
   bindWalletButtons();
 });
