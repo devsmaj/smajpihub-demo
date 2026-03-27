@@ -593,6 +593,31 @@ function updateDashboardLinksForState(state) {
   });
 }
 
+function resolveSmalaHeaderElement() {
+  const header = document.getElementById("smalaajimi36") || document.querySelector("header.header");
+  if (!header) return null;
+  if (header.id !== "smalaajimi36") {
+    header.id = "smalaajimi36";
+  }
+  return header;
+}
+
+function syncSmalaHeaderVisibility(state) {
+  const header = resolveSmalaHeaderElement();
+  if (!header) return;
+  const connected = !!(state && state.connected);
+  header.classList.toggle("smala-header-hidden", connected);
+}
+
+function initSmalaHeaderVisibility() {
+  const refresh = () => syncSmalaHeaderVisibility(getWalletStateForNav());
+  window.addEventListener("smaj:wallet-changed", (event) => {
+    syncSmalaHeaderVisibility(event.detail || getWalletStateForNav());
+  });
+  document.addEventListener("DOMContentLoaded", refresh);
+  refresh();
+}
+
 function initNavigationWalletSync() {
   const refresh = () => updateDashboardLinksForState(getWalletStateForNav());
   window.addEventListener("smaj:wallet-changed", (event) => {
@@ -603,6 +628,7 @@ function initNavigationWalletSync() {
 }
 
 initNavigationWalletSync();
+initSmalaHeaderVisibility();
 
 function ensureDesktopWalletButton() {
   if (window.SmajWallet && typeof window.SmajWallet.init === "function") {
