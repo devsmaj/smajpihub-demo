@@ -203,11 +203,11 @@ function requireAuth() {
 const storedUser = getStoredUser() || getStoredPiUser();
 if (storedUser) {
   const el = document.getElementById("piUsername");
+  const icon = document.getElementById("walletConnectedIcon");
   if (el) {
-    const address = storedUser.walletAddress || storedUser.wallet_address || storedUser.address || localStorage.getItem("pi_wallet_address") || "";
-    const label = storedUser.username || (address ? formatWalletAddress(address) : "Wallet Connected");
-    el.textContent = label;
+    el.style.display = "none";
   }
+  if (icon) icon.style.display = "inline-block";
 }
 
 const logoutBtn = document.getElementById("logoutBtn");
@@ -593,9 +593,12 @@ initNavigationWalletSync();
 
 function syncSmalaNameVisibility(state) {
   const usernameEl = document.getElementById("smalaajimi36");
-  if (!usernameEl) return;
+  const piUserEl = document.getElementById("piUsername");
+  const statusIconEl = document.getElementById("walletConnectedIcon");
   const connected = !!(state && state.connected);
-  usernameEl.style.display = connected ? "none" : "";
+  if (usernameEl) usernameEl.style.display = connected ? "none" : "";
+  if (piUserEl) piUserEl.style.display = connected ? "none" : "";
+  if (statusIconEl) statusIconEl.style.display = connected ? "inline-block" : "none";
 }
 
 function initSmalaNameVisibility() {
