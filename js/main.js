@@ -595,7 +595,7 @@ function syncSmalaNameVisibility(state) {
   const usernameEl = document.getElementById("smalaajimi36");
   if (!usernameEl) return;
   const connected = !!(state && state.connected);
-  usernameEl.classList.toggle("smala-user-hidden", connected);
+  usernameEl.style.display = connected ? "none" : "";
 }
 
 function initSmalaNameVisibility() {
