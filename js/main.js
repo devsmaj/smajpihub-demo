@@ -23,6 +23,7 @@ function getApiBase() {
 const API_BASE = getApiBase();
 const DASHBOARD_URL = window.SmajDashboardUrl || "pages/dashboard/client.html";
 const DASHBOARD_LINK_SELECTOR = 'a[href*="dashboard/client.html"], a[href*="smaj-ecosystem-dashboard"]';
+const BACK_TO_HOME_URL = "https://officialsmaj.github.io/smajpihub/";
 const TOKEN_KEY = "smaj_token";
 const USER_KEY = "smaj_user";
 
@@ -252,6 +253,18 @@ function ensureLogoHomeLink() {
   logoContainer.removeChild(image);
   link.appendChild(image);
   logoContainer.appendChild(link);
+}
+
+function ensureBackToHomeLink() {
+  const nav = document.getElementById("navMenu");
+  if (!nav || nav.querySelector('[data-back-home="true"]')) return;
+  const link = document.createElement("a");
+  link.href = BACK_TO_HOME_URL;
+  link.textContent = "Back to Home";
+  link.setAttribute("data-back-home", "true");
+  link.setAttribute("aria-label", "Back to Home");
+  link.setAttribute("rel", "noopener noreferrer");
+  nav.appendChild(link);
 }
 
 function requestProtectedAccess(target) {
@@ -634,11 +647,13 @@ function bindWalletButtons() {
 }
 
 ensureLogoHomeLink();
+ensureBackToHomeLink();
 ensureDesktopWalletButton();
 bindWalletButtons();
 
 document.addEventListener("DOMContentLoaded", () => {
   ensureLogoHomeLink();
+  ensureBackToHomeLink();
   ensureDesktopWalletButton();
   bindWalletButtons();
 });

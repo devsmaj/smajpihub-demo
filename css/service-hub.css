@@ -391,3 +391,154 @@
     grid-template-columns: 1fr;
   }
 }
+
+.pi-ops-section {
+  background: #f6f7ff;
+  padding: 64px 0;
+}
+
+.pi-ops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.pi-ops-card {
+  background: #fff;
+  border: 1px solid #e1e5f2;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 16px 40px rgba(15, 21, 48, 0.08);
+}
+
+.pi-ops-heading h3 {
+  font-size: 20px;
+  margin-bottom: 4px;
+  color: #101425;
+}
+
+.pi-ops-heading p {
+  margin: 0;
+  color: #5d6482;
+  font-size: 14px;
+}
+
+.pi-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #4c5168;
+}
+
+.pi-field input {
+  border: 1px solid #d4dbef;
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: border-color 0.2s ease;
+  font-size: 15px;
+  background: #f9fafc;
+}
+
+.pi-field input:focus {
+  border-color: #7d3cff;
+  outline: none;
+  background: #fff;
+}
+
+.transaction-history {
+  background: #fff;
+  border: 1px solid #e1e5f2;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 18px 36px rgba(15, 21, 48, 0.04);
+}
+
+.transaction-history-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+
+.transaction-history-head h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #101425;
+}
+
+.transaction-history-head p {
+  margin: 2px 0 0;
+  color: #5d6482;
+  font-size: 13px;
+}
+
+.transaction-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transaction-item {
+  border: 1px solid #e4e9f6;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #fdfdff;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.transaction-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #0d1222;
+}
+
+.transaction-detail span {
+  font-size: 14px;
+}
+
+.transaction-type {
+  font-weight: 700;
+}
+
+.transaction-meta {
+  font-size: 12px;
+  color: #6b738f;
+}
+
+.transaction-empty {
+  margin: 0;
+  padding: 12px 0;
+  color: #6b738f;
+  font-size: 14px;
+  text-align: center;
+}
+
+.pi-ops-card .hub-action,
+.transaction-history .btn-soft {
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.transaction-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.transaction-list::-webkit-scrollbar-thumb {
+  background: rgba(125, 60, 255, 0.4);
+  border-radius: 999px;
+}

@@ -7,6 +7,7 @@
   const DASHBOARD_EXTERNAL_URL = "https://officialsmaj.github.io/smaj-ecosystem-dashboard/";
   const DASHBOARD_HOSTNAME = "officialsmaj.github.io";
   window.SmajDashboardUrl = window.SmajDashboardUrl || DASHBOARD_EXTERNAL_URL;
+  const USERNAME_DENYLIST = new Set(["smaj_user", "smaj pioneer", "pioneer"]);
 
   const CONNECT_TEXT = "Login with Pi";
   const DISCONNECT_TEXT = "Log Out";
@@ -362,6 +363,54 @@
     return match ? match[1] : "";
   }
 
+  function getValueByPath(source, path) {
+    if (!source || typeof source !== "object") return undefined;
+    return path.reduce((current, key) => {
+      if (!current || typeof current !== "object") return undefined;
+      return current[key];
+    }, source);
+  }
+
+  function findPreferredUserName(accountPayload) {
+    if (!accountPayload || typeof accountPayload !== "object") return "";
+
+    const targets = [
+      accountPayload,
+      accountPayload.user,
+      accountPayload.result,
+      accountPayload.result && accountPayload.result.user,
+      accountPayload.data,
+      accountPayload.data && accountPayload.data.user,
+      accountPayload.identity,
+      accountPayload.profile
+    ];
+
+    const paths = [
+      ["username"],
+      ["name"],
+      ["displayName"],
+      ["handle"],
+      ["identity", "username"],
+      ["identity", "handle"],
+      ["profile", "username"],
+      ["profile", "name"]
+    ];
+
+    for (const target of targets) {
+      if (!target || typeof target !== "object") continue;
+      for (const path of paths) {
+        const value = getValueByPath(target, path);
+        if (!value || typeof value !== "string") continue;
+        const normalized = value.toLowerCase().replace(/^@/, "").trim();
+        if (!normalized) continue;
+        if (USERNAME_DENYLIST.has(normalized)) continue;
+        return value.trim();
+      }
+    }
+
+    return "";
+  }
+
   function findPiUserSegment(accountPayload) {
     if (!accountPayload || typeof accountPayload !== "object") return null;
     const candidates = [
@@ -384,12 +433,11 @@
   }
 
   function resolvePiDisplayInfo(accountPayload, fallbackAddress) {
+    const username = findPreferredUserName(accountPayload);
     const candidate = findPiUserSegment(accountPayload);
-    let username = "";
     let uid = "";
 
     if (candidate) {
-      if (candidate.username) username = String(candidate.username).trim();
       if (candidate.uid) uid = String(candidate.uid).trim();
       if (!uid && candidate.id) uid = String(candidate.id).trim();
       if (!uid && candidate.userId) uid = String(candidate.userId).trim();
