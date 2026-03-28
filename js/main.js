@@ -74,12 +74,37 @@ function notifyAuthStateChange() {
 
 function ensureAppUiPrimitives() {
   if (!document.body) return;
+
+  // Inject Styles if missing (handles all pages automatically)
+  if (!document.getElementById("smajLoaderStyles")) {
+    const style = document.createElement("style");
+    style.id = "smajLoaderStyles";
+    style.textContent = `
+      .app-loader-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #ffffff; display: flex; flex-direction: column;
+        justify-content: center; align-items: center; z-index: 10000;
+        opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s;
+      }
+      .app-loader-overlay.show { opacity: 1; visibility: visible; }
+      .app-loader-spinner {
+        width: 80px; height: 80px;
+        background-image: url('${appPath('assets/images/logo.png')}');
+        background-size: contain; background-repeat: no-repeat; background-position: center;
+        animation: smaj-pulse 1.5s ease-in-out infinite alternate; margin-bottom: 15px;
+        border: none; border-radius: 0;
+      }
+      @keyframes smaj-pulse { 0% { transform: scale(0.85); filter: drop-shadow(0 0 5px rgba(125, 60, 255, 0.3)); } 100% { transform: scale(1.1); filter: drop-shadow(0 0 15px rgba(125, 60, 255, 0.7)); } }
+    `;
+    document.head.appendChild(style);
+  }
+
   if (document.getElementById("appLoaderOverlay")) return;
 
   const loader = document.createElement("div");
   loader.id = "appLoaderOverlay";
-  loader.className = "app-loader-overlay";
-  loader.innerHTML = "<div class='app-loader-spinner'></div><p>Processing...</p>";
+  loader.className = "app-loader-overlay show";
+  loader.innerHTML = "<div class='app-loader-spinner'></div><p style='font-family: sans-serif; color: #555; font-size: 14px;'>Loading SMAJ PI HUB...</p>";
   document.body.appendChild(loader);
 }
 
@@ -908,3 +933,12 @@ if (document.readyState === "loading") {
 } else {
   setupSmajAiAssistant();
 }
+
+// Initialize loader for all pages immediately
+ensureAppUiPrimitives();
+
+// Global Page Load Handler to dismiss the preloader
+window.addEventListener('load', () => {
+  // Slight timeout for a smoother visual transition
+  setTimeout(() => setAppLoading(false), 300);
+});

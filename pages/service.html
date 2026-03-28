@@ -72,68 +72,6 @@
       </div>
     </section>
 
-    <section class="hub-section pi-ops-section">
-      <div class="container">
-        <div class="hub-section-head">
-          <h2>Pi Wallet Operations</h2>
-          <p>Send or receive Pi inside the hub and keep a copy of every wallet activity for reference.</p>
-        </div>
-        <div class="pi-ops-grid">
-          <form id="sendPiForm" class="pi-ops-card" aria-label="Send Pi transaction">
-            <div class="pi-ops-heading">
-              <h3>Send Pi</h3>
-              <p>Require a connected wallet to submit.</p>
-            </div>
-            <label class="pi-field">
-              <span>Amount (Pi)</span>
-              <input name="amount" type="number" step="0.01" min="0.01" placeholder="e.g. 12.5" required autocomplete="off">
-            </label>
-            <label class="pi-field">
-              <span>Recipient (Pi ID or wallet)</span>
-              <input name="recipient" type="text" placeholder="pi-username or wallet address" required autocomplete="off">
-            </label>
-            <label class="pi-field">
-              <span>Note (optional)</span>
-              <input name="note" type="text" placeholder="Why you are sending Pi">
-            </label>
-            <button type="submit" class="hub-action">Send Pi</button>
-          </form>
-
-          <form id="receivePiForm" class="pi-ops-card" aria-label="Receive Pi transaction">
-            <div class="pi-ops-heading">
-              <h3>Receive Pi</h3>
-              <p>Log incoming Pi to keep your balance history updated.</p>
-            </div>
-            <label class="pi-field">
-              <span>Amount (Pi)</span>
-              <input name="amount" type="number" step="0.01" min="0.01" placeholder="e.g. 5.0" required autocomplete="off">
-            </label>
-            <label class="pi-field">
-              <span>Sender (Pi ID or wallet)</span>
-              <input name="sender" type="text" placeholder="pi-username or wallet address" required autocomplete="off">
-            </label>
-            <label class="pi-field">
-              <span>Note (optional)</span>
-              <input name="note" type="text" placeholder="Why you received Pi">
-            </label>
-            <button type="submit" class="hub-action">Receive Pi</button>
-          </form>
-        </div>
-
-        <div class="transaction-history">
-          <div class="transaction-history-head">
-            <div>
-              <h3>Transaction History</h3>
-              <p id="transactionHistoryCount">No records yet</p>
-            </div>
-            <button type="button" id="clearTransactionHistory" class="btn-soft">Clear History</button>
-          </div>
-          <ul id="transactionList" class="transaction-list" aria-live="polite"></ul>
-          <p class="transaction-empty" id="transactionHistoryEmpty">Saved transactions will appear here.</p>
-        </div>
-      </div>
-    </section>
-
     <section class="hub-section container">
       <div class="hub-section-head">
         <h2>How SMAJ PI HUB Connects All Projects</h2>
