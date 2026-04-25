@@ -78,6 +78,11 @@ smajpihub/
 
 ## Navigation and Menu Notes
 
+## Repository Check Update
+
+- Verified repository write access by updating this README.
+- Added this note as a lightweight commit-test change on April 25, 2026.
+
 - Shared mobile menu uses:
   - `#menuToggle`
   - `#menuOverlay`
