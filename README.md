@@ -109,3 +109,8 @@ smajpihub/
 
 - Keep shared header/footer structure consistent across all pages.
 - Keep branding colors and typography from base styles unless intentionally redesigning.
+
+## Maintenance
+
+- Repository write-access verification note added on April 25, 2026.
+- Apply the same README verification pattern in the `smaj-pi-hub-demo` repository when working there.
