@@ -1,116 +1,99 @@
 # SMAJ PI HUB
 
-All-in-one frontend platform for Pi ecosystem services.
+All-in-one platform for Pi ecosystem services with frontend pages, app-specific microsites, and backend API support.
 
 ## Overview
 
-SMAJ PI HUB brings multiple Pi-powered services into one user flow:
-- E-commerce and marketplace access
-- Digital services and onboarding guides
-- Community and developer ecosystem pages
-- Wallet-first experience with Pi branding
+This repository contains:
+- A frontend web platform built with HTML, CSS, and Vanilla JavaScript
+- App-specific subprojects under `apps/` for service verticals such as food delivery, education, health, housing, energy, transport, charity, and more
+- A backend API service in `smajpihub-backend/`
 
-This repository is currently frontend-focused (HTML, CSS, Vanilla JS).
+The project is designed as a hub for Pi-powered services, marketplace flows, community pages, and wallet-oriented onboarding.
 
 ## Tech Stack
 
-- HTML5
-- CSS3
-- Vanilla JavaScript (ES6)
-- Boxicons
-- Pi SDK script integration in page templates
+- Frontend: HTML5, CSS3, Vanilla JavaScript (ES6)
+- Backend: Node.js, Express, MongoDB, Redis, JWT authentication
+- Utilities: Boxicons, dotenv, Helmet, rate limiting, CORS
 
-## Project Structure
+## Repository Structure
 
 ```text
-smajpihub/
-|-- index.html
+/workspaces/smajpihub-demo
+|-- apps/
+|   |-- smaj-food-delivery/
+|   |-- smaj-pi-agro/
+|   |-- smaj-pi-charity/
+|   |-- smaj-pi-edu/
+|   |-- smaj-pi-energy/
+|   |-- smaj-pi-events/
+|   |-- smaj-pi-health/
+|   |-- smaj-pi-housing/
+|   |-- smaj-pi-jobs/
+|   |   |-- index.html
+|   |   |-- dashboard.html
+|   |   |-- jobs.html
+|   |   |-- profile.html
+|   |   `-- ...
+|   |-- smaj-pi-swap/
+|   |-- smaj-pi-transport/
+|   |-- smaj-store/
+|   `-- smaj-token-hub/
 |-- assets/
 |   `-- images/
 |-- css/
-|   |-- style.css
-|   |-- responsive.css
-|   |-- homepage.css
-|   `-- [page-specific css files]
 |-- js/
-|   |-- main.js
-|   `-- [page-specific js files]
-`-- pages/
-    |-- about.html
-    |-- service.html
-    |-- how-it-works.html
-    |-- pricing.html
-    |-- portfolio.html
-    |-- marketplace/markerplace.html
-    |-- blog.html
-    |-- blog-post.html
-    |-- community.html
-    |-- developers.html
-    |-- faq.html
-    |-- contact.html
-    |-- dashboard/
-    |-- auth/
-    `-- legal/
+|-- pages/
+|-- index.html
+|-- package.json
+|-- package-lock.json
+|-- smajpihub-backend/
+|   |-- package.json
+|   |-- README.md
+|   |-- server.js
+|   `-- config/
+`-- README.md
 ```
 
-## Rebuilt Pages (Recent)
+## Frontend Notes
 
-- `index.html` (homepage structure and hub messaging)
-- `pages/service.html`
-- `pages/dashboard/client.html`
-- `pages/how-it-works.html`
-- `pages/pricing.html`
-- `pages/marketplace/markerplace.html`
-- `pages/faq.html`
-- `pages/contact.html`
-- `pages/about.html` (except protected team/founder sections as requested)
-- `pages/blog.html`
-- `pages/blog-post.html`
-- `pages/community.html`
-- `pages/developers.html`
-- `pages/portfolio.html`
+- The frontend is a static, multi-page site with shared header/footer behavior managed in `js/main.js`
+- Page-specific scripts live in `js/`
+- Styles are organized across `css/` and page-specific stylesheets
+- `apps/` contains service-specific microsites and subpages for different Pi ecosystem verticals
+
+## Backend Notes
+
+- `smajpihub-backend/` is the main backend API service
+- It includes Express routes, authentication utilities, session handling, and optional Redis support
+- The root `package.json` also contains a separate auth API package configuration used for backend development
 
 ## Run Locally
 
-1. Open project folder in VS Code.
-2. Run with Live Server (or any static server).
-3. Start from `index.html`.
+Frontend:
+1. Open the project in VS Code.
+2. Use Live Server or another static file server to serve `index.html`.
 
-## Navigation and Menu Notes
+Backend:
+1. Navigate to `smajpihub-backend/`
+2. Run `npm install`
+3. Start the server with `npm run dev`
 
-## Repository Check Update
+Optional root auth package:
+1. Run `npm install`
+2. Start with `npm run dev`
 
-- Verified repository write access by updating this README.
-- Added this note as a lightweight commit-test change on April 25, 2026.
+## Recommended Next Steps
 
-- Shared mobile menu uses:
-  - `#menuToggle`
-  - `#menuOverlay`
-  - `#menuClose`
-  - `#navMenu`
-- Shared behavior is controlled by `js/main.js`.
+- Verify desktop and mobile navigation links across all pages
+- Replace placeholder `href="#"` links with production URLs
+- Validate mobile menu open/close across pages
+- Review SEO metadata per page: `<title>`, meta description, Open Graph tags
+- Review `apps/` subprojects for consistency and content accuracy
 
-## What Next (Recommended Checks)
+## Known Cleanup Items
 
-1. Check all nav links on every page (desktop + mobile).
-2. Validate mobile menu open/close on each page.
-3. Replace all `href="#"` placeholders (social and CTA links) with real URLs.
-4. Run visual QA for spacing/typography consistency across rebuilt pages.
-5. Test `js/portfolio.js` filters/counters and `js/community.js` category filters.
-6. Fix file naming typos in future cleanup:
-   - `pages/marketplace/markerplace.html` (typo in filename)
-   - `js/contant.js` (typo in filename)
-7. Add SEO basics per page:
-   - unique `<title>`
-   - meta description
-   - Open Graph tags
-
-## Notes
-
-- Keep shared header/footer structure consistent across all pages.
-- Keep branding colors and typography from base styles unless intentionally redesigning.
-
-## Maintenance
-
-- Repository write-access verification note added on April 25, 2026.
-- Apply the same README verification pattern in the `smaj-pi-hub-demo` repository when working there.
+- Fix file naming typos and duplicate placeholder files as needed
+- Review backend environment setup and update README in `smajpihub-backend/`
+- Confirm the `apps/` folder structure aligns with the new hub architecture
